@@ -19,6 +19,8 @@
 #include "flags\procdbgflag.h"
 #include "flags\procdbgport.h"
 
+#include "hook\ishooked.h"
+
 #include "memory\hwbreakp.h"
 #include "memory\membreakp.h"
 
@@ -26,15 +28,16 @@
 #include "object\crtfile.h"
 #include "object\dbgobj.h"
 #include "object\loadlib.h"
+#include "object\opnproc.h"
 
 bool IsProgramDebugged() {
-    return IsDebuggerPresent() || IsRemoteDebuggerPresent() ||
-           DebuggerBreak() || int2D() || int3() || POPFTrapFlag() ||
-           StackSegmentRegister() || DBG_PRINTEXCEPTION() || RaiseDbgControl() ||
-           IsDebuggerPresent_DebugObjectHandle() || KernelDebugger() ||
-           IsDebuggerPresent_DebugFlags() || CheckNtQueryInformationProcess() ||
-           HardwareBreakpoint() || MemoryBreakpoint() || CheckCloseHandle() ||
-           CheckCreateFile() || CheckNtQueryObject() || CheckLoadLibrary();
+        return IsDebuggerPresent() || IsRemoteDebuggerPresent() ||
+        DebuggerBreak() || int2D() || int3() || POPFTrapFlag() ||
+        StackSegmentRegister() || DBG_PRINTEXCEPTION() || RaiseDbgControl() ||
+        IsDebuggerPresent_DebugObjectHandle() || KernelDebugger() ||
+        IsDebuggerPresent_DebugFlags() || IsHooked() || CheckNtQueryInformationProcess() ||
+        HardwareBreakpoint() || MemoryBreakpoint() || CheckCloseHandle() ||
+        CheckCreateFile() || CheckNtQueryObject() || CheckLoadLibrary() || CheckOpenProcess();
 }
 
 /* 
@@ -44,9 +47,10 @@ bool IsProgramDebugged() {
 * ================
 
 #include <stdio.h>
+#include "adbg.h"
 
 int main() {
-    if (IsSpectrumDebugged()) {
+    if (IsProgramDebugged()) {
         printf("Debugger detected!\n");
     } else {
         printf("No debugger detected.\n");
