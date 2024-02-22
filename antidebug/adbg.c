@@ -1,4 +1,4 @@
-/* Only reliable and tested methods, that can be done from user-mode in x64 bits, are included. Im still developing the rest. */
+/* Only reliable and tested methods, that can be done from user-mode in x64 bits, are included.*/
 
 #include "adbg.h"
 
@@ -21,6 +21,8 @@
 #include "hook\ishooked.h"
 
 #include "memory\hwbreakp.h"
+#include "memory\readstck.h"
+#include "memory\peb.h"
 
 #include "object\clshandle.h"
 #include "object\crtfile.h"
@@ -40,6 +42,8 @@ DebugCheckResult debuggerChecks[] = {
     {"KernelDebugger", KernelDebugger, false},
     {"IsDebuggerPresent_DebugFlags", IsDebuggerPresent_DebugFlags, false},
     {"IsHooked", IsHooked, false},
+    {"ReadOwnMemoryStack", ReadMemoryStack, false},
+    {"PEB", PEB, false},
     {"CheckNtQueryInformationProcess", CheckNtQueryInformationProcess, false},
     {"HardwareBreakpoint", HardwareBreakpoint, false},
     {"CheckCloseHandle", CheckCloseHandle, false},
@@ -49,7 +53,7 @@ DebugCheckResult debuggerChecks[] = {
     {"CheckOpenProcess", CheckOpenProcess, false},
 };
 
-bool IsProgramDebugged() {
+bool IsSpectrumDebugged() {
     for (int i = 0; i < sizeof(debuggerChecks) / sizeof(debuggerChecks[0]); ++i) {
         debuggerChecks[i].result = debuggerChecks[i].functionPtr();
         if (debuggerChecks[i].result) {
