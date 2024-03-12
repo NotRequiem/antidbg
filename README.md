@@ -3,7 +3,6 @@
 `Example Usage:`
 
 ```
-#include <stdio.h>
 #include "adbg.h"
 
 int main() {
