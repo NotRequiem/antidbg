@@ -6,7 +6,7 @@ bool StackSegmentRegister()
 
     __try
     {
-        CONTEXT ctx;
+        CONTEXT ctx = { 0 };
         ctx.ContextFlags = CONTEXT_FULL;
 
         // Get the current thread context
