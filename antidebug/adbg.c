@@ -1,4 +1,4 @@
-/* Only reliable and tested methods, that can be done from user-mode, are included.*/
+/* Only reliable and tested methods, that can be done from user-mode in x64 bits, are included. */
 
 #include "adbg.h"
 
@@ -15,6 +15,7 @@
 #include "exceptions\raiseexc.h"
 #include "exceptions\unhexcp.h"
 #include "exceptions\hwbreakp2.h"
+#include "exceptions\pgexcbp.h"
 
 #include "flags\dbgobjhandle.h"
 #include "flags\kerneldbg.h"
@@ -26,10 +27,12 @@
 #include "hook\ishooked.h"
 
 #include "memory\hwbreakp.h"
+#include "memory\membreakp.h"
 #include "memory\readstck.h"
 #include "memory\peb.h"
 #include "memory\ntglobalflag.h"
 #include "memory\lowfraghp.h"
+#include "memory\vrtalloc.h"
 
 #include "object\clshandle.h"
 #include "object\clsinvhandle.h"
@@ -37,6 +40,7 @@
 #include "object\dbgobj.h"
 #include "object\loadlib.h"
 #include "object\opnproc.h"
+#include "object\prothnd.h"
 #include "object\sysdbgctl.h"
 
 DebugCheckResult debuggerChecks[] = {
@@ -50,6 +54,7 @@ DebugCheckResult debuggerChecks[] = {
     {"StackSegmentRegister", StackSegmentRegister, false},
     {"UnhandledExcepFilterTest", CheckUnhandledExcepFilter, false},
     {"RaiseDbgControl", RaiseDbgControl, false},
+    {"PageExceptionBreakpoint", PageExceptionBreakpoint, false},
     {"IsDebuggerPresent_DebugObjectHandle", IsDebuggerPresent_DebugObjectHandle, false},
     {"KernelDebugger", KernelDebugger, false},
     {"IsDebuggerPresent_DebugFlags", IsDebuggerPresent_DebugFlags, false},
@@ -63,12 +68,15 @@ DebugCheckResult debuggerChecks[] = {
     {"CheckNtQueryInformationProcess", CheckNtQueryInformationProcess, false},
     {"HardwareBreakpoint", HardwareBreakpoint, false},
     {"HardwareBreakpoint2", HardwareBreakPoint2, false},
+    {"MemoryBreakpoint", MemoryBreakpoint, false},
+    {"VirtualAlloc_MEM_WRITE_WATCH", WriteWatch, false},
     {"CheckCloseHandle", CheckCloseHandle, false},
     {"CheckCloseHandleWithInvalidHandle", CloseInvalidHandle, false},
     {"CheckCreateFile", CheckCreateFile, false},
     {"CheckNtQueryObject", CheckNtQueryObject, false},
     {"CheckLoadLibrary", CheckLoadLibrary, false},
     {"CheckOpenProcess", CheckOpenProcess, false},
+    {"SetHandleInformation", ProtectedHandle, false},
     {"NtSystemDebugControl_Command", NtSystemDebugControl, false},
 };
 
