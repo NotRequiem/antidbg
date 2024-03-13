@@ -62,7 +62,7 @@ DebugCheckResult debuggerChecks[] = {
     {"ProcessHeapForce_Flag", ProcessHeapForceFlag, false},
     {"IsHooked", IsHooked, false},
     {"ReadOwnMemoryStack", ReadMemoryStack, false},
-    {"PEB", PEB, false},
+    {"PEB", CheckPEB, false},
     {"NtGlobalFlag", NtGlobalFlag, false},
     {"LowFragmentationHeap", LowFragmentationHeap, false},
     {"CheckNtQueryInformationProcess", CheckNtQueryInformationProcess, false},
