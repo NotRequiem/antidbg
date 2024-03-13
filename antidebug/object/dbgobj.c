@@ -80,7 +80,6 @@ bool CheckNtQueryObject()
             }
         }
 
-        // Move to the next entry if the buffer is not null
         if (pObjectTypeInfo->TypeName.Buffer != NULL)
         {
             pObjInfoLocation += sizeof(OBJECT_TYPE_INFORMATION) + pObjectTypeInfo->TypeName.MaximumLength;
