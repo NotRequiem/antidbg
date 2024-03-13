@@ -9,7 +9,7 @@ bool CheckOutputDebugString()
 	if (IsWindowsXPOr2k())
 	{
 		SetLastError(Val);
-		OutputDebugString(_T("random"));
+		OutputDebugString(_T("test"));
 
 		if (GetLastError() == Val)
 			IsDbgPresent = TRUE;
