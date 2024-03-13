@@ -22,6 +22,7 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <ProjectGuid>{46E084D0-0641-4404-BFD8-269C35EEB999}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -78,44 +79,98 @@
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <StringPooling>true</StringPooling>
+      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <IntelJCCErratum>true</IntelJCCErratum>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <TurnOffAssemblyGeneration>false</TurnOffAssemblyGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <StringPooling>true</StringPooling>
+      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <IntelJCCErratum>true</IntelJCCErratum>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <TurnOffAssemblyGeneration>false</TurnOffAssemblyGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <StringPooling>true</StringPooling>
+      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <IntelJCCErratum>true</IntelJCCErratum>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
+      <TurnOffAssemblyGeneration>false</TurnOffAssemblyGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <StringPooling>true</StringPooling>
+      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <IntelJCCErratum>true</IntelJCCErratum>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
+      <TurnOffAssemblyGeneration>false</TurnOffAssemblyGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -128,20 +183,18 @@
     <ClCompile Include="antidebug\asm\int3.c" />
     <ClCompile Include="antidebug\asm\popf.c" />
     <ClCompile Include="antidebug\asm\sckreg.c" />
-    <ClCompile Include="antidebug\exceptions\dbgprintex.c" />
     <ClCompile Include="antidebug\exceptions\hwbreakp2.c" />
     <ClCompile Include="antidebug\exceptions\kernel\ntsetdbgfilterst.c" />
+    <ClCompile Include="antidebug\exceptions\pgexcbp.c" />
     <ClCompile Include="antidebug\exceptions\raiseexc.c" />
     <ClCompile Include="antidebug\exceptions\unhexcp.c" />
-    <ClCompile Include="antidebug\exceptions\x86\unhndlexcpfilter.c" />
-    <ClCompile Include="antidebug\flags\archived\rtldbginf.c" />
-    <ClCompile Include="antidebug\flags\archived\rtlheapinf.c" />
     <ClCompile Include="antidebug\flags\dbgobjhandle.c" />
     <ClCompile Include="antidebug\flags\kerneldbg.c" />
     <ClCompile Include="antidebug\flags\prochpforceflag.c" />
     <ClCompile Include="antidebug\flags\procdbgflag.c" />
     <ClCompile Include="antidebug\flags\procdbgport.c" />
     <ClCompile Include="antidebug\flags\prochpflag.c" />
+    <ClCompile Include="antidebug\hook\api.c" />
     <ClCompile Include="antidebug\hook\ishooked.c" />
     <ClCompile Include="antidebug\memory\archived\ntqvirtualmem.c" />
     <ClCompile Include="antidebug\memory\hwbreakp.c" />
@@ -150,12 +203,14 @@
     <ClCompile Include="antidebug\memory\ntglobalflag.c" />
     <ClCompile Include="antidebug\memory\peb.c" />
     <ClCompile Include="antidebug\memory\readstck.c" />
+    <ClCompile Include="antidebug\memory\vrtalloc.c" />
     <ClCompile Include="antidebug\object\clshandle.c" />
     <ClCompile Include="antidebug\object\clsinvhandle.c" />
     <ClCompile Include="antidebug\object\crtfile.c" />
     <ClCompile Include="antidebug\object\dbgobj.c" />
     <ClCompile Include="antidebug\object\loadlib.c" />
     <ClCompile Include="antidebug\object\opnproc.c" />
+    <ClCompile Include="antidebug\object\prothnd.c" />
     <ClCompile Include="antidebug\object\sysdbgctl.c" />
   </ItemGroup>
   <ItemGroup>
@@ -175,8 +230,8 @@
     <ClInclude Include="antidebug\asm\int3.h" />
     <ClInclude Include="antidebug\asm\popf.h" />
     <ClInclude Include="antidebug\asm\sckreg.h" />
-    <ClInclude Include="antidebug\exceptions\dbgprintex.h" />
     <ClInclude Include="antidebug\exceptions\hwbreakp2.h" />
+    <ClInclude Include="antidebug\exceptions\pgexcbp.h" />
     <ClInclude Include="antidebug\exceptions\raiseexc.h" />
     <ClInclude Include="antidebug\exceptions\unhexcp.h" />
     <ClInclude Include="antidebug\flags\dbgobjhandle.h" />
@@ -185,6 +240,8 @@
     <ClInclude Include="antidebug\flags\procdbgflag.h" />
     <ClInclude Include="antidebug\flags\procdbgport.h" />
     <ClInclude Include="antidebug\flags\prochpflag.h" />
+    <ClInclude Include="antidebug\flags\winver.h" />
+    <ClInclude Include="antidebug\hook\api.h" />
     <ClInclude Include="antidebug\hook\ishooked.h" />
     <ClInclude Include="antidebug\memory\hwbreakp.h" />
     <ClInclude Include="antidebug\memory\lowfraghp.h" />
@@ -198,6 +255,7 @@
     <ClInclude Include="antidebug\object\dbgobj.h" />
     <ClInclude Include="antidebug\object\loadlib.h" />
     <ClInclude Include="antidebug\object\opnproc.h" />
+    <ClInclude Include="antidebug\object\prothnd.h" />
     <ClInclude Include="antidebug\object\sysdbgctl.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
