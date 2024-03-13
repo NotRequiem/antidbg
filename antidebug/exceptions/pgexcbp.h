@@ -15,9 +15,6 @@ extern "C" {
 #define OutputDebugStringDbgOnly(S) do {} while(0)
 #endif
 
-	void** executablePages = NULL;
-	size_t executablePagesCount = 0;
-
 	bool PageExceptionBreakpoint();
 
 #ifdef __cplusplus
