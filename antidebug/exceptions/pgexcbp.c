@@ -47,8 +47,21 @@ static void PageExceptionInitialEnum()
     }
 }
 
+static void freeExecutablePages() {
+    free(executablePages);
+    executablePages = NULL;
+    executablePagesCount = 0;
+}
+
 bool PageExceptionBreakpoint()
 {
+    if (executablePages == NULL) {
+        PageExceptionInitialEnum();
+        if (executablePages == NULL) {
+            return FALSE;
+        }
+    }
+
     SYSTEM_INFO sysInfo;
     GetSystemInfo(&sysInfo);
     size_t pageSize = sysInfo.dwPageSize;
@@ -128,6 +141,8 @@ bool PageExceptionBreakpoint()
             }
         }
     }
+
+    freeExecutablePages();
 
     return FALSE;
 }
