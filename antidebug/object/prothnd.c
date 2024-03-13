@@ -4,7 +4,8 @@ bool ProtectedHandle()
 {
 	HANDLE hMutex;
 
-	hMutex = CreateMutex(NULL, FALSE, _T("test"));
+	// hMutex = CreateMutex(NULL, FALSE, _T("test"));
+	hMutex = CreateMutexA(NULL, FALSE, "test");
 
 	if (hMutex) {
 
