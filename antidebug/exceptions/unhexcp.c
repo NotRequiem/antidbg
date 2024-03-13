@@ -2,7 +2,7 @@
 
 BOOL bIsBeinDbg = TRUE;
 
-LONG WINAPI UnhandledExcepFilter(PEXCEPTION_POINTERS pExcepPointers)
+static LONG WINAPI UnhandledExcepFilter(PEXCEPTION_POINTERS pExcepPointers)
 {
 	bIsBeinDbg = FALSE;
 	return EXCEPTION_CONTINUE_EXECUTION;
