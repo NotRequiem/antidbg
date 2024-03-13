@@ -68,7 +68,7 @@ bool PageExceptionBreakpoint()
             for (size_t ofs = 0; ofs < moduleInfo.SizeOfImage; ofs += pageSize)
             {
                 SecureZeroMemory(buffer, 512);
-                wsprintf(buffer, L"Scanning %p... ", module + ofs);
+                swprintf(buffer, L"Scanning %p... ", module + ofs);
                 OutputDebugStringDbgOnly(buffer);
                 if (VirtualQuery(module + ofs, &memInfo, sizeof(MEMORY_BASIC_INFORMATION)) >= sizeof(MEMORY_BASIC_INFORMATION))
                 {
@@ -107,7 +107,7 @@ bool PageExceptionBreakpoint()
         for (size_t i = 0; i < executablePagesCount; ++i)
         {
             SecureZeroMemory(buffer, 512);
-            wsprintf(buffer, L"Scanning delta for %p... ", executablePages[i]);
+            swprintf(buffer, L"Scanning delta for %p... ", executablePages[i]);
             OutputDebugStringDbgOnly(buffer);
 
             if (VirtualQuery(executablePages[i], &memInfo, sizeof(MEMORY_BASIC_INFORMATION)) >= sizeof(MEMORY_BASIC_INFORMATION))
