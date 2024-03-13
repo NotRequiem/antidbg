@@ -39,8 +39,8 @@ typedef struct _RTL_PROCESS_HEAPS {
 #define PDI_HEAPS           0x1
 #define PDI_HEAP_BLOCKS     0x2
 
-bool Check() {
-    HMODULE hNtdll = GetModuleHandle(L"ntdll.dll");
+static bool Check() {
+    HMODULE hNtdll = GetModuleHandleW(L"ntdll.dll");
     if (!hNtdll) {
         return false;
     }
