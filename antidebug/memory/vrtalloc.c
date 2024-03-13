@@ -58,12 +58,13 @@ static BOOL VirtualAlloc_WriteWatch_APICalls() {
 		result = FALSE;
 		error = TRUE;
 	}
-	if (GetEnvironmentVariable(L"%ThisIsAnInvalidEnvironmentVariableName?[]<>@\\;*!-{}#:/~%", (LPWSTR)buffer, 4096 * 4096) != FALSE) {
+	// Ignore buffer overrun
+	if (GetEnvironmentVariableW(L"%ThisIsAnInvalidEnvironmentVariableName?[]<>@\\;*!-{}#:/~%", (LPWSTR)buffer, 4096 * 4096) != FALSE) {
 		printf("GetEnvironmentVariable succeeded when it should've failed... not sure what happened!\n");
 		result = FALSE;
 		error = TRUE;
 	}
-	if (GetBinaryType(L"%ThisIsAnInvalidFileName?[]<>@\\;*!-{}#:/~%", (LPDWORD)buffer) != FALSE) {
+	if (GetBinaryTypeW(L"%ThisIsAnInvalidFileName?[]<>@\\;*!-{}#:/~%", (LPDWORD)buffer) != FALSE) {
 		printf("GetBinaryType succeeded when it should've failed... not sure what happened!\n");
 		result = FALSE;
 		error = TRUE;
