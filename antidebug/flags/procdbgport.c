@@ -9,10 +9,10 @@ bool CheckNtQueryInformationProcess() {
 
         if (pfnNtQueryInformationProcess)
         {
-            DWORD dwProcessDebugPort, dwReturned;
+            DWORD dwProcessDebugPort = 0, dwReturned;
             NTSTATUS status = pfnNtQueryInformationProcess(
                 GetCurrentProcess(),
-                7, // ProcessDebugPort
+                ProcessDebugPort,
                 &dwProcessDebugPort,
                 sizeof(DWORD),
                 &dwReturned);
