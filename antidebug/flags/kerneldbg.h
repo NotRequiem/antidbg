@@ -6,8 +6,6 @@
 #include <stdio.h>
 #pragma warning(disable: 4005)
 #include <ntstatus.h>
-#pragma warning(enable: 4005)
-
 #pragma comment(lib, "ntdll.lib")
 
 #ifdef __cplusplus
@@ -23,12 +21,14 @@ typedef struct _SYSTEM_KERNEL_DEBUGGER_INFORMATION {
     BOOLEAN DebuggerNotPresent;
 } SYSTEM_KERNEL_DEBUGGER_INFORMATION, *PSYSTEM_KERNEL_DEBUGGER_INFORMATION;
 
+/*
 __kernel_entry NTSTATUS NTAPI NtQuerySystemInformation(
     IN SYSTEM_INFORMATION_CLASS SystemInformationClass,
     OUT PVOID SystemInformation,
     IN ULONG SystemInformationLength,
     OUT PULONG ReturnLength OPTIONAL
 );
+*/
 
 bool KernelDebugger();
 
