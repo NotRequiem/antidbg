@@ -72,7 +72,7 @@ static bool ModuleBoundsHookCheckSingle(HMODULE dll, char* apiList) {
     while (currentAPI != NULL) {
         FARPROC procAddr = GetProcAddress(dll, currentAPI);
         if (procAddr != NULL) {
-            if (procAddr < moduleBottom || procAddr >= moduleTop) {
+            if ((PVOID)procAddr < moduleBottom || (PVOID)procAddr >= moduleTop) {
                 foundHook = true;
                 //printf("Caught hook on API '%s'\n", currentAPI);
             }
@@ -85,9 +85,9 @@ static bool ModuleBoundsHookCheckSingle(HMODULE dll, char* apiList) {
 }
 
 bool CheckModuleBounds() {
-    bool foundHook = ModuleBoundsHookCheckSingle(LoadLibrary(_T("kernel32.dll")), apis_kernel32) &&
-        ModuleBoundsHookCheckSingle(LoadLibrary(_T("ntdll.dll")), apis_ntdll) &&
-        ModuleBoundsHookCheckSingle(LoadLibrary(_T("user32.dll")), apis_user32);
+    bool foundHook = ModuleBoundsHookCheckSingle(LoadLibraryA("kernel32.dll"), apis_kernel32) &&
+        ModuleBoundsHookCheckSingle(LoadLibraryA("ntdll.dll"), apis_ntdll) &&
+        ModuleBoundsHookCheckSingle(LoadLibraryA("user32.dll"), apis_user32);
 
     return foundHook ? TRUE : FALSE;
 }
