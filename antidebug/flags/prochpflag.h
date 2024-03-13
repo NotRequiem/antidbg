@@ -4,9 +4,8 @@
 extern "C" {
 #endif
 
-#include <Windows.h>
 #include <stdio.h>
-#include <stdbool.h>
+#include "winver.h"
 
 	bool ProcessHeapFlag();
 
