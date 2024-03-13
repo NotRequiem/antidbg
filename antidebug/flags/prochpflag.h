@@ -7,6 +7,8 @@ extern "C" {
 #include <stdio.h>
 #include "winver.h"
 
+#include "..\adbg.h"
+
 	bool ProcessHeapFlag();
 
 #ifdef __cplusplus
