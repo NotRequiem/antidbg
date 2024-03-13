@@ -58,6 +58,7 @@ DebugCheckResult debuggerChecks[] = {
     {"PageExceptionBreakpoint", PageExceptionBreakpoint, false},
     {"IsDebuggerPresent_DebugObjectHandle", IsDebuggerPresent_DebugObjectHandle, false},
     {"KernelDebugger", KernelDebugger, false},
+    {"NtGlobalFlag", NtGlobalFlag, false},
     {"IsDebuggerPresent_DebugFlags", IsDebuggerPresent_DebugFlags, false},
     {"ProcessHeap_Flags", ProcessHeapFlag, false},
     {"ProcessHeapForce_Flag", ProcessHeapForceFlag, false},
@@ -65,7 +66,6 @@ DebugCheckResult debuggerChecks[] = {
     {"API_Hooks", CheckModuleBounds, false},
     {"ReadOwnMemoryStack", ReadMemoryStack, false},
     {"PEB", CheckPEB, false},
-    {"NtGlobalFlag", NtGlobalFlag, false},
     {"LowFragmentationHeap", LowFragmentationHeap, false},
     {"CheckNtQueryInformationProcess", CheckNtQueryInformationProcess, false},
     {"HardwareBreakpoint", HardwareBreakpoint, false},
@@ -94,4 +94,9 @@ bool IsProgramDebugged() {
 
     printf("No debugger detected.\n");
     return false;
+}
+
+int main() {
+    IsProgramDebugged();
+    return 0;
 }
