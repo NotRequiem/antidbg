@@ -1,10 +1,6 @@
 #include "membreakp.h"
 
-/* In Development, and also not really needed since other anti tampering checks
-based on protecting important memory regions with PAGE_GUARD needs to be added apart from antidebugging checks 
-*/
-
-// Function to check if the program is being debugged
+/*
 bool MemoryBreakpoint()
 {
     DWORD dwOldProtect = 0;
@@ -48,17 +44,36 @@ bool MemoryBreakpoint()
         return true;
     }
 }
+*/
 
-int main()
+bool MemoryBreakpoint()
 {
-    if (MemoryBreakpoint())
+    UCHAR* pMem = NULL;
+    SYSTEM_INFO SystemInfo = { 0 };
+    DWORD OldProtect = 0;
+    PVOID pAllocation = NULL;
+
+    GetSystemInfo(&SystemInfo);
+
+    pAllocation = VirtualAlloc(NULL, SystemInfo.dwPageSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+    if (pAllocation == NULL)
+        return FALSE;
+
+    RtlFillMemory(pAllocation, 1, 0xC3);
+
+    if (VirtualProtect(pAllocation, SystemInfo.dwPageSize, PAGE_EXECUTE_READWRITE | PAGE_GUARD, &OldProtect) == 0)
+        return FALSE;
+
+    __try
     {
-        printf("Debugger detected!\n");
+        ((void(*)())pAllocation)();
     }
-    else
+    __except (GetExceptionCode() == STATUS_GUARD_PAGE_VIOLATION ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH)
     {
-        printf("No debugger detected.\n");
+        VirtualFree(pAllocation, 0, MEM_RELEASE);
+        return FALSE;
     }
 
-    return 0;
+    VirtualFree(pAllocation, 0, MEM_RELEASE);
+    return TRUE;
 }
