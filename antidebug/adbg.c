@@ -66,7 +66,7 @@ DebugCheckResult debuggerChecks[] = {
     {"API_Hooks", CheckModuleBounds, false},
     {"ReadOwnMemoryStack", ReadMemoryStack, false},
     {"PEB", CheckPEB, false},
-    {"LowFragmentationHeap", LowFragmentationHeap, false},
+    // {"LowFragmentationHeap", LowFragmentationHeap, false}, - Not too reliable, uncomment if you wanna have more antidebugging protection with some false flags in edge cases
     {"CheckNtQueryInformationProcess", CheckNtQueryInformationProcess, false},
     {"HardwareBreakpoint", HardwareBreakpoint, false},
     {"HardwareBreakpoint2", HardwareBreakPoint2, false},
