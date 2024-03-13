@@ -19,6 +19,7 @@
 
 #include "flags\dbgobjhandle.h"
 #include "flags\kerneldbg.h"
+#include "flags\ntglobalflag.h"
 #include "flags\procdbgflag.h"
 #include "flags\procdbgport.h"
 #include "flags\prochpflag.h"
@@ -31,7 +32,6 @@
 #include "memory\membreakp.h"
 #include "memory\readstck.h"
 #include "memory\peb.h"
-#include "memory\ntglobalflag.h"
 #include "memory\lowfraghp.h"
 #include "memory\vrtalloc.h"
 
@@ -53,7 +53,7 @@ DebugCheckResult debuggerChecks[] = {
     {"int3", int3, false},
     {"POPFTrapFlag", POPFTrapFlag, false},
     {"StackSegmentRegister", StackSegmentRegister, false},
-    // {"UnhandledExcepFilterTest", CheckUnhandledExcepFilter, false}, - Uncomment this if you're ok with having crashes when checking for debuggers
+    // {"UnhandledExcepFilterTest", CheckUnhandledExcepFilter, false}, - Uncomment this if you're ok with having crashes when detecting debuggers
     {"RaiseDbgControl", RaiseDbgControl, false},
     {"PageExceptionBreakpoint", PageExceptionBreakpoint, false},
     {"IsDebuggerPresent_DebugObjectHandle", IsDebuggerPresent_DebugObjectHandle, false},
