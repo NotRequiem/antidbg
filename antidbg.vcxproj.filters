@@ -108,9 +108,6 @@
     <ClCompile Include="antidebug\memory\lowfraghp.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\memory\ntglobalflag.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="antidebug\object\clsinvhandle.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -127,6 +124,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\hook\api.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\ntglobalflag.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -235,9 +235,6 @@
     <ClInclude Include="antidebug\memory\lowfraghp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="antidebug\memory\ntglobalflag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="antidebug\object\clsinvhandle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -255,6 +252,9 @@
     </ClInclude>
     <ClInclude Include="antidebug\flags\winver.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\ntglobalflag.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
