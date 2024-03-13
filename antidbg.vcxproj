@@ -190,6 +190,7 @@
     <ClCompile Include="antidebug\exceptions\unhexcp.c" />
     <ClCompile Include="antidebug\flags\dbgobjhandle.c" />
     <ClCompile Include="antidebug\flags\kerneldbg.c" />
+    <ClCompile Include="antidebug\flags\ntglobalflag.c" />
     <ClCompile Include="antidebug\flags\prochpforceflag.c" />
     <ClCompile Include="antidebug\flags\procdbgflag.c" />
     <ClCompile Include="antidebug\flags\procdbgport.c" />
@@ -200,7 +201,6 @@
     <ClCompile Include="antidebug\memory\hwbreakp.c" />
     <ClCompile Include="antidebug\memory\lowfraghp.c" />
     <ClCompile Include="antidebug\memory\membreakp.c" />
-    <ClCompile Include="antidebug\memory\ntglobalflag.c" />
     <ClCompile Include="antidebug\memory\peb.c" />
     <ClCompile Include="antidebug\memory\readstck.c" />
     <ClCompile Include="antidebug\memory\vrtalloc.c" />
@@ -236,6 +236,7 @@
     <ClInclude Include="antidebug\exceptions\unhexcp.h" />
     <ClInclude Include="antidebug\flags\dbgobjhandle.h" />
     <ClInclude Include="antidebug\flags\kerneldbg.h" />
+    <ClInclude Include="antidebug\flags\ntglobalflag.h" />
     <ClInclude Include="antidebug\flags\prochpforceflag.h" />
     <ClInclude Include="antidebug\flags\procdbgflag.h" />
     <ClInclude Include="antidebug\flags\procdbgport.h" />
@@ -246,7 +247,6 @@
     <ClInclude Include="antidebug\memory\hwbreakp.h" />
     <ClInclude Include="antidebug\memory\lowfraghp.h" />
     <ClInclude Include="antidebug\memory\membreakp.h" />
-    <ClInclude Include="antidebug\memory\ntglobalflag.h" />
     <ClInclude Include="antidebug\memory\peb.h" />
     <ClInclude Include="antidebug\memory\readstck.h" />
     <ClInclude Include="antidebug\object\clshandle.h" />
