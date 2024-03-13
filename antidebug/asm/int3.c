@@ -10,12 +10,14 @@ static int filter(unsigned int code, struct _EXCEPTION_POINTERS* ep)
 
 bool int3()
 {
+    bool result = false;
     __try
     {
         __debugbreak();
     }
     __except (filter(GetExceptionCode(), GetExceptionInformation()))
     {
-        return g_bDebugged;
+        result = g_bDebugged;
     }
+    return result;
 }
