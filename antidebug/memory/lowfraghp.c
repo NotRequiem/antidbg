@@ -24,7 +24,7 @@ bool LowFragmentationHeap()
 #endif
 	}
 
-	if (FrontEndHeap && *FrontEndHeap == NULL) {
+	if (FrontEndHeap && *FrontEndHeap == 0) {
 		return TRUE;
 	}
 
