@@ -5,7 +5,7 @@ bool CheckNtQueryObject()
     bool bDebugged = false;
     NTSTATUS status;
     LPVOID pMem = NULL;
-    ULONG dwMemSize;
+    ULONG dwMemSize = 0;
     POBJECT_ALL_INFORMATION pObjectAllInfo;
     PBYTE pObjInfoLocation;
     HMODULE hNtdll;
