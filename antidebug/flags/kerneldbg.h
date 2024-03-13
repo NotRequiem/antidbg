@@ -4,7 +4,9 @@
 #include <stdbool.h>
 #include <winternl.h>
 #include <stdio.h>
+#pragma warning(disable: 4005)
 #include <ntstatus.h>
+#pragma warning(enable: 4005)
 
 #pragma comment(lib, "ntdll.lib")
 
