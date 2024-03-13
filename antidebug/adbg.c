@@ -95,8 +95,3 @@ bool IsProgramDebugged() {
     printf("No debugger detected.\n");
     return false;
 }
-
-int main() {
-    IsProgramDebugged();
-    return 0;
-}
