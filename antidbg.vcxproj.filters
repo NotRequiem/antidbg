@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -39,16 +39,10 @@
     <ClCompile Include="antidebug\asm\sckreg.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\exceptions\dbgprintex.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="antidebug\exceptions\raiseexc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\exceptions\kernel\ntsetdbgfilterst.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="antidebug\exceptions\x86\unhndlexcpfilter.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\flags\dbgobjhandle.c">
@@ -61,12 +55,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\flags\procdbgport.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="antidebug\flags\archived\rtldbginf.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="antidebug\flags\archived\rtlheapinf.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\hook\ishooked.c">
@@ -100,6 +88,45 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\object\opnproc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\api\outdbgstring.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\exceptions\hwbreakp2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\exceptions\unhexcp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\prochpforceflag.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\prochpflag.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\memory\lowfraghp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\memory\ntglobalflag.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\object\clsinvhandle.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\object\sysdbgctl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\object\prothnd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\memory\vrtalloc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\exceptions\pgexcbp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\hook\api.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -148,9 +175,6 @@
     <ClInclude Include="antidebug\asm\sckreg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="antidebug\exceptions\dbgprintex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="antidebug\exceptions\raiseexc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -194,6 +218,42 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\object\opnproc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\exceptions\hwbreakp2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\exceptions\unhexcp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\prochpforceflag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\prochpflag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\memory\lowfraghp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\memory\ntglobalflag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\object\clsinvhandle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\object\sysdbgctl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\object\prothnd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\exceptions\pgexcbp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\hook\api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\winver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
