@@ -1,14 +1,14 @@
 #pragma once
 
-#include <windows.h>
-#include <stdbool.h>
-#include <winternl.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-bool PEB();
+#include <windows.h>
+#include <winternl.h>
+#include <stdbool.h>
+
+	bool CheckPEB();
 
 #ifdef __cplusplus
 }
