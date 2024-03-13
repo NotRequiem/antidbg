@@ -53,7 +53,7 @@ DebugCheckResult debuggerChecks[] = {
     {"int3", int3, false},
     {"POPFTrapFlag", POPFTrapFlag, false},
     {"StackSegmentRegister", StackSegmentRegister, false},
-    // {"UnhandledExcepFilterTest", CheckUnhandledExcepFilter, false}, - Uncomment this if you're ok with having crashes
+    // {"UnhandledExcepFilterTest", CheckUnhandledExcepFilter, false}, - Uncomment this if you're ok with having crashes when checking for debuggers
     {"RaiseDbgControl", RaiseDbgControl, false},
     {"PageExceptionBreakpoint", PageExceptionBreakpoint, false},
     {"IsDebuggerPresent_DebugObjectHandle", IsDebuggerPresent_DebugObjectHandle, false},
@@ -83,20 +83,15 @@ DebugCheckResult debuggerChecks[] = {
 };
 
 bool IsProgramDebugged() {
-    __try {
-        for (int i = 0; i < sizeof(debuggerChecks) / sizeof(debuggerChecks[0]); ++i) {
-            // printf("Running debug check: %s\n", debuggerChecks[i].functionName);
-            debuggerChecks[i].result = debuggerChecks[i].functionPtr();
-            if (debuggerChecks[i].result) {
-                printf("%s: Debugger detected!\n", debuggerChecks[i].functionName);
-                return true;
-            }
+    for (int i = 0; i < sizeof(debuggerChecks) / sizeof(debuggerChecks[0]); ++i) {
+        // printf("Running debug check: %s\n", debuggerChecks[i].functionName);
+        debuggerChecks[i].result = debuggerChecks[i].functionPtr();
+        if (debuggerChecks[i].result) {
+            printf("%s: Debugger detected!\n", debuggerChecks[i].functionName);
+            return true;
         }
-        printf("No debugger detected.\n");
-        return false;
     }
-    __except (EXCEPTION_EXECUTE_HANDLER) {
-        printf("An error occurred while checking for debugger.\n");
-        return false;
-    }
+
+    printf("No debugger detected.\n");
+    return false;
 }
