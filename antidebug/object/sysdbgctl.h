@@ -8,7 +8,7 @@ extern "C" {
 #include <stdio.h>
 #include <stdbool.h>
 
-    typedef NTSTATUS(NTAPI* PFN_NtSystemDebugControl)(SYSDBG_COMMAND, PVOID, ULONG);
+    typedef NTSTATUS(NTAPI* PFN_NtSystemDebugControl)(SYSDBG_COMMAND, PVOID, ULONG_PTR);
 
     static PFN_NtSystemDebugControl GetNtSystemDebugControlPointer() {
         HMODULE hNtdll = LoadLibrary("ntdll.dll");
