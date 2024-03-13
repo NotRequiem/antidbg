@@ -9,7 +9,7 @@ bool IsDebuggerPresent_DebugFlags() {
 
         if (pfnNtQueryInformationProcess)
         {
-            DWORD dwProcessDebugFlags, dwReturned;
+            DWORD dwProcessDebugFlags = 0, dwReturned;
             const DWORD ProcessDebugFlags = 0x1f;
             NTSTATUS status = pfnNtQueryInformationProcess(
                 GetCurrentProcess(),
