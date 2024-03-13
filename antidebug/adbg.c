@@ -25,6 +25,7 @@
 #include "flags\prochpforceflag.h"
 
 #include "hook\ishooked.h"
+#include "hook\api.h"
 
 #include "memory\hwbreakp.h"
 #include "memory\membreakp.h"
@@ -61,6 +62,7 @@ DebugCheckResult debuggerChecks[] = {
     {"ProcessHeap_Flags", ProcessHeapFlag, false},
     {"ProcessHeapForce_Flag", ProcessHeapForceFlag, false},
     {"IsHooked", IsHooked, false},
+    {"API_Hooks", CheckModuleBounds, false},
     {"ReadOwnMemoryStack", ReadMemoryStack, false},
     {"PEB", CheckPEB, false},
     {"NtGlobalFlag", NtGlobalFlag, false},
@@ -90,4 +92,9 @@ bool IsProgramDebugged() {
     }
     printf("No debugger detected.\n");
     return false;
+}
+
+int main() {
+    IsProgramDebugged();
+    return 0;
 }
