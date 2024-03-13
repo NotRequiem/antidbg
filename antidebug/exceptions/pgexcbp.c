@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include "pgexcbp.h"
 
+void** executablePages = NULL;
+size_t executablePagesCount = 0;
+
 static void PageExceptionInitialEnum()
 {
     SYSTEM_INFO sysInfo;
