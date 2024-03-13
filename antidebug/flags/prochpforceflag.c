@@ -1,7 +1,6 @@
 #include "prochpforceflag.h"
 
-#define ENV64BIT
-#if defined (ENV64BIT)
+#if defined (BIT64)
 static PUINT32 GetForceFlags_x64()
 {
 	PINT64 pProcessHeap = NULL;
@@ -19,7 +18,7 @@ static PUINT32 GetForceFlags_x64()
 	return pHeapForceFlags;
 }
 
-#elif defined(ENV32BIT)
+#elif defined(BIT32)
 static PUINT32 GetForceFlags_x86()
 {
 	PUINT32 pProcessHeap, pHeapForceFlags = NULL;
@@ -43,10 +42,10 @@ bool ProcessHeapForceFlag()
 {
 	PUINT32 pHeapForceFlags = NULL;
 
-#if defined (ENV64BIT)
+#if defined (BIT64)
 	pHeapForceFlags = GetForceFlags_x64();
 
-#elif defined(ENV32BIT)
+#elif defined(BIT32)
 	pHeapForceFlags = GetForceFlags_x86();
 
 #endif
