@@ -85,60 +85,60 @@ bool PageExceptionBreakpoint()
             {
                 SecureZeroMemory(buffer, 512);
                 swprintf(buffer, 512, L"Scanning %p... ", (void*)(module + ofs));
-                OutputDebugStringDbgOnly(buffer);
+                OutputDebugStringW(buffer);
                 if (VirtualQuery(module + ofs, &memInfo, sizeof(MEMORY_BASIC_INFORMATION)) >= sizeof(MEMORY_BASIC_INFORMATION))
                 {
                     if (memInfo.AllocationProtect == 0)
-                        OutputDebugStringDbgOnly(L"^ AllocationProtect is zero. Potential shenanigans.");
+                        OutputDebugStringW(L"^ AllocationProtect is zero. Potential shenanigans.");
                     if (memInfo.Protect == 0)
-                        OutputDebugStringDbgOnly(L"^ Protect is zero. Potential shenanigans.");
+                        OutputDebugStringW(L"^ Protect is zero. Potential shenanigans.");
 
                     if ((memInfo.Protect & PAGE_EXECUTE) == PAGE_EXECUTE ||
                         (memInfo.Protect & PAGE_EXECUTE_READ) == PAGE_EXECUTE_READ ||
                         (memInfo.Protect & PAGE_EXECUTE_WRITECOPY) == PAGE_EXECUTE_WRITECOPY ||
                         (memInfo.Protect & PAGE_EXECUTE_READWRITE) == PAGE_EXECUTE_READWRITE)
                     {
-                        OutputDebugStringDbgOnly(L"^ is executable.");
+                        OutputDebugStringW(L"^ is executable.");
 
                         if ((memInfo.Protect & PAGE_GUARD) == PAGE_GUARD ||
                             (memInfo.AllocationProtect & PAGE_GUARD) == PAGE_GUARD)
                         {
-                            OutputDebugStringDbgOnly(L"^ is guard page !!!!!!");
+                            OutputDebugStringW(L"^ is guard page !!!!!!");
                             return TRUE;
                         }
                     }
 
                     if ((memInfo.Protect & PAGE_NOACCESS) == PAGE_NOACCESS)
                     {
-                        OutputDebugStringDbgOnly(L"^ is NOACCESS !!!!!!!");
+                        OutputDebugStringW(L"^ is NOACCESS !!!!!!!");
                         return TRUE;
                     }
                 }
-                else OutputDebugStringDbgOnly(L"^ FAILED!");
+                else OutputDebugStringW(L"^ FAILED!");
             }
         }
 
-        OutputDebugStringDbgOnly(L"Moving on to delta check...");
+        OutputDebugStringW(L"Moving on to delta check...");
 
         for (size_t i = 0; i < executablePagesCount; ++i)
         {
             SecureZeroMemory(buffer, 512);
             swprintf(buffer, 512, L"Scanning delta for %p... ", (void*)(executablePages[i]));
-            OutputDebugStringDbgOnly(buffer);
+            OutputDebugStringW(buffer);
 
             if (VirtualQuery(executablePages[i], &memInfo, sizeof(MEMORY_BASIC_INFORMATION)) >= sizeof(MEMORY_BASIC_INFORMATION))
             {
                 if (memInfo.AllocationProtect == 0)
-                    OutputDebugStringDbgOnly(L"^ AllocationProtect is zero. Potential shenanigans.");
+                    OutputDebugStringW(L"^ AllocationProtect is zero. Potential shenanigans.");
                 if (memInfo.Protect == 0)
-                    OutputDebugStringDbgOnly(L"^ Protect is zero. Potential shenanigans.");
+                    OutputDebugStringW(L"^ Protect is zero. Potential shenanigans.");
 
                 if (!((memInfo.Protect & PAGE_EXECUTE) == PAGE_EXECUTE ||
                     (memInfo.Protect & PAGE_EXECUTE_READ) == PAGE_EXECUTE_READ ||
                     (memInfo.Protect & PAGE_EXECUTE_WRITECOPY) == PAGE_EXECUTE_WRITECOPY ||
                     (memInfo.Protect & PAGE_EXECUTE_READWRITE) == PAGE_EXECUTE_READWRITE))
                 {
-                    OutputDebugStringDbgOnly(L"^ was executable, now isn't !!!!!!");
+                    OutputDebugStringW(L"^ was executable, now isn't !!!!!!");
                     return TRUE;
                 }
             }
