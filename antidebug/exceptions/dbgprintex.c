@@ -1,7 +1,7 @@
 #include "dbgprintex.h"
 
 /* In development */
-#define DBG_PRINTEXCEPTION_C 0x40010006
+// #define DBG_PRINTEXCEPTION_C 0x40010006
 
 bool DBG_PRINTEXCEPTION()
 {
