@@ -1,7 +1,8 @@
 #include "prochpflag.h"
 
+#define ENV64BIT
 #if defined (ENV64BIT)
-PUINT32 GetHeapFlags_x64()
+static PUINT32 GetHeapFlags_x64()
 {
 	PINT64 pProcessHeap = NULL;
 	PUINT32 pHeapFlags = NULL;
@@ -19,7 +20,7 @@ PUINT32 GetHeapFlags_x64()
 }
 
 #elif defined(ENV32BIT)
-PUINT32 GetHeapFlags_x86()
+static PUINT32 GetHeapFlags_x86()
 {
 	PUINT32 pProcessHeap, pHeapFlags = NULL;
 
