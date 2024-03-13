@@ -1,5 +1,13 @@
 #include "unhexcp.h"
 
+BOOL bIsBeinDbg = TRUE;
+
+LONG WINAPI UnhandledExcepFilter(PEXCEPTION_POINTERS pExcepPointers)
+{
+	bIsBeinDbg = FALSE;
+	return EXCEPTION_CONTINUE_EXECUTION;
+}
+
 bool CheckUnhandledExcepFilter()
 {
 	LPTOP_LEVEL_EXCEPTION_FILTER Top = SetUnhandledExceptionFilter(UnhandledExcepFilter);
