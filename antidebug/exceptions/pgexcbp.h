@@ -18,12 +18,6 @@ extern "C" {
 	void** executablePages = NULL;
 	size_t executablePagesCount = 0;
 
-	void freeExecutablePages() {
-		free(executablePages);
-		executablePages = NULL;
-		executablePagesCount = 0;
-	}
-
 	bool PageExceptionBreakpoint();
 
 #ifdef __cplusplus
