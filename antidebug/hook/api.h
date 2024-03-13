@@ -8,7 +8,6 @@ extern "C" {
 #include <stdio.h>
 #include <stdbool.h>
 #include <psapi.h>
-#include <tchar.h>
 #include <string.h>
 
 	bool CheckModuleBounds();
