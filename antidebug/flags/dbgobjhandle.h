@@ -5,6 +5,7 @@ extern "C" {
 #endif
 
 #include <Windows.h>
+#include <stdio.h>
 #include <stdbool.h>
 #include <winternl.h>
 
