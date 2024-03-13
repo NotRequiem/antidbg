@@ -7,7 +7,6 @@ extern "C" {
 #include <Windows.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include <tchar.h>
 
 	bool ProtectedHandle();
 
