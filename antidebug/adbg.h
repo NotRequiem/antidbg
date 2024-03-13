@@ -7,6 +7,14 @@
 extern "C" {
 #endif
 
+#if _WIN32 || _WIN64
+#if _WIN64
+#define BIT64
+#else
+#define BIT32
+#endif
+#endif
+
     typedef struct {
         const char* functionName;
         bool (*functionPtr)();
