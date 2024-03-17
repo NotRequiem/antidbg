@@ -2,7 +2,7 @@
 
 bool g_bDebugged = false;
 
-static int filter(unsigned int code, struct _EXCEPTION_POINTERS* ep)
+static int filter(unsigned int code)
 {
     g_bDebugged = code != EXCEPTION_BREAKPOINT;
     return EXCEPTION_EXECUTE_HANDLER;
