@@ -15,7 +15,7 @@ bool int3()
     {
         __debugbreak();
     }
-    __except (filter(GetExceptionCode(), GetExceptionInformation()))
+    __except (filter(GetExceptionCode()))
     {
         result = g_bDebugged;
     }
