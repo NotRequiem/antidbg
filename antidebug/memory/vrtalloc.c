@@ -84,7 +84,7 @@ static BOOL VirtualAlloc_WriteWatch_APICalls() {
 		result = FALSE;
 		error = TRUE;
 	}
-	if (GetWriteWatch(0, &VirtualAlloc_WriteWatch_APICalls, 0, NULL, NULL, (PULONG)buffer) == 0) {
+	if (GetWriteWatch(0, &VirtualAlloc_WriteWatch_APICalls, 0, NULL, NULL, NULL) == 0) {
 		printf("GetWriteWatch succeeded when it should've failed... not sure what happened!\n");
 		result = FALSE;
 		error = TRUE;
