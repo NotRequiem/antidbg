@@ -7,7 +7,15 @@ extern "C" {
 #include <Windows.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+
 #define VERSIONHELPERAPI inline bool
+
+#else
+
+#define VERSIONHELPERAPI FORCEINLINE BOOL
+
+#endif 
 
     VERSIONHELPERAPI
     IsWindowsVersionOrGreater(WORD wMajorVersion, WORD wMinorVersion, WORD wServicePackMajor)
