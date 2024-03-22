@@ -8,6 +8,8 @@ extern "C" {
 #include <winternl.h>
 #include <stdbool.h>
 
+#include "..\adbg.h"
+
 	bool CheckPEB();
 
 #ifdef __cplusplus
