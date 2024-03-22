@@ -1,5 +1,12 @@
 # AntiDebugging Library for C/C++
 
+## Compatibility
+> This library is compatible with:
+- **__1.__** Any C or C++ standard
+- **__2.__** Any Windows version and/or build ranging from Windows Vista to Windows 11
+- **__3.__** Any C/C++ compiler
+- **__4.__** Any processor architecture (32 or 64 bits)
+  
 `Example Usage 1:`
 
 ```
