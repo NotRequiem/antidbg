@@ -1,4 +1,4 @@
-/* Only reliable and tested methods, that can be done from user-mode in x64 bits, are included. */
+/* Only reliable and tested methods, that can be done from user-mode, are included. */
 
 #include "adbg.h"
 
@@ -82,16 +82,25 @@ DebugCheckResult debuggerChecks[] = {
     {"NtSystemDebugControl_Command", NtSystemDebugControl, false},
 };
 
+bool printDebugInfo = true;
+
 bool IsProgramDebugged() {
-    for (int i = 0; i < sizeof(debuggerChecks) / sizeof(debuggerChecks[0]); ++i) {
-        // printf("Running debug check: %s\n", debuggerChecks[i].functionName);
+    bool debuggerDetected = false;
+
+    for (int i = 0; i < NUM_DEBUG_CHECKS; ++i) {
         debuggerChecks[i].result = debuggerChecks[i].functionPtr();
         if (debuggerChecks[i].result) {
-            printf("%s: Debugger detected!\n", debuggerChecks[i].functionName);
-            return true;
+            debuggerDetected = true;
+            if (printDebugInfo) {
+                printf("%s: Debugger detected!\n", debuggerChecks[i].functionName);
+            }
+            break;
         }
     }
 
-    printf("No debugger detected.\n");
-    return false;
+    if (!debuggerDetected && printDebugInfo) {
+        printf("No debugger detected.\n");
+    }
+
+    return debuggerDetected;
 }
