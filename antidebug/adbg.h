@@ -15,6 +15,8 @@ extern "C" {
 #endif
 #endif
 
+#define NUM_DEBUG_CHECKS (sizeof(debuggerChecks) / sizeof(debuggerChecks[0]))
+
     typedef struct {
         const char* functionName;
         bool (*functionPtr)();
