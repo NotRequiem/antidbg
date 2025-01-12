@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Header Files\api">
+      <UniqueIdentifier>{b965e6a4-1c99-410e-add1-4de9f9cca036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\asm">
+      <UniqueIdentifier>{60e8a82f-cd86-4d08-9721-a506f1302a8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\core">
+      <UniqueIdentifier>{ba098465-e250-4777-b693-9a06c3a6b945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\exceptions">
+      <UniqueIdentifier>{cd1f7299-0a9a-42fd-b63e-2d4f69f70b61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\flags">
+      <UniqueIdentifier>{e1cd8016-3c6a-4934-8d03-e03247f8a9d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\memory">
+      <UniqueIdentifier>{6b03fc1b-888d-458c-8a33-4be6c54fb1bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\object">
+      <UniqueIdentifier>{fecd0062-d6df-438b-8d45-70365522dc69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\api">
+      <UniqueIdentifier>{b83e56e4-7219-443d-aab0-1dee05e9d259}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\asm">
+      <UniqueIdentifier>{0a850d77-4e2d-4477-ae18-fa93c5d9fd1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{af1c6922-6540-4471-b5e9-db7ff2be6c8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\exceptions">
+      <UniqueIdentifier>{536e5ad0-6dac-4651-9609-684858871907}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\flags">
+      <UniqueIdentifier>{55ec457c-78ec-4ead-b0ad-98d919f6ff62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\memory">
+      <UniqueIdentifier>{67ccd922-7eb1-42a0-97c8-a32ad54cf9fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\object">
+      <UniqueIdentifier>{0fc006c4-c9e5-4fff-911b-3524c734ef1d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="antidebug\api\dbgpresent.c">
+      <Filter>Source Files\api</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\api\outdbgstring.c">
+      <Filter>Source Files\api</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\api\rdbgpresent.c">
+      <Filter>Source Files\api</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\api\job.c">
+      <Filter>Source Files\api</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\exceptions\hwbreakp2.c">
+      <Filter>Source Files\exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\exceptions\pgexcbp.c">
+      <Filter>Source Files\exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\exceptions\raiseexc.c">
+      <Filter>Source Files\exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\core\thrmng.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\asm\sckreg.c">
+      <Filter>Source Files\asm</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\asm\prehop.c">
+      <Filter>Source Files\asm</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\asm\popf.c">
+      <Filter>Source Files\asm</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\asm\movss.c">
+      <Filter>Source Files\asm</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\asm\int3.c">
+      <Filter>Source Files\asm</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\asm\int2d.c">
+      <Filter>Source Files\asm</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\asm\dbgbreak.c">
+      <Filter>Source Files\asm</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\dbgobjhandle.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\duphnd.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\kerneldbg.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\ntglobalflag.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\procdbgflag.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\procdbgport.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\prochpflag.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\prochpforceflag.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\memory\dbgactproc.c">
+      <Filter>Source Files\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\memory\hwbreakp.c">
+      <Filter>Source Files\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\memory\membreakp.c">
+      <Filter>Source Files\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\memory\peb.c">
+      <Filter>Source Files\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\memory\readstck.c">
+      <Filter>Source Files\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\memory\vrtalloc.c">
+      <Filter>Source Files\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\object\clshandle.c">
+      <Filter>Source Files\object</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\object\clsinvhandle.c">
+      <Filter>Source Files\object</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\object\dbgobj.c">
+      <Filter>Source Files\object</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\object\opnproc.c">
+      <Filter>Source Files\object</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\object\prothnd.c">
+      <Filter>Source Files\object</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\object\sysdbgctl.c">
+      <Filter>Source Files\object</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\adbg.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\core\syscall.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="antidebug\api\dbgpresent.h">
+      <Filter>Header Files\api</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\api\job.h">
+      <Filter>Header Files\api</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\api\outdbgstring.h">
+      <Filter>Header Files\api</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\api\rdbgpresent.h">
+      <Filter>Header Files\api</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\asm\dbgbreak.h">
+      <Filter>Header Files\asm</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\asm\int2d.h">
+      <Filter>Header Files\asm</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\asm\int3.h">
+      <Filter>Header Files\asm</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\asm\movss.h">
+      <Filter>Header Files\asm</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\asm\popf.h">
+      <Filter>Header Files\asm</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\asm\prehop.h">
+      <Filter>Header Files\asm</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\asm\sckreg.h">
+      <Filter>Header Files\asm</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\core\thrmng.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\exceptions\raiseexc.h">
+      <Filter>Header Files\exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\exceptions\hwbreakp2.h">
+      <Filter>Header Files\exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\exceptions\pgexcbp.h">
+      <Filter>Header Files\exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\prochpforceflag.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\dbgobjhandle.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\duphnd.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\kerneldbg.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\ntglobalflag.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\procdbgflag.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\procdbgport.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\prochpflag.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\memory\dbgactproc.h">
+      <Filter>Header Files\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\memory\hwbreakp.h">
+      <Filter>Header Files\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\memory\membreakp.h">
+      <Filter>Header Files\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\memory\peb.h">
+      <Filter>Header Files\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\memory\readstck.h">
+      <Filter>Header Files\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\memory\vrtalloc.h">
+      <Filter>Header Files\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\object\dbgobj.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\object\opnproc.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\object\prothnd.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\object\sysdbgctl.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\object\clshandle.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\object\clsinvhandle.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\adbg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\core\syscall.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="antidebug\core\syscall-core.asm">
+      <Filter>Source Files\core</Filter>
+    </MASM>
+  </ItemGroup>
+</Project>
