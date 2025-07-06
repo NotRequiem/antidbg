@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <intrin.h>
 
 #ifdef __cplusplus
 extern "C" {

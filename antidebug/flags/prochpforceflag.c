@@ -16,6 +16,6 @@ bool ProcessHeapForceFlag() {
 
 	if (*pHeapForceFlags > 0)
 		return TRUE;
-	else
-		return FALSE;
+
+	return false;
 }

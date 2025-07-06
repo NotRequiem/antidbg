@@ -2,7 +2,6 @@
 
 bool mov_ss()
 {
-    bool found = 0;
 
 #ifdef _WIN64
 #else
@@ -21,5 +20,6 @@ bool mov_ss()
     }
 #endif
 
-    return found;
+    unsigned __int64 flags = __readeflags();
+    return (flags & 0x100) != 0;
 }

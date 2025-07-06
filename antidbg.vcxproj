@@ -24,6 +24,8 @@
     <ClCompile Include="antidebug\api\job.c" />
     <ClCompile Include="antidebug\api\outdbgstring.c" />
     <ClCompile Include="antidebug\api\rdbgpresent.c" />
+    <ClCompile Include="antidebug\api\timing.c" />
+    <ClCompile Include="antidebug\api\window.c" />
     <ClCompile Include="antidebug\asm\dbgbreak.c" />
     <ClCompile Include="antidebug\asm\int2d.c" />
     <ClCompile Include="antidebug\asm\int3.c" />
@@ -31,6 +33,8 @@
     <ClCompile Include="antidebug\asm\popf.c" />
     <ClCompile Include="antidebug\asm\prehop.c" />
     <ClCompile Include="antidebug\asm\sckreg.c" />
+    <ClCompile Include="antidebug\core\atcptr.c" />
+    <ClCompile Include="antidebug\core\hasher.c" />
     <ClCompile Include="antidebug\core\syscall.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -47,7 +51,6 @@
     <ClCompile Include="antidebug\flags\procdbgport.c" />
     <ClCompile Include="antidebug\flags\prochpflag.c" />
     <ClCompile Include="antidebug\flags\prochpforceflag.c" />
-    <ClCompile Include="antidebug\memory\dbgactproc.c" />
     <ClCompile Include="antidebug\memory\hwbreakp.c" />
     <ClCompile Include="antidebug\memory\membreakp.c" />
     <ClCompile Include="antidebug\memory\peb.c" />
@@ -66,6 +69,8 @@
     <ClInclude Include="antidebug\api\job.h" />
     <ClInclude Include="antidebug\api\outdbgstring.h" />
     <ClInclude Include="antidebug\api\rdbgpresent.h" />
+    <ClInclude Include="antidebug\api\timing.h" />
+    <ClInclude Include="antidebug\api\window.h" />
     <ClInclude Include="antidebug\asm\dbgbreak.h" />
     <ClInclude Include="antidebug\asm\int2d.h" />
     <ClInclude Include="antidebug\asm\int3.h" />
@@ -73,6 +78,8 @@
     <ClInclude Include="antidebug\asm\popf.h" />
     <ClInclude Include="antidebug\asm\prehop.h" />
     <ClInclude Include="antidebug\asm\sckreg.h" />
+    <ClInclude Include="antidebug\core\atcptr.h" />
+    <ClInclude Include="antidebug\core\hasher.h" />
     <ClInclude Include="antidebug\core\syscall.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -89,7 +96,6 @@
     <ClInclude Include="antidebug\flags\procdbgport.h" />
     <ClInclude Include="antidebug\flags\prochpflag.h" />
     <ClInclude Include="antidebug\flags\prochpforceflag.h" />
-    <ClInclude Include="antidebug\memory\dbgactproc.h" />
     <ClInclude Include="antidebug\memory\hwbreakp.h" />
     <ClInclude Include="antidebug\memory\membreakp.h" />
     <ClInclude Include="antidebug\memory\peb.h" />
@@ -247,7 +253,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>

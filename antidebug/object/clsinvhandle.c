@@ -3,15 +3,13 @@
 typedef NTSTATUS(NTAPI* PFN_NtClose)(HANDLE);
 
 static inline PFN_NtClose GetNtClosePointer() {
-    HMODULE hNtdll = LoadLibraryA("ntdll.dll");
+    HMODULE hNtdll = LoadLibrary(_T("ntdll.dll"));
     if (hNtdll == NULL) {
-        printf("Failed to load ntdll.dll\n");
         return NULL;
     }
 
     PFN_NtClose pfnNtClose = (PFN_NtClose)GetProcAddress(hNtdll, "NtClose");
     if (pfnNtClose == NULL) {
-        printf("Failed to get address of NtClose function\n");
         FreeLibrary(hNtdll);
         return NULL;
     }
@@ -23,7 +21,6 @@ static inline BOOL NtClose_InvalideHandle()
 {
     PFN_NtClose NtClose_ = GetNtClosePointer();
     if (NtClose_ == NULL) {
-        printf("Failed to get pointer for NtClose\n");
         return FALSE;
     }
 
@@ -43,6 +40,12 @@ bool CloseInvalidHandle()
         CloseHandle((HANDLE)0x99999999ULL);
     }
     __except (EXCEPTION_EXECUTE_HANDLER) {
+        return TRUE;
+    }
+
+    const DWORD ret = CloseWindow((HWND)0x1234);
+    if (ret != 0 || GetLastError() != ERROR_INVALID_WINDOW_HANDLE)
+    {
         return TRUE;
     }
 

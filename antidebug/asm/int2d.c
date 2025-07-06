@@ -1,4 +1,4 @@
-#include "int2d.h"
+﻿#include "int2d.h"
 
 bool int2D()
 {
@@ -9,6 +9,14 @@ bool int2D()
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
-        return false;
+        __try
+        {
+            RaiseException(0x2D, 0, 0, NULL);
+        }
+        __except (1)
+        {
+            return FALSE;
+        }
+        return TRUE;
     }
 }

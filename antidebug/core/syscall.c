@@ -21,6 +21,7 @@ DWORD Dbg_HashSyscall(PCSTR FunctionName)
 
 static PVOID SC_Address(PVOID NtApiAddress)
 {
+    (NtApiAddress);
     return NULL;
 }
 
@@ -106,7 +107,7 @@ BOOL Dbg_PopulateSyscallList()
 
 EXTERN_C DWORD Dbg_GetSyscallNumber(DWORD FunctionHash)
 {
-    if (!Dbg_PopulateSyscallList()) return -1;
+    if (!Dbg_PopulateSyscallList()) return 1;
 
     for (DWORD i = 0; i < Dbg_SyscallList.Count; i++)
     {

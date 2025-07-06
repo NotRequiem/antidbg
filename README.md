@@ -1,17 +1,17 @@
 # Advanced AntiDebugging Library for C/C++
 
-antidbg is an advanced user-mode anti-debugging library for Windows, designed to detect debuggers without using unreliable/inaccurate checks (like timing checks, process name checks, etc)
+antidbg is an advanced user-mode anti-debugging library for Windows, designed to protect any software from debuggers.
 
 The library is:
 - Very easy to use (only one function call required)
-- Directly syscalled, which means that most antidebugging checks can't be hooked from user-mode
+- Directly syscalled, which means that most antidebugging checks can't be hooked/intercepted from user-mode
 - Optimized for officially supported Windows versions. For techniques with full compatibility for Windows Vista - Windows 11 and x86_32/WoW64, check the source files in https://github.com/NotRequiem/antidbg/commit/9d0dd9a8bac7d694a0f8f06bc24a78cd1aa953e4
-- Designed for speed and minimal memory usage
+- Designed for speed and minimal memory usage: Checks running under 10ms and taking less than 1.3MB of memory
 
 ## Features
 **__1.__** Able to bypass thread creation hooking and hide user-mode threads from debuggers.
 
-**__2.__** Able to detect debuggers with more than 30 different techniques:
+**__2.__** Able to detect debuggers with more than 30 different tricks:
   - 1: IsBeingDebugged
   - 2: IsRemoteDebuggerPresent
   - 3: DebuggerBreak
@@ -44,14 +44,26 @@ The library is:
   - 30: POPFTrapFlag
   - 31: MemoryBreakpoint
   - 32: PageExceptionBreakpoint
+  - 33: Timing attacks
+  - 34: Window Analysis
  
 *If you're interested in more antidebug detections, this repository contains more tricks that were not included in production that you may find useful, such as code for Self-Debugging techniques and kernel debugger detections.*
 
 **__3.__** Able to detect unusual memory writes by other analysis tools like sandboxes.
 
-**__4.__** Monitorization of antidebugging thread priority.
+**__4.__** Monitorization of antidebugging thread priority and self-integrity.
 
 **__5.__** Ability to randomize the time when protection routines will run.
+
+**__6.__** Prevention, not only detection, of debuggers from being attached.
+
+**__7.__** Protects the software from memory injections done by debuggers.
+
+**__8.__** Continous tracking of virtual memory with hardware-accelerated hashing to detect software and hardware breakpoints.
+
+**__9.__** Locates and self-destructs important but unneeded PE structures in your software, making binary dumping far more difficult.
+
+**__10.__** Compatible with any C and C++ standard
 
 ## Detection Modes
 > 1. Guard mode: A thread will start running in your program and monitor for attached debuggers infinitely. If a debugger is detected at any time, the program will forcefully exit while preventing other programs to stop the crash.
@@ -61,7 +73,7 @@ The library is:
 #include "adbg.h"
 
 int main() {
-    IsProgramBeingDebugged();
+    StartDebugProtection();
 
     return 0;
 }

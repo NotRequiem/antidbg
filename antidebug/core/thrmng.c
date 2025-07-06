@@ -33,7 +33,9 @@ HANDLE SpectrumCreateThread(
 
     const NTSTATUS statusHide = DbgNtSetInformationThread(hThread, ThreadHideFromDebugger, NULL, 0);
     if (!((NTSTATUS)(statusHide) >= 0)) {
+#ifdef _DEBUG
         printf("Failed to hide thread from debugger. Status: 0x%08X\n", statusHide);
+#endif
     }
 
     if (lpThreadId)

@@ -7,6 +7,8 @@
 #include <time.h>
 
 #include "core\thrmng.h"
+#include "core\atcptr.h"
+#include "core\hasher.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,7 +27,7 @@ extern "C" {
 
     extern DebugCheckResult debuggerChecks[];
 
-    void IsProgramBeingDebugged(); // guard mode
+    void StartDebugProtection(); // guard mode
     bool isProgramBeingDebugged(); // single run mode
 
 #ifdef __cplusplus

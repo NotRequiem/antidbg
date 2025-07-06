@@ -4,6 +4,8 @@
 #include "api\dbgpresent.h"
 #include "api\rdbgpresent.h"
 #include "api\job.h"
+#include "api\timing.h"
+#include "api\window.h"
 
 #include "asm\dbgbreak.h"
 #include "asm\int2d.h"
@@ -53,10 +55,10 @@ DebugCheckResult debuggerChecks[] = {
     {false, "IsDebuggerPresent_DebugFlags", .functionPtrWithProcess = IsDebuggerPresent_DebugFlags},
     {false, "ProcessHeap_Flags", .functionPtr = ProcessHeapFlag},
     {false, "ProcessHeapForce_Flag", .functionPtr = ProcessHeapForceFlag},
-    {false, "DuplicatedHandles", .functionPtr = DuplicatedHandles},
+    {false, "DuplicatedHandles", .functionPtrWithProcess = DuplicatedHandles},
     {false, "PEB", .functionPtr = CheckPEB},
-    {false, "CheckNtQueryInformationProcess", .functionPtr = CheckNtQueryInformationProcess},
-    {false, "HardwareBreakpoint", .functionPtr = HardwareBreakpoint},
+    {false, "CheckNtQueryInformationProcess", .functionPtrWithProcess = CheckNtQueryInformationProcess},
+    {false, "HardwareBreakpoint", .functionPtrWithThread = HardwareBreakpoint},
     {false, "HardwareBreakpoint2", .functionPtrWithProcessAndThread = HardwareBreakPoint2},
     {false, "VirtualAlloc_MEM_WRITE_WATCH", .functionPtr = WriteWatch},
     {false, "CheckCloseHandle", .functionPtr = CheckCloseHandle},
@@ -68,8 +70,10 @@ DebugCheckResult debuggerChecks[] = {
     {false, "ReadOwnMemoryStack", .functionPtr = ReadMemoryStack},
     {false, "ProcessJob", .functionPtr = ProcessJob},
     {false, "POPFTrapFlag", .functionPtr = POPFTrapFlag},
-    {false, "MemoryBreakpoint", .functionPtr = MemoryBreakpoint},
+    {false, "MemoryBreakpoint", .functionPtrWithProcess = MemoryBreakpoint},
     {false, "PageExceptionBreakpoint", .functionPtrWithProcess = PageExceptionBreakpoint},
+    {false, "Timing", .functionPtr = TimingAttacks},
+    {false, "Window", .functionPtr = CheckWindow}
 };
 
 #define NUM_DEBUG_CHECKS (sizeof(debuggerChecks) / sizeof(debuggerChecks[0]))
@@ -77,7 +81,6 @@ DebugCheckResult debuggerChecks[] = {
 DWORD __stdcall __adbg(LPVOID lpParam) {
     const HANDLE hProcess = (HANDLE)(lpParam);
     const HANDLE hThread = GetCurrentThread();
-    const char* arg = (const char*)lpParam;
 
     srand((unsigned int)time(NULL));
 
@@ -135,18 +138,20 @@ DWORD __stdcall __adbg(LPVOID lpParam) {
         }
     }
 
+    DbgNtClose(hProcess); // never reached but ok
     return 0;
 }
 
-void IsProgramBeingDebugged() {
+void StartDebugProtection() {
     const HANDLE hProcess = GetCurrentProcess();
+    StartAttachProtection(hProcess);
     const HANDLE hThread = SpectrumCreateThread(GetCurrentProcess(), 0, __adbg, (LPVOID)hProcess, 0, ((void*)0), ((void*)0));
     WaitForSingleObject(hThread, INFINITE); // or keep running your main thread
 
     if (hThread)
         DbgNtClose(hThread);
-    else
-        printf("[-] Failed to create anti-debug thread\n.");
+
+    StartMemoryTracker(hProcess);
 }
 
 bool isProgramBeingDebugged() {
@@ -175,6 +180,8 @@ bool isProgramBeingDebugged() {
         }
     }
 
+    DbgNtClose(hProcess);
+    DbgNtClose(hThread);
     return false;
 }
 
@@ -188,7 +195,7 @@ int main() {
     }
 
     // Guard mode
-    IsProgramBeingDebugged();
+    StartDebugProtection();
 
     return 0;
 }

@@ -126,9 +126,6 @@
     <ClCompile Include="antidebug\flags\prochpforceflag.c">
       <Filter>Source Files\flags</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\memory\dbgactproc.c">
-      <Filter>Source Files\memory</Filter>
-    </ClCompile>
     <ClCompile Include="antidebug\memory\hwbreakp.c">
       <Filter>Source Files\memory</Filter>
     </ClCompile>
@@ -167,6 +164,18 @@
     </ClCompile>
     <ClCompile Include="antidebug\core\syscall.c">
       <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\api\timing.c">
+      <Filter>Source Files\api</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\core\atcptr.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\core\hasher.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\api\window.c">
+      <Filter>Source Files\api</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -239,9 +248,6 @@
     <ClInclude Include="antidebug\flags\prochpflag.h">
       <Filter>Header Files\flags</Filter>
     </ClInclude>
-    <ClInclude Include="antidebug\memory\dbgactproc.h">
-      <Filter>Header Files\memory</Filter>
-    </ClInclude>
     <ClInclude Include="antidebug\memory\hwbreakp.h">
       <Filter>Header Files\memory</Filter>
     </ClInclude>
@@ -280,6 +286,18 @@
     </ClInclude>
     <ClInclude Include="antidebug\core\syscall.h">
       <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\api\timing.h">
+      <Filter>Header Files\api</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\core\atcptr.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\core\hasher.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\api\window.h">
+      <Filter>Header Files\api</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

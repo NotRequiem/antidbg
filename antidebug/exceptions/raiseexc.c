@@ -11,6 +11,14 @@ bool RaiseDbgControl()
         ? EXCEPTION_EXECUTE_HANDLER
         : EXCEPTION_CONTINUE_SEARCH)
     {
-        return false;
+        __try
+        {
+            RaiseException(DBG_RIPEXCEPTION, 0, 0, 0);
+        }
+        __except (1)
+        {
+            return FALSE;
+        }
+        return TRUE;
     }
 }
