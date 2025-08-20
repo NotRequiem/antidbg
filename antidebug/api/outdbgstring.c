@@ -24,6 +24,10 @@ IsWindowsXPOr2k()
 
 bool CheckOutputDebugString()
 {
+	__try {
+		OutputDebugString(TEXT("%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s"));
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER) { ; }
 
 	BOOL IsDbgPresent = FALSE;
 	DWORD Val = 0x29A;
@@ -36,6 +40,18 @@ bool CheckOutputDebugString()
 		if (GetLastError() == Val)
 			IsDbgPresent = TRUE;
 	}
+
+	WCHAR* outputString = L"xd";
+	ULONG_PTR args[4] = { 0 };
+	args[0] = (ULONG_PTR)wcslen(outputString) + 1;
+	args[1] = (ULONG_PTR)outputString;
+	__try
+	{
+		RaiseException(DBG_PRINTEXCEPTION_WIDE_C, 0, 4, args);
+		RaiseException(DBG_PRINTEXCEPTION_C, 0, 4, args);
+		IsDbgPresent = TRUE;
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER) {}
 
 	return IsDbgPresent;
 }

@@ -1,6 +1,6 @@
 #include "window.h"
 
-BOOL CALLBACK EnumWndProc(HWND hwnd, LPARAM lParam)
+static BOOL CALLBACK EnumWndProc(HWND hwnd, LPARAM lParam)
 {
 	char cur_window[1024];
 	GetWindowTextA(hwnd, cur_window, 1023);

@@ -1,7 +1,7 @@
 #include "thrmng.h"
 #include "syscall.h"
 
-HANDLE SpectrumCreateThread(
+HANDLE DbgCreateThread(
     const HANDLE hProcess,
     const SIZE_T dwStackSize,
     const LPTHREAD_START_ROUTINE lpStartAddress,
@@ -31,12 +31,7 @@ HANDLE SpectrumCreateThread(
         return NULL;
     }
 
-    const NTSTATUS statusHide = DbgNtSetInformationThread(hThread, ThreadHideFromDebugger, NULL, 0);
-    if (!((NTSTATUS)(statusHide) >= 0)) {
-#ifdef _DEBUG
-        printf("Failed to hide thread from debugger. Status: 0x%08X\n", statusHide);
-#endif
-    }
+    DbgNtSetInformationThread(hThread, ThreadHideFromDebugger, NULL, 0);
 
     if (lpThreadId)
         *lpThreadId = GetThreadId(hThread);

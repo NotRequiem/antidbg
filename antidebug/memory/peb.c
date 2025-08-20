@@ -1,5 +1,5 @@
 #include "peb.h"
-#include <winternl.h>
+#include "../core/nttypes.h"
 
 bool CheckPEB() {
     PEB* peb = (PEB*)__readgsqword(0x60);

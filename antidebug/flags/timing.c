@@ -27,7 +27,7 @@ bool TimingAttacks()
     Sleep(50);
     y = GetTickCount64();
 
-    ULONGLONG elapsedTime = x - y;
+    const ULONGLONG elapsedTime = x - y;
     bool detection_value = elapsedTime > 100;
     if (detection_value) return true;
 
@@ -36,8 +36,8 @@ bool TimingAttacks()
         time = __rdtsc();
         return false;
     }
-    ULONGLONG second_time = __rdtsc();
-    ULONGLONG diff = (second_time - time) >> 20;
+    const ULONGLONG second_time = __rdtsc();
+    const ULONGLONG diff = (second_time - time) >> 20;
     if (diff > 0x100) {
         time = second_time;
         return true;

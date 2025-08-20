@@ -1,12 +1,13 @@
-# Advanced AntiDebugging Library for C/C++
+# AntiDebugging Library for C/C++
 
-antidbg is an advanced user-mode anti-debugging library for Windows, designed to protect any software from debuggers.
+antidbg is a PoC of a x64 user-mode anti-debugging library for Windows, designed to protect any software from debugging.
 
 The library is:
 - Very easy to use (only one function call required)
 - Directly syscalled, which means that most antidebugging checks can't be hooked/intercepted from user-mode
-- Optimized for officially supported Windows versions. For techniques with full compatibility for Windows Vista - Windows 11 and x86_32/WoW64, check the source files in https://github.com/NotRequiem/antidbg/commit/9d0dd9a8bac7d694a0f8f06bc24a78cd1aa953e4
-- Designed for speed and minimal memory usage: Checks running under 10ms and taking less than 1.3MB of memory
+- Optimized for officially supported Windows versions and AMD64 only.
+- Designed for speed and minimal memory usage
+- Compatible with any C and C++ standard
 
 ## Features
 **__1.__** Able to bypass thread creation hooking and hide user-mode threads from debuggers.
@@ -20,34 +21,33 @@ The library is:
   - 6: StackSegmentRegister
   - 7: PrefixHop
   - 8: RaiseDbgControl
-  - 9: IsDebuggerPresent_DebugObjectHandle
+  - 9: DebugObjectHandle
   - 10: KernelDebugger
   - 11: NtGlobalFlag
-  - 12: IsDebuggerPresent_DebugFlags
-  - 13: ProcessHeap_Flags
-  - 14: ProcessHeapForce_Flag
+  - 12: DebugFlags
+  - 13: ProcessHeapFlags
+  - 14: ProcessHeapForceFlag
   - 15: DuplicatedHandles
-  - 16: PEB (direct access without using api calls)
-  - 17: CheckNtQueryInformationProcess
+  - 16: PEB (direct memory access without using OS api calls)
+  - 17: ProcessDebugPort
   - 18: HardwareBreakpoint
   - 19: HardwareBreakpoint2
-  - 20: VirtualAlloc_MEM_WRITE_WATCH
+  - 20: MEM_WRITE_WATCH
   - 21: DebugActiveProcess
-  - 22: CheckCloseHandle
-  - 23: CheckCloseHandleWithInvalidHandle
-  - 24: CheckNtQueryObject
-  - 25: CheckOpenProcess
-  - 26: SetHandleInformation
-  - 27: NtSystemDebugControl_Command
-  - 28: ReadOwnMemoryStack
-  - 29: ProcessJob
-  - 30: POPFTrapFlag
-  - 31: MemoryBreakpoint
-  - 32: PageExceptionBreakpoint
-  - 33: Timing attacks
-  - 34: Window Analysis
- 
-*If you're interested in more antidebug detections, this repository contains more tricks that were not included in production that you may find useful, such as code for Self-Debugging techniques and kernel debugger detections.*
+  - 22: InvalidHandle
+  - 23: NtQueryObject
+  - 24: NtOpenProcess
+  - 25: SetHandleInformation
+  - 26: NtSystemDebugControl_Command
+  - 27: ReadOwnMemoryStack
+  - 28: ProcessJob
+  - 29: POPFTrapFlag
+  - 30: MemoryBreakpoint (PAGE_GUARD)
+  - 31: PageExceptionBreakpoint
+  - 32: Timing attacks
+  - 33: Window analysis
+  - 34: Thread start address
+  - 35: Parent process 
 
 **__3.__** Able to detect unusual memory writes by other analysis tools like sandboxes.
 
@@ -59,14 +59,14 @@ The library is:
 
 **__7.__** Protects the software from memory injections done by debuggers.
 
-**__8.__** Continous tracking of virtual memory with hardware-accelerated hashing to detect software and hardware breakpoints.
+**__8.__** Continuous tracking of virtual memory with hardware-accelerated hashing to detect software breakpoints and inline hooks.
 
-**__9.__** Locates and self-destructs important but unneeded PE structures in your software, making binary dumping far more difficult.
+**__9.__** Runs a special routine before your program's entrypoint even starts to detect if a debugger is attached.
 
-**__10.__** Compatible with any C and C++ standard
+**__10.__** Automatic handling of any exception in your software without interfering with other program's handlers.
 
 ## Detection Modes
-> 1. Guard mode: A thread will start running in your program and monitor for attached debuggers infinitely. If a debugger is detected at any time, the program will forcefully exit while preventing other programs to stop the crash.
+> 1. Guard mode:A thread will start running in your program and continuously monitor for attached debuggers. If a debugger is detected at any time, the program will forcefully exit while preventing other programs from stopping the crash.
 
 `Example Usage:`
 ```c
@@ -96,6 +96,10 @@ int main() {
     return 0;
 }
 ```
+
+# Notes
+The library is fully supported on MSVC, the syscall core for other compilers like MinGW-w64, GCC and Clang is in experimental phase.
+CMake generation is experimental.
 
 # Legal
 I am not responsible nor liable for any damage you cause through any malicious usage of this project.

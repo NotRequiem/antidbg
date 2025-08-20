@@ -5,17 +5,17 @@
 #include <stdbool.h>
 #include <psapi.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifdef _DEBUG
 #define OutputDebugStringDbgOnly(S) OutputDebugString(S)
 #else
 #define OutputDebugStringDbgOnly(S) do {} while(0)
 #endif
 
-	bool PageExceptionBreakpoint(HANDLE hProcess);
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	bool PageExceptionBreakpoint(const HANDLE hProcess);
 
 #ifdef __cplusplus
 }

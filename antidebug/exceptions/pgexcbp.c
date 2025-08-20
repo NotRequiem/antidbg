@@ -10,7 +10,7 @@ static inline void __fastcall PageExceptionInitialEnum(const HANDLE hProcess)
     size_t       pageSize = sysInfo.dwPageSize;
     HMODULE      hMainModule;
     MODULEINFO   moduleInfo;
-    MEMORY_BASIC_INFORMATION memInfo;
+    MEMORY_BASIC_INFORMATION memInfo = { 0 };
 
     if (!(executablePages = malloc(sizeof(void*))))
         return;

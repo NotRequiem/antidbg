@@ -215,14 +215,6 @@ static inline BOOL VirtualAlloc_WriteWatch_CodeWrite()
     // construct a call to isDebuggerPresent in assembly
     ULONG_PTR isDebuggerPresentAddr = (ULONG_PTR)&IsDebuggerPresent;
 
-#ifndef _WIN32
-#ifndef _WIN64
-#error Architecture must be WIN32 or WIN64
-#endif
-#endif
-
-
-#if _WIN64
     /*
      * 64-bit
      *
@@ -247,31 +239,6 @@ static inline BOOL VirtualAlloc_WriteWatch_CodeWrite()
     buffer[pos++] = 0x59; // pop rcx
     buffer[pos] = 0xC3; // ret
 
-#else
-    /*
-     * 32-bit
-     *
-    0:  51                      push   ecx
-    1:  b9 78 56 34 12          mov    ecx, 0x12345678
-    6:  ff d1                   call   ecx
-    8:  59                      pop    ecx
-    9:  c3                      ret
-    */
-    int pos = 0;
-    buffer[pos++] = 0x51; // push ecx
-    buffer[pos++] = 0xB9; // mov ecx, ...
-    int offset = 0;
-    for (int n = 0; n < 4; n++)
-    {
-        buffer[pos++] = (isDebuggerPresentAddr >> offset) & 0xFF;
-        offset += 8;
-    }
-    buffer[pos++] = 0xFF; // call ecx
-    buffer[pos++] = 0xD1; // ^
-    buffer[pos++] = 0x59; // pop ecx
-    buffer[pos] = 0xC3; // ret
-
-#endif
 
     ResetWriteWatch(buffer, (SIZE_T)(4096) * 4096);
 

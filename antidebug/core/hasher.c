@@ -1,11 +1,5 @@
 #include "hasher.h"
-
-typedef struct {
-    HMODULE hMod;
-    DWORD   textRVA;
-    DWORD   textSize;
-    uint32_t originalCrc;
-} ModuleCRC;
+#include "syscall.h"
 
 static inline BOOL __fastcall GetTextSectionInfo(HMODULE hMod, DWORD* rva, DWORD* size)
 {
@@ -30,18 +24,34 @@ static inline BOOL __fastcall GetTextSectionInfo(HMODULE hMod, DWORD* rva, DWORD
     return FALSE;
 }
 
-static inline uint32_t __fastcall Crc32_Section(void* sectionBase, DWORD sectionSize)
+static inline uint32_t __fastcall Crc32_Section(const HMODULE hMod, const DWORD sectionRVA, const DWORD sectionSize)
 {
-    uint64_t crc = 0;
-    BYTE* p = (BYTE*)sectionBase;
-    size_t i, q = sectionSize / 8, r = sectionSize % 8;
+    MODULEINFO mi;
+    if (!GetModuleInformation(GetCurrentProcess(), hMod, &mi, sizeof(mi))) return 0;
 
-    for (i = 0; i < q; i++, p += 8) {
-        uint64_t chunk = *(uint64_t*)p;
+    BYTE* base = (BYTE*)hMod;
+    BYTE* sectionBase = base + sectionRVA;
+    BYTE* sectionEnd = sectionBase + sectionSize;
+
+    if ((BYTE*)sectionBase < (BYTE*)mi.lpBaseOfDll || sectionEnd >((BYTE*)mi.lpBaseOfDll + mi.SizeOfImage))
+        return 0; 
+
+    uint64_t crc = 0;
+    BYTE* p = sectionBase;
+    SIZE_T bytesLeft = sectionSize;
+
+    while (bytesLeft >= 8) {
+        uint64_t chunk;
+        memcpy(&chunk, p, sizeof(chunk)); 
+        // always_inline function '_mm_crc32_u64' requires target feature 'crc32', but would be inlined into function 'Crc32_Section' that is compiled without support for 'crc32'
         crc = _mm_crc32_u64(crc, chunk);
+        p += 8; bytesLeft -= 8;
     }
-    for (i = 0; i < r; i++, p++) {
-        crc = _mm_crc32_u8((uint32_t)crc, *p);
+    while (bytesLeft > 0) {
+        uint8_t b;
+        memcpy(&b, p, 1);
+        crc = _mm_crc32_u8((uint32_t)crc, b);
+        p++; bytesLeft--;
     }
     return (uint32_t)crc;
 }
@@ -58,38 +68,48 @@ void StartMemoryTracker(const HANDLE hProcess)
     }
     mCount = cbNeeded / sizeof(HMODULE);
 
-    // allocate array to hold CRC info
     modCrcs = (ModuleCRC*)calloc(mCount, sizeof(ModuleCRC));
     if (!modCrcs) {
         return;
     }
 
-    // for each module, find .text and compute initial CRC
     for (i = 0; i < mCount; i++) {
         DWORD rva, size;
         if (GetTextSectionInfo(mods[i], &rva, &size)) {
-            BYTE* textBase = (BYTE*)mods[i] + rva;
             modCrcs[i].hMod = mods[i];
             modCrcs[i].textRVA = rva;
             modCrcs[i].textSize = size;
-            modCrcs[i].originalCrc = Crc32_Section(textBase, size);
-            //printf("Module[%u]=%p  CRC=0x%08X\n", i, mods[i], modCrcs[i].originalCrc);
+
+            modCrcs[i].originalCrc = Crc32_Section(mods[i], rva, size);
+
+#ifdef _DEBUG
+            printf("Module[%u]=%p  CRC=0x%08X\n", i, mods[i], modCrcs[i].originalCrc);
+#endif
         }
     }
 
     for (;;) {
-        SleepEx(1000, FALSE);
+        const DWORD minDelayMs = 500;
+        const DWORD maxDelayMs = 2000;
+        const DWORD randomDelayMs = minDelayMs + (rand() % (maxDelayMs - minDelayMs + 1));
+
+        LARGE_INTEGER delay = { 0 };
+        const __int64 randomDelayMs64 = (__int64)randomDelayMs;
+        const __int64 conversionFactor = 10000;
+        const __int64 result = -(randomDelayMs64 * conversionFactor);
+
+        delay.QuadPart = result;
+
+        DbgNtDelayExecution(FALSE, &delay);
 
         for (i = 0; i < mCount; i++) {
             if (modCrcs[i].hMod == NULL)
                 continue;
 
-            BYTE* textBase = (BYTE*)modCrcs[i].hMod + modCrcs[i].textRVA;
-            DWORD  size = modCrcs[i].textSize;
-            uint32_t crc = Crc32_Section(textBase, size);
+            uint32_t crc = Crc32_Section(modCrcs[i].hMod, modCrcs[i].textRVA, modCrcs[i].textSize);
 
-            if (crc != modCrcs[i].originalCrc) {
-                /*
+            if (crc != 0 && crc != modCrcs[i].originalCrc) {
+#ifdef _DEBUG
                 wchar_t name[MAX_PATH];
                 if (GetModuleFileNameW(modCrcs[i].hMod, name, _countof(name)))
                     fwprintf(stderr, L"[!] Module tampered: %s\n", name);
@@ -98,9 +118,8 @@ void StartMemoryTracker(const HANDLE hProcess)
 
                 fprintf(stderr, "    original CRC=0x%08X  new CRC=0x%08X\n",
                     modCrcs[i].originalCrc, crc);
-                */
-
-                TerminateProcess(hProcess, 0);
+#endif
+                __fastfail(ERROR_STACK_BUFFER_OVERRUN);
             }
         }
     }

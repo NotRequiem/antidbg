@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-    HANDLE SpectrumCreateThread(
+    HANDLE DbgCreateThread(
         const HANDLE hProcess,
         const SIZE_T dwStackSize,
         const LPTHREAD_START_ROUTINE lpStartAddress,

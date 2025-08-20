@@ -1,44 +1,4 @@
 #include "adbg.h"
-#include "core\syscall.h"
-
-#include "api\dbgpresent.h"
-#include "api\rdbgpresent.h"
-#include "api\job.h"
-#include "api\timing.h"
-#include "api\window.h"
-
-#include "asm\dbgbreak.h"
-#include "asm\int2d.h"
-#include "asm\int3.h"
-#include "asm\sckreg.h"
-#include "asm\prehop.h"
-#include "asm\popf.h"
-
-#include "exceptions\raiseexc.h"
-#include "exceptions\hwbreakp2.h"
-#include "exceptions\pgexcbp.h"
-
-#include "flags\dbgobjhandle.h"
-#include "flags\kerneldbg.h"
-#include "flags\ntglobalflag.h"
-#include "flags\procdbgflag.h"
-#include "flags\procdbgport.h"
-#include "flags\prochpflag.h"
-#include "flags\prochpforceflag.h"
-#include "flags\duphnd.h"
-
-#include "memory\hwbreakp.h"
-#include "memory\readstck.h"
-#include "memory\peb.h"
-#include "memory\vrtalloc.h"
-#include "memory\membreakp.h"
-
-#include "object\clshandle.h"
-#include "object\clsinvhandle.h"
-#include "object\dbgobj.h"
-#include "object\opnproc.h"
-#include "object\prothnd.h"
-#include "object\sysdbgctl.h"
 
 DebugCheckResult debuggerChecks[] = {
     {false, "IsBeingDebugged", .functionPtr = IsBeingDebugged},
@@ -49,24 +9,25 @@ DebugCheckResult debuggerChecks[] = {
     {false, "StackSegmentRegister", .functionPtrWithThread = StackSegmentRegister},
     {false, "PrefixHop", .functionPtr = PrefixHop},
     {false, "RaiseDbgControl", .functionPtr = RaiseDbgControl},
-    {false, "IsDebuggerPresent_DebugObjectHandle", .functionPtrWithProcess = IsDebuggerPresent_DebugObjectHandle},
+    {false, "DebugObjectHandle", .functionPtrWithProcess = DebugObjectHandle},
     {false, "KernelDebugger", .functionPtr = KernelDebugger},
     {false, "NtGlobalFlag", .functionPtr = NtGlobalFlag},
-    {false, "IsDebuggerPresent_DebugFlags", .functionPtrWithProcess = IsDebuggerPresent_DebugFlags},
+    {false, "DebugFlags", .functionPtrWithProcess = DebugFlags},
     {false, "ProcessHeap_Flags", .functionPtr = ProcessHeapFlag},
     {false, "ProcessHeapForce_Flag", .functionPtr = ProcessHeapForceFlag},
     {false, "DuplicatedHandles", .functionPtrWithProcess = DuplicatedHandles},
+    {false, "ParentProcesses", .functionPtrWithProcess = ParentProcesses},
+    {false, "NtSetLdtEntries", .functionPtr = CheckNtSetLdtEntries},
     {false, "PEB", .functionPtr = CheckPEB},
-    {false, "CheckNtQueryInformationProcess", .functionPtrWithProcess = CheckNtQueryInformationProcess},
+    {false, "DebugPort", .functionPtrWithProcess = DebugPort},
     {false, "HardwareBreakpoint", .functionPtrWithThread = HardwareBreakpoint},
     {false, "HardwareBreakpoint2", .functionPtrWithProcessAndThread = HardwareBreakPoint2},
     {false, "VirtualAlloc_MEM_WRITE_WATCH", .functionPtr = WriteWatch},
-    {false, "CheckCloseHandle", .functionPtr = CheckCloseHandle},
-    {false, "CheckCloseHandleWithInvalidHandle", .functionPtr = CloseInvalidHandle},
-    {false, "CheckNtQueryObject", .functionPtr = CheckNtQueryObject},
-    {false, "CheckOpenProcess", .functionPtr = CheckOpenProcess},
+    {false, "InvalidHandle", .functionPtr = CheckCloseHandle},
+    {false, "NtQueryObject", .functionPtr = CheckNtQueryObject},
+    {false, "OpenProcess", .functionPtr = CheckOpenProcess},
     {false, "SetHandleInformation", .functionPtr = ProtectedHandle},
-    {false, "NtSystemDebugControl_Command", .functionPtr = NtSystemDebugControl},
+    {false, "NtSystemDebugControl", .functionPtr = NtSystemDebugControl},
     {false, "ReadOwnMemoryStack", .functionPtr = ReadMemoryStack},
     {false, "ProcessJob", .functionPtr = ProcessJob},
     {false, "POPFTrapFlag", .functionPtr = POPFTrapFlag},
@@ -77,6 +38,7 @@ DebugCheckResult debuggerChecks[] = {
 };
 
 #define NUM_DEBUG_CHECKS (sizeof(debuggerChecks) / sizeof(debuggerChecks[0]))
+
 
 DWORD __stdcall __adbg(LPVOID lpParam) {
     const HANDLE hProcess = (HANDLE)(lpParam);
@@ -106,7 +68,7 @@ DWORD __stdcall __adbg(LPVOID lpParam) {
                 __fastfail(EXIT_SUCCESS);
             }
 
-            // Ensure our thread priority was not tampered with
+            // ensure our thread priority was not tampered with
             const int currentPriority = GetThreadPriority(hThread);
             if (currentPriority == THREAD_PRIORITY_ERROR_RETURN) {
 #ifdef _DEBUG
@@ -122,7 +84,7 @@ DWORD __stdcall __adbg(LPVOID lpParam) {
                 }
             }
 
-            // Generate a random delay to avoid attackers from predicting when checks will run
+            // random delay to avoid attackers from predicting when checks will run
             const DWORD minDelayMs = 500;
             const DWORD maxDelayMs = 2000;
             const DWORD randomDelayMs = minDelayMs + (rand() % (maxDelayMs - minDelayMs + 1));
@@ -142,17 +104,19 @@ DWORD __stdcall __adbg(LPVOID lpParam) {
     return 0;
 }
 
+
 void StartDebugProtection() {
+    const PVOID hVeh = AddVectoredExceptionHandler(1, VectoredDebuggerCheck);
+    if (!hVeh) {
+        __fastfail(STATUS_ACCESS_VIOLATION);
+    }
+
+    StartAttachProtection();
     const HANDLE hProcess = GetCurrentProcess();
-    StartAttachProtection(hProcess);
-    const HANDLE hThread = SpectrumCreateThread(GetCurrentProcess(), 0, __adbg, (LPVOID)hProcess, 0, ((void*)0), ((void*)0));
-    WaitForSingleObject(hThread, INFINITE); // or keep running your main thread
-
-    if (hThread)
-        DbgNtClose(hThread);
-
+    DbgCreateThread(GetCurrentProcess(), 0, __adbg, (LPVOID)hProcess, 0, ((void*)0), ((void*)0));
     StartMemoryTracker(hProcess);
 }
+
 
 bool isProgramBeingDebugged() {
     const HANDLE hProcess = GetCurrentProcess();
@@ -183,19 +147,4 @@ bool isProgramBeingDebugged() {
     DbgNtClose(hProcess);
     DbgNtClose(hThread);
     return false;
-}
-
-int main() {
-    // Single-run mode
-    if (isProgramBeingDebugged()) {
-        printf("[+] Debugger detected.\n");
-    }
-    else {
-        printf("[-] No debugger was detected.\n");
-    }
-
-    // Guard mode
-    StartDebugProtection();
-
-    return 0;
 }

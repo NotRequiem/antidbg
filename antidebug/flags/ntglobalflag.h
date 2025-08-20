@@ -3,8 +3,6 @@
 #include <windows.h>
 #include <stdbool.h>
 
-#include "..\adbg.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif

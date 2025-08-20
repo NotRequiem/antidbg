@@ -1,6 +1,6 @@
 #include "sckreg.h"
 
-bool StackSegmentRegister(HANDLE hThread)
+bool StackSegmentRegister(const HANDLE hThread)
 {
     CONTEXT ctx = { 0 };
     ctx.ContextFlags = CONTEXT_CONTROL;

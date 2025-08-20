@@ -66,9 +66,6 @@
     <ClCompile Include="antidebug\api\rdbgpresent.c">
       <Filter>Source Files\api</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\api\job.c">
-      <Filter>Source Files\api</Filter>
-    </ClCompile>
     <ClCompile Include="antidebug\exceptions\hwbreakp2.c">
       <Filter>Source Files\exceptions</Filter>
     </ClCompile>
@@ -102,9 +99,6 @@
     <ClCompile Include="antidebug\asm\dbgbreak.c">
       <Filter>Source Files\asm</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\flags\dbgobjhandle.c">
-      <Filter>Source Files\flags</Filter>
-    </ClCompile>
     <ClCompile Include="antidebug\flags\duphnd.c">
       <Filter>Source Files\flags</Filter>
     </ClCompile>
@@ -112,12 +106,6 @@
       <Filter>Source Files\flags</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\flags\ntglobalflag.c">
-      <Filter>Source Files\flags</Filter>
-    </ClCompile>
-    <ClCompile Include="antidebug\flags\procdbgflag.c">
-      <Filter>Source Files\flags</Filter>
-    </ClCompile>
-    <ClCompile Include="antidebug\flags\procdbgport.c">
       <Filter>Source Files\flags</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\flags\prochpflag.c">
@@ -144,9 +132,6 @@
     <ClCompile Include="antidebug\object\clshandle.c">
       <Filter>Source Files\object</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\object\clsinvhandle.c">
-      <Filter>Source Files\object</Filter>
-    </ClCompile>
     <ClCompile Include="antidebug\object\dbgobj.c">
       <Filter>Source Files\object</Filter>
     </ClCompile>
@@ -165,24 +150,45 @@
     <ClCompile Include="antidebug\core\syscall.c">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\api\timing.c">
-      <Filter>Source Files\api</Filter>
-    </ClCompile>
     <ClCompile Include="antidebug\core\atcptr.c">
       <Filter>Source Files\core</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\core\hasher.c">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\api\window.c">
+    <ClCompile Include="antidebug\flags\prntproc.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\ntldt.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\loadlib.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\core\handler.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\api\dbgobjhandle.c">
       <Filter>Source Files\api</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\api\procdbgport.c">
+      <Filter>Source Files\api</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\api\procdbgflag.c">
+      <Filter>Source Files\api</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\window.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\timing.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\job.c">
+      <Filter>Source Files\flags</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="antidebug\api\dbgpresent.h">
-      <Filter>Header Files\api</Filter>
-    </ClInclude>
-    <ClInclude Include="antidebug\api\job.h">
       <Filter>Header Files\api</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\api\outdbgstring.h">
@@ -227,9 +233,6 @@
     <ClInclude Include="antidebug\flags\prochpforceflag.h">
       <Filter>Header Files\flags</Filter>
     </ClInclude>
-    <ClInclude Include="antidebug\flags\dbgobjhandle.h">
-      <Filter>Header Files\flags</Filter>
-    </ClInclude>
     <ClInclude Include="antidebug\flags\duphnd.h">
       <Filter>Header Files\flags</Filter>
     </ClInclude>
@@ -237,12 +240,6 @@
       <Filter>Header Files\flags</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\flags\ntglobalflag.h">
-      <Filter>Header Files\flags</Filter>
-    </ClInclude>
-    <ClInclude Include="antidebug\flags\procdbgflag.h">
-      <Filter>Header Files\flags</Filter>
-    </ClInclude>
-    <ClInclude Include="antidebug\flags\procdbgport.h">
       <Filter>Header Files\flags</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\flags\prochpflag.h">
@@ -278,17 +275,11 @@
     <ClInclude Include="antidebug\object\clshandle.h">
       <Filter>Header Files\object</Filter>
     </ClInclude>
-    <ClInclude Include="antidebug\object\clsinvhandle.h">
-      <Filter>Header Files\object</Filter>
-    </ClInclude>
     <ClInclude Include="antidebug\adbg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\core\syscall.h">
       <Filter>Header Files\core</Filter>
-    </ClInclude>
-    <ClInclude Include="antidebug\api\timing.h">
-      <Filter>Header Files\api</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\core\atcptr.h">
       <Filter>Header Files\core</Filter>
@@ -296,8 +287,41 @@
     <ClInclude Include="antidebug\core\hasher.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="antidebug\api\window.h">
+    <ClInclude Include="antidebug\flags\prntproc.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\ntldt.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\loadlib.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\core\handler.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\core\syscalls.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\api\dbgobjhandle.h">
       <Filter>Header Files\api</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\api\procdbgflag.h">
+      <Filter>Header Files\api</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\api\procdbgport.h">
+      <Filter>Header Files\api</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\job.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\timing.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\window.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\core\nttypes.h">
+      <Filter>Header Files\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

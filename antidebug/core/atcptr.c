@@ -1,54 +1,174 @@
 #include "atcptr.h"
+#include "syscall.h"
 
-void __stdcall AntiAttach(void)
+static void __stdcall AntiAttach(void);
+void __stdcall clb(PVOID DllHandle, DWORD reason, PVOID Reserved);
+
+// some virtualizers can't obfuscate TLS callbacks. If this is a problem for you, just remove this code block 
+#pragma region TLS_CALLBACK_SETUP
+#ifdef _WIN64
+    #pragma comment (linker, "/INCLUDE:_tls_used")
+    #pragma const_seg(".CRT$XLA")
+    EXTERN_C const PIMAGE_TLS_CALLBACK p_thread_callback_list[] = { (PIMAGE_TLS_CALLBACK)clb, NULL };
+    #pragma const_seg()
+#else
+    #pragma comment (linker, "/INCLUDE:__tls_used")
+    #pragma data_seg(".CRT$XLA")
+    EXTERN_C PIMAGE_TLS_CALLBACK p_thread_callback_list[] = { (PIMAGE_TLS_CALLBACK)clb, NULL };
+    #pragma data_seg()
+#endif
+#pragma endregion
+
+void __stdcall clb(PVOID DllHandle, DWORD reason, PVOID Reserved)
 {
-    ExitProcess(0);
-    __fastfail(0);
+    UNREFERENCED_PARAMETER(DllHandle);
+    UNREFERENCED_PARAMETER(Reserved);
+
+    if (reason != DLL_THREAD_ATTACH)
+    {
+        return;
+    }
+    HMODULE hNtdll = GetModuleHandle(_T("ntdll.dll"));
+    if (!hNtdll) return;
+
+    const FARPROC pDbgUiRemoteBreakin = GetProcAddress(hNtdll, "DbgUiRemoteBreakin");
+    if (!pDbgUiRemoteBreakin) return;
+
+    ULONG cbBuffer = 0x8000;
+    PVOID pBuffer = NULL;
+    NTSTATUS status;
+
+    do {
+        pBuffer = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, cbBuffer);
+        if (!pBuffer) return;
+
+        status = DbgNtQuerySystemInformation(SystemProcessInformation, pBuffer, cbBuffer, NULL);
+
+        if (status == STATUS_INFO_LENGTH_MISMATCH) {
+            HeapFree(GetProcessHeap(), 0, pBuffer);
+            cbBuffer *= 2;
+        }
+    } while (status == STATUS_INFO_LENGTH_MISMATCH);
+
+    if (!NT_SUCCESS(status)) {
+        if (pBuffer) HeapFree(GetProcessHeap(), 0, pBuffer);
+        return;
+    }
+
+    PSYSTEM_PROCESS_INFORMATION pCurrentProcInfo = (PSYSTEM_PROCESS_INFORMATION)pBuffer;
+    const DWORD currentProcessId = GetCurrentProcessId();
+    const DWORD currentThreadId = GetCurrentThreadId();
+
+    while (TRUE)
+    {
+        if ((ULONG_PTR)pCurrentProcInfo->UniqueProcessId == (ULONG_PTR)currentProcessId)
+        {
+            PSYSTEM_THREAD_INFORMATION pThreadInfo = (PSYSTEM_THREAD_INFORMATION)(pCurrentProcInfo + 1);
+
+            for (unsigned int i = 0; i < pCurrentProcInfo->NumberOfThreads; i++)
+            {
+                if ((ULONG_PTR)pThreadInfo[i].ClientId.UniqueThread == (ULONG_PTR)currentThreadId)
+                {
+                    if (pThreadInfo[i].StartAddress == pDbgUiRemoteBreakin)
+                    {
+                        __fastfail(STATUS_ACCESS_VIOLATION);
+                    }
+                    break;
+                }
+            }
+            break;
+        }
+
+        if (pCurrentProcInfo->NextEntryOffset == 0) break;
+        pCurrentProcInfo = (PSYSTEM_PROCESS_INFORMATION)((PUCHAR)pCurrentProcInfo + pCurrentProcInfo->NextEntryOffset);
+    }
+
+    if (pBuffer) HeapFree(GetProcessHeap(), 0, pBuffer);
 }
 
-bool StartAttachProtection(const HANDLE hProcess)
+static void __stdcall AntiAttach(void)
 {
-    DWORD oldProtect = 0;
+    __fastfail(FAST_FAIL_FATAL_APP_EXIT);
+}
 
-    char* baseAdress = (char*)GetModuleHandle(NULL);
+// not directly syscalled because we don't really care too much, we will be checking debug registers at random times during all the program's lifecycle with direct kernel calls
+static void ClearHardwareBreakpoints()
+{
+    const DWORD currentPid = GetCurrentProcessId();
+    const DWORD currentTid = GetCurrentThreadId();
 
-    VirtualProtect(baseAdress, 4096,
-        PAGE_READWRITE, &oldProtect);
+    HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+    if (hSnap == INVALID_HANDLE_VALUE) return;
 
-    ZeroMemory(baseAdress, 4096);
+    THREADENTRY32 te = { 0 };
+    te.dwSize = sizeof(te);
 
+    if (Thread32First(hSnap, &te)) {
+        do {
+            if (te.th32OwnerProcessID == currentPid) {
+                if (te.th32ThreadID == currentTid) {
+                    continue;
+                }
+
+                HANDLE hThread = OpenThread(THREAD_SUSPEND_RESUME | THREAD_GET_CONTEXT | THREAD_SET_CONTEXT, FALSE, te.th32ThreadID);
+                if (hThread) {
+                    if (SuspendThread(hThread) != (DWORD)-1) {
+                        CONTEXT ctx = { 0 };
+                        ctx.ContextFlags = CONTEXT_DEBUG_REGISTERS;
+
+                        if (GetThreadContext(hThread, &ctx)) {
+                            ctx.Dr0 = 0;
+                            ctx.Dr1 = 0;
+                            ctx.Dr2 = 0;
+                            ctx.Dr3 = 0;
+                            ctx.Dr7 = 0;
+                            SetThreadContext(hThread, &ctx);
+                        }
+                        ResumeThread(hThread);
+                    }
+                    CloseHandle(hThread);
+                }
+            }
+        } while (Thread32Next(hSnap, &te));
+    }
+    CloseHandle(hSnap);
+}
+
+bool StartAttachProtection(void)
+{
     HMODULE hNtdll = GetModuleHandle(_T("ntdll.dll"));
-    if (!hNtdll) {
-        return false;
+    if (!hNtdll) return FALSE;
+
+    ClearHardwareBreakpoints();
+
+    void* pDbgUiRemoteBreakin = (void*)GetProcAddress(hNtdll, "DbgUiRemoteBreakin");
+    if (pDbgUiRemoteBreakin) {
+        DWORD oldProtect;
+        if (VirtualProtect(pDbgUiRemoteBreakin, 6, PAGE_EXECUTE_READWRITE, &oldProtect)) {
+            // absolute just in case the target is >2GB away
+            unsigned char patch[12] = { 0 };
+            patch[0] = 0x48; // REX.W prefix for 64-bit operand
+            patch[1] = 0xB8; // MOV RAX, imm64
+            *(ULONGLONG*)&patch[2] = (ULONGLONG)&AntiAttach;
+            patch[10] = 0xFF; // JMP RAX
+            patch[11] = 0xE0;
+
+            SIZE_T bytesWritten;
+            WriteProcessMemory(GetCurrentProcess(), pDbgUiRemoteBreakin, patch, sizeof(patch), &bytesWritten);
+            VirtualProtect(pDbgUiRemoteBreakin, 6, oldProtect, &oldProtect);
+        }
     }
 
-    void* target = (void*)GetProcAddress(hNtdll, "DbgUiRemoteBreakin");
-    if (!target) {
-        return false;
+    void* pDbgBreakPoint = (void*)GetProcAddress(hNtdll, "DbgBreakPoint");
+    if (pDbgBreakPoint) {
+        DWORD dwOldProtect;
+        if (VirtualProtect(pDbgBreakPoint, 1, PAGE_EXECUTE_READWRITE, &dwOldProtect))
+        {
+            unsigned char patch[] = { 0xC3 }; // ret
+            WriteProcessMemory(GetCurrentProcess(), pDbgBreakPoint, patch, sizeof(patch), NULL);
+            VirtualProtect(pDbgBreakPoint, 1, dwOldProtect, &dwOldProtect);
+        }
     }
 
-    // build the 5-byte relative JMP (E9 xx xx xx xx) + 1-byte NOP padding
-    unsigned char patch[6] = { 0 };
-
-    // calculate rel32: destination - (source + 5), source is the address we’re patching; +5 because E9+4-byte offset
-    uintptr_t src = (uintptr_t)target;
-    uintptr_t dst = (uintptr_t)&AntiAttach;
-    int rel = (int)(dst - (src + 5));
-
-    patch[0] = 0xE9;                       // JMP rel32 opcode
-    memcpy(patch + 1, &rel, sizeof(rel));  // rel32 little-endian
-    patch[5] = 0x90;                       // one NOP to make it 6 bytes total
-
-    if (!VirtualProtect(target, sizeof(patch), PAGE_EXECUTE_READWRITE, &oldProtect)) {
-        return false;
-    }
-
-    // overwrite the first 6 bytes with our JMP
-    SIZE_T bytesWritten;
-    if (!WriteProcessMemory(hProcess, target, patch, sizeof(patch), &bytesWritten)
-        || bytesWritten != sizeof(patch)) {
-        return false;
-    }
-
-    return true;
+    return TRUE;
 }
