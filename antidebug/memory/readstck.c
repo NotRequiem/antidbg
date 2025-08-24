@@ -1,7 +1,8 @@
 #include "readstck.h"
 #include "..\core\syscall.h"
 
-bool ReadMemoryStack() {
+bool ReadMemoryStack() 
+{
     PVOID stack_address = NULL;
     SIZE_T number_of_bytes_read;
 

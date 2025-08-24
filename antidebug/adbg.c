@@ -44,8 +44,6 @@ DWORD __stdcall __adbg(LPVOID lpParam) {
     const HANDLE hProcess = (HANDLE)(lpParam);
     const HANDLE hThread = GetCurrentThread();
 
-    srand((unsigned int)time(NULL));
-
     while (1) {
         for (int i = 0; i < NUM_DEBUG_CHECKS; ++i) {
             if (debuggerChecks[i].functionPtrWithProcess != NULL) {
@@ -84,10 +82,24 @@ DWORD __stdcall __adbg(LPVOID lpParam) {
                 }
             }
 
-            // random delay to avoid attackers from predicting when checks will run
             const DWORD minDelayMs = 500;
             const DWORD maxDelayMs = 2000;
-            const DWORD randomDelayMs = minDelayMs + (rand() % (maxDelayMs - minDelayMs + 1));
+            DWORD randomValue = 0;
+
+            // maybe to syscall it we would need to get a handle to the cng device and get the IOCTL code (of course will change between versions) that this sends to the driver
+            const NTSTATUS status = BCryptGenRandom(
+                NULL,
+                (PUCHAR)&randomValue,
+                sizeof(randomValue),
+                BCRYPT_USE_SYSTEM_PREFERRED_RNG);
+
+            DWORD randomDelayMs;
+            if (BCRYPT_SUCCESS(status)) { // something like RtlGenRandom
+                randomDelayMs = minDelayMs + (randomValue % (maxDelayMs - minDelayMs + 1));
+            }
+            else {
+                randomDelayMs = minDelayMs;
+            }
 
             LARGE_INTEGER delay = { 0 };
             const __int64 randomDelayMs64 = (__int64)randomDelayMs;
@@ -104,7 +116,6 @@ DWORD __stdcall __adbg(LPVOID lpParam) {
     return 0;
 }
 
-
 void StartDebugProtection() {
     const PVOID hVeh = AddVectoredExceptionHandler(1, VectoredDebuggerCheck);
     if (!hVeh) {
@@ -116,7 +127,6 @@ void StartDebugProtection() {
     DbgCreateThread(GetCurrentProcess(), 0, __adbg, (LPVOID)hProcess, 0, ((void*)0), ((void*)0));
     StartMemoryTracker(hProcess);
 }
-
 
 bool isProgramBeingDebugged() {
     const HANDLE hProcess = GetCurrentProcess();

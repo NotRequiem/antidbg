@@ -1,6 +1,7 @@
 #include "handler.h"
 
-LONG CALLBACK VectoredDebuggerCheck(PEXCEPTION_POINTERS pExceptionInfo) {
+LONG CALLBACK VectoredDebuggerCheck(PEXCEPTION_POINTERS pExceptionInfo) 
+{
     if (!pExceptionInfo || !pExceptionInfo->ContextRecord || !pExceptionInfo->ExceptionRecord) {
         return EXCEPTION_CONTINUE_SEARCH;
     }
@@ -13,10 +14,10 @@ LONG CALLBACK VectoredDebuggerCheck(PEXCEPTION_POINTERS pExceptionInfo) {
         }
     }
 
-    HMODULE hNtdll = GetModuleHandle(TEXT("ntdll.dll"));
+    const HMODULE hNtdll = GetModuleHandle(TEXT("ntdll.dll"));
     if (!hNtdll) return EXCEPTION_CONTINUE_SEARCH;
 
-    FARPROC pKi = GetProcAddress(hNtdll, "KiUserExceptionDispatcher");
+    const FARPROC pKi = GetProcAddress(hNtdll, "KiUserExceptionDispatcher");
     if (!pKi) return EXCEPTION_CONTINUE_SEARCH;
 
     __try {

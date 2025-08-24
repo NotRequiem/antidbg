@@ -1,6 +1,6 @@
 #include "outdbgstring.h"
 
-inline BOOL
+inline static BOOL
 IsWindowsVersionOrLesser(WORD wMajorVersion, WORD wMinorVersion, WORD wServicePackMajor)
 {
 	OSVERSIONINFOEXW osvi = { sizeof(osvi), 0, 0, 0, 0, { 0 }, 0, 0 };
@@ -16,7 +16,7 @@ IsWindowsVersionOrLesser(WORD wMajorVersion, WORD wMinorVersion, WORD wServicePa
 	return VerifyVersionInfoW(&osvi, VER_MAJORVERSION | VER_MINORVERSION, dwlConditionMask) != FALSE;
 }
 
-inline BOOL
+inline static BOOL
 IsWindowsXPOr2k()
 {
 	return IsWindowsVersionOrLesser(HIBYTE(_WIN32_WINNT_WINXP), LOBYTE(_WIN32_WINNT_WINXP), 0);
@@ -41,9 +41,10 @@ bool CheckOutputDebugString()
 			IsDbgPresent = TRUE;
 	}
 
-	WCHAR* outputString = L"xd";
+	const WCHAR outputString[] = L"xd";
 	ULONG_PTR args[4] = { 0 };
-	args[0] = (ULONG_PTR)wcslen(outputString) + 1;
+
+	args[0] = (ULONG_PTR)(sizeof(outputString) / sizeof(outputString[0]));
 	args[1] = (ULONG_PTR)outputString;
 	__try
 	{
@@ -55,4 +56,3 @@ bool CheckOutputDebugString()
 
 	return IsDbgPresent;
 }
-

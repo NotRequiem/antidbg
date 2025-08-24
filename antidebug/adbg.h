@@ -1,8 +1,5 @@
 #pragma once
 
-#include <stdlib.h>
-#include <time.h>
-
 #include "core\thrmng.h"
 #include "core\atcptr.h"
 #include "core\hasher.h"

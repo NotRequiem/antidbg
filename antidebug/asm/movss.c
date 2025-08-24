@@ -2,9 +2,7 @@
 
 bool mov_ss()
 {
-
-#ifdef _WIN64
-#else
+/*
     _asm
     {
         push ss;
@@ -18,8 +16,7 @@ bool mov_ss()
     end:
         nop;
     }
-#endif
-
+*/
     unsigned __int64 flags = __readeflags();
     return (flags & 0x100) != 0;
 }

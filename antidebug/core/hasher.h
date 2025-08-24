@@ -7,6 +7,8 @@
 #include <string.h>
 #include <intrin.h>
 #include <stdbool.h>
+#include <bcrypt.h>
+#pragma comment(lib, "bcrypt.lib")
 
 #pragma comment(lib, "psapi.lib")
 

@@ -1,14 +1,16 @@
 #include "clshandle.h"
+#include "../core/syscall.h"
 
-static inline PFN_NtClose GetNtClosePointer() {
-    HMODULE hNtdll = LoadLibrary(_T("ntdll.dll"));
+static inline PFN_NtClose GetNtClosePointer() 
+{
+    HMODULE hNtdll = GetModuleHandle(_T("ntdll.dll"));
     if (hNtdll == NULL) {
         return NULL;
     }
 
     PFN_NtClose pfnNtClose = (PFN_NtClose)GetProcAddress(hNtdll, "NtClose");
+
     if (pfnNtClose == NULL) {
-        FreeLibrary(hNtdll);
         return NULL;
     }
 
@@ -24,6 +26,13 @@ static inline BOOL NtClose_InvalideHandle()
 
     __try {
         NtClose_((HANDLE)0x99999999ULL);
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER) {
+        return TRUE;
+    }
+
+    __try {
+        DbgNtClose((HANDLE)0x99999999ULL); // now try syscall
     }
     __except (EXCEPTION_EXECUTE_HANDLER) {
         return TRUE;

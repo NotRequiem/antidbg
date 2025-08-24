@@ -21,7 +21,7 @@ static PVOID SC_Address(PVOID NtApiAddress)
     return NULL;
 }
 
-BOOL Dbg_PopulateSyscallList()
+bool Dbg_PopulateSyscallList()
 {
     if (Dbg_SyscallList.Count) return TRUE;
 
@@ -126,7 +126,7 @@ EXTERN_C PVOID Dbg_GetSyscallAddress(DWORD FunctionHash)
 static const BYTE SyscallStub[] = { 0x4C, 0x8B, 0xD1, 0xB8, 0x00, 0x00, 0x00, 0x00, 0x0F, 0x05, 0xC3 };
 static PVOID g_pStubs = NULL;
 
-BOOL Dbg_PopulateSyscallList()
+bool Dbg_PopulateSyscallList()
 {
     if (Dbg_SyscallList.Count) return TRUE;
 
@@ -203,8 +203,8 @@ BOOL Dbg_PopulateSyscallList()
     for (i = 0; i < Dbg_SyscallList.Count; i++)
     {
         PBYTE pStub = (PBYTE)g_pStubs + (i * sizeof(SyscallStub));
-        memcpy(pStub, SyscallStub, sizeof(SyscallStub));
-        *(DWORD*)(pStub + 4) = i; 
+        memcpy_s(pStub, sizeof(SyscallStub), SyscallStub, sizeof(SyscallStub));
+        *(DWORD*)(pStub + 4) = i;
         Entries[i].SyscallAddress = pStub;
     }
 

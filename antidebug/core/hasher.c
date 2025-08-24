@@ -24,32 +24,30 @@ static inline BOOL __fastcall GetTextSectionInfo(HMODULE hMod, DWORD* rva, DWORD
     return FALSE;
 }
 
-static inline uint32_t __fastcall Crc32_Section(const HMODULE hMod, const DWORD sectionRVA, const DWORD sectionSize)
+static inline uint32_t __fastcall Crc32_Section(const HMODULE hMod, const DWORD sectionRVA, const DWORD sectionSize, const HANDLE hProcess)
 {
     MODULEINFO mi;
-    if (!GetModuleInformation(GetCurrentProcess(), hMod, &mi, sizeof(mi))) return 0;
+    if (!GetModuleInformation(hProcess, hMod, &mi, sizeof(mi))) return 0;
 
     BYTE* base = (BYTE*)hMod;
     BYTE* sectionBase = base + sectionRVA;
     BYTE* sectionEnd = sectionBase + sectionSize;
 
     if ((BYTE*)sectionBase < (BYTE*)mi.lpBaseOfDll || sectionEnd >((BYTE*)mi.lpBaseOfDll + mi.SizeOfImage))
-        return 0; 
+        return 0;
 
     uint64_t crc = 0;
     BYTE* p = sectionBase;
     SIZE_T bytesLeft = sectionSize;
 
     while (bytesLeft >= 8) {
-        uint64_t chunk;
-        memcpy(&chunk, p, sizeof(chunk)); 
+        uint64_t chunk = *(uint64_t*)p;
         // always_inline function '_mm_crc32_u64' requires target feature 'crc32', but would be inlined into function 'Crc32_Section' that is compiled without support for 'crc32'
         crc = _mm_crc32_u64(crc, chunk);
         p += 8; bytesLeft -= 8;
     }
     while (bytesLeft > 0) {
-        uint8_t b;
-        memcpy(&b, p, 1);
+        uint8_t b = *p;
         crc = _mm_crc32_u8((uint32_t)crc, b);
         p++; bytesLeft--;
     }
@@ -80,10 +78,10 @@ void StartMemoryTracker(const HANDLE hProcess)
             modCrcs[i].textRVA = rva;
             modCrcs[i].textSize = size;
 
-            modCrcs[i].originalCrc = Crc32_Section(mods[i], rva, size);
+            modCrcs[i].originalCrc = Crc32_Section(mods[i], rva, size, hProcess);
 
 #ifdef _DEBUG
-            printf("Module[%u]=%p  CRC=0x%08X\n", i, mods[i], modCrcs[i].originalCrc);
+            printf("[*] Module[%u]=%p  CRC=0x%08X\n", i, mods[i], modCrcs[i].originalCrc);
 #endif
         }
     }
@@ -106,7 +104,7 @@ void StartMemoryTracker(const HANDLE hProcess)
             if (modCrcs[i].hMod == NULL)
                 continue;
 
-            uint32_t crc = Crc32_Section(modCrcs[i].hMod, modCrcs[i].textRVA, modCrcs[i].textSize);
+            const uint32_t crc = Crc32_Section(modCrcs[i].hMod, modCrcs[i].textRVA, modCrcs[i].textSize, hProcess);
 
             if (crc != 0 && crc != modCrcs[i].originalCrc) {
 #ifdef _DEBUG

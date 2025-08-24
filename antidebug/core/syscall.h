@@ -38,7 +38,7 @@ typedef struct _Dbg_SYSCALL_LIST
 #endif
 
 DWORD Dbg_HashSyscall(PCSTR FunctionName);
-BOOL Dbg_PopulateSyscallList();
+bool Dbg_PopulateSyscallList();
 EXTERN_C PVOID Dbg_GetSyscallAddress(DWORD FunctionHash);
 
 #ifdef _MSC_VER

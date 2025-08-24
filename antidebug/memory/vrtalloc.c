@@ -13,11 +13,11 @@
  *
  */
 
-static inline BOOL VirtualAlloc_WriteWatch_BufferOnly()
+static inline bool VirtualAlloc_WriteWatch_BufferOnly()
 {
     ULONG_PTR hitCount;
     DWORD granularity;
-    BOOL result = FALSE;
+    bool result = FALSE;
 
     PVOID* addresses = (PVOID*)(VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
     if (addresses == NULL) {
@@ -53,11 +53,11 @@ static inline BOOL VirtualAlloc_WriteWatch_BufferOnly()
     return result;
 }
 
-static inline BOOL VirtualAlloc_WriteWatch_APICalls()
+static inline bool VirtualAlloc_WriteWatch_APICalls()
 {
     ULONG_PTR hitCount;
     DWORD granularity;
-    BOOL result = FALSE, error = FALSE;
+    bool result = FALSE, error = FALSE;
 
     PVOID* addresses = (PVOID*)(VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
     if (addresses == NULL) {
@@ -153,11 +153,11 @@ static inline BOOL VirtualAlloc_WriteWatch_APICalls()
     return result;
 }
 
-static inline BOOL VirtualAlloc_WriteWatch_IsDebuggerPresent()
+static inline bool VirtualAlloc_WriteWatch_IsDebuggerPresent()
 {
     ULONG_PTR hitCount;
     DWORD granularity;
-    BOOL result = FALSE;
+    bool result = FALSE;
 
     PVOID* addresses = (PVOID*)(VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
     if (addresses == NULL) {
@@ -192,11 +192,11 @@ static inline BOOL VirtualAlloc_WriteWatch_IsDebuggerPresent()
     return result;
 }
 
-static inline BOOL VirtualAlloc_WriteWatch_CodeWrite()
+static inline bool VirtualAlloc_WriteWatch_CodeWrite()
 {
     ULONG_PTR hitCount;
     DWORD granularity;
-    BOOL result = FALSE;
+    bool result = FALSE;
 
     PVOID* addresses = (PVOID*)(VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
     if (addresses == NULL) {
@@ -268,7 +268,8 @@ static inline BOOL VirtualAlloc_WriteWatch_CodeWrite()
     return result;
 }
 
-bool WriteWatch() {
+bool WriteWatch() 
+{
     if (VirtualAlloc_WriteWatch_BufferOnly())
         return TRUE;
     if (VirtualAlloc_WriteWatch_APICalls())

@@ -3,13 +3,13 @@
 
 bool HardwareBreakPoint2(const HANDLE hThread, const HANDLE hProcess)
 {
-    BOOL bResult = FALSE;
+    bool bResult = FALSE;
     PVOID BaseAddress = NULL;
     SIZE_T RegionSize = sizeof(CONTEXT);
     ULONG AllocationType = MEM_COMMIT;
     ULONG Protect = PAGE_READWRITE;
 
-    NTSTATUS status = DbgNtAllocateVirtualMemory(
+    const NTSTATUS status = DbgNtAllocateVirtualMemory(
         hProcess,
         &BaseAddress,
         0,

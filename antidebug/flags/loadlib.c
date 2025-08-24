@@ -44,28 +44,40 @@ static bool CheckEndUpdateResource() {
 static bool CheckReadFileBreakpoint() {
     bool bDetected = TRUE;
     char szSelfPath[MAX_PATH];
-    if (!GetModuleFileNameA(NULL, szSelfPath, MAX_PATH)) return FALSE;
+    if (!GetModuleFileNameA(NULL, szSelfPath, MAX_PATH)) {
+        return FALSE;
+    }
+
     HANDLE hSelf = CreateFileA(szSelfPath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
-    if (hSelf == INVALID_HANDLE_VALUE) return FALSE;
+    if (hSelf == INVALID_HANDLE_VALUE) {
+        return FALSE;
+    }
 
-    unsigned char breakpoint_check[] = { 0xCC }; // INT 3
+    unsigned char breakpoint_check[] = { 0xCC }; // int 3
+
     LPVOID pCode = VirtualAlloc(NULL, sizeof(breakpoint_check), MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-    if (!pCode) { CloseHandle(hSelf); return FALSE; }
-    memcpy(pCode, breakpoint_check, sizeof(breakpoint_check));
-
-    DWORD dwRead;
-    if (!ReadFile(hSelf, pCode, 1, &dwRead, NULL)) {
+    if (!pCode) {
         CloseHandle(hSelf);
         return FALSE;
     }
+
+    memcpy(pCode, breakpoint_check, sizeof(breakpoint_check));
+
+    DWORD dwRead = 0;
+    if (!ReadFile(hSelf, pCode, 1, &dwRead, NULL) || dwRead != 1) {
+        VirtualFree(pCode, 0, MEM_RELEASE);
+        CloseHandle(hSelf);
+        return FALSE; 
+    }
+
     CloseHandle(hSelf);
 
     __try {
         ((void(*)())pCode)();
-        bDetected = FALSE; 
+        bDetected = FALSE;
     }
     __except (GetExceptionCode() == EXCEPTION_BREAKPOINT ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH) {
-        bDetected = TRUE; 
+        bDetected = TRUE;
     }
 
     VirtualFree(pCode, 0, MEM_RELEASE);

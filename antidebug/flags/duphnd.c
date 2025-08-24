@@ -18,14 +18,15 @@ typedef struct _MYOBJECT_HANDLE_FLAG_INFORMATION
     BOOLEAN ProtectFromClose;
 } MYOBJECT_HANDLE_FLAG_INFORMATION, * PMYOBJECT_HANDLE_FLAG_INFORMATION;
 
-typedef NTSTATUS(WINAPI* fnNtSetInformationObject)(
+typedef NTSTATUS(__stdcall* fnNtSetInformationObject)(
     _In_ HANDLE Handle,
     _In_ MYOBJECT_INFORMATION_CLASS ObjectInformationClass,
     _In_ PVOID ObjectInformation,
     _In_ ULONG ObjectInformationLength
     );
 
-bool DuplicatedHandles(const HANDLE hProcess) {
+bool DuplicatedHandles(const HANDLE hProcess) 
+{
     HMODULE hNtdll = GetModuleHandle(_T("ntdll.dll"));
     if (!hNtdll) {
         return false;

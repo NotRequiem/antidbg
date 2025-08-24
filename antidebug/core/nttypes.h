@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <stdbool.h>
 
 typedef struct _Dbg_PEB_LDR_DATA {
 	BYTE Reserved1[8];

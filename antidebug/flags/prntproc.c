@@ -14,9 +14,7 @@ static DWORD GetParentProcessIdFromHandle(HANDLE hProcess)
 {
     DBG_PROCESS_BASIC_INFORMATION pbi = { 0 };
     ULONG returnLength;
-    NTSTATUS status;
-
-    status = DbgNtQueryInformationProcess(
+    const NTSTATUS status = DbgNtQueryInformationProcess(
         hProcess,
         ProcessBasicInformation,
         &pbi,
@@ -50,9 +48,9 @@ bool ParentProcesses(const HANDLE hProcess)
 
     HANDLE hSnapshot = INVALID_HANDLE_VALUE;
     PROCESSENTRY32W pe32 = { 0 };
-    BOOL isSuspicious = TRUE; 
+    bool isSuspicious = TRUE; 
 
-    DWORD ppid = GetParentProcessIdFromHandle(hProcess);
+    const DWORD ppid = GetParentProcessIdFromHandle(hProcess);
     if (ppid == 0) {
         return FALSE;
     }

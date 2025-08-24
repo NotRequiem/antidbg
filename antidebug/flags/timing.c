@@ -1,6 +1,6 @@
 #include "timing.h"
 
-static BOOL CheckDebuggerTiming(void)
+static bool CheckDebuggerTiming(void)
 {
     const ULONGLONG time1 = GetTickCount64();
 

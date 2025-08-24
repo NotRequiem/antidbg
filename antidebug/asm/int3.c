@@ -1,6 +1,6 @@
 #include "int3.h"
 
-static BOOL SwallowedException = TRUE;
+static bool SwallowedException = TRUE;
 
 static LONG CALLBACK VectoredHandler(
 	_In_ PEXCEPTION_POINTERS ExceptionInfo
@@ -16,9 +16,9 @@ static LONG CALLBACK VectoredHandler(
 	return EXCEPTION_CONTINUE_SEARCH;
 }
 
-static BOOL __try_interrupt()
+static bool __try_interrupt()
 {
-	PVOID Handle = AddVectoredExceptionHandler(1, VectoredHandler);
+	const PVOID Handle = AddVectoredExceptionHandler(1, VectoredHandler);
 	SwallowedException = TRUE;
 	__debugbreak();
 	RemoveVectoredExceptionHandler(Handle);

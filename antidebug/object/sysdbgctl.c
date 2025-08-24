@@ -1,7 +1,8 @@
 #include "sysdbgctl.h"
 #include "..\core\syscall.h"
 
-bool NtSystemDebugControl() {
+bool NtSystemDebugControl() 
+{
     NTSTATUS status = DbgNtSystemDebugControl(
         20,      // SystemDebugControlCode::DebugPort
         NULL, 0, // in

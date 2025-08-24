@@ -1,8 +1,9 @@
 #include "job.h"
 #include "..\core\syscall.h"
 
-bool ProcessJob() {
-    BOOL foundProblem = FALSE;
+bool ProcessJob() 
+{
+    bool foundProblem = FALSE;
     DWORD jobProcessStructSize = sizeof(JOBOBJECT_BASIC_PROCESS_ID_LIST) + sizeof(ULONG_PTR) * 1024;
     JOBOBJECT_BASIC_PROCESS_ID_LIST* jobProcessIdList = (JOBOBJECT_BASIC_PROCESS_ID_LIST*)(malloc(jobProcessStructSize));
 

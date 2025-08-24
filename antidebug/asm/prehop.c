@@ -2,7 +2,7 @@
 
 bool PrefixHop()
 {
-    BOOL found = TRUE;
+    bool found = TRUE;
 
     __try
     {

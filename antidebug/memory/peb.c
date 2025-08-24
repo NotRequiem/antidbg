@@ -1,7 +1,8 @@
 #include "peb.h"
 #include "../core/nttypes.h"
 
-bool CheckPEB() {
+bool CheckPEB() 
+{
     PEB* peb = (PEB*)__readgsqword(0x60);
     if (!peb) {
         return false;

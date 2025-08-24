@@ -27,20 +27,6 @@
 extern "C" {
 #endif
 
-    typedef struct _SYSTEM_THREAD_INFORMATION {
-        LARGE_INTEGER KernelTime;
-        LARGE_INTEGER UserTime;
-        LARGE_INTEGER CreateTime;
-        ULONG WaitTime;
-        PVOID StartAddress;
-        CLIENT_ID ClientId;
-        KPRIORITY Priority;
-        LONG BasePriority;
-        ULONG ContextSwitches;
-        ULONG ThreadState;
-        ULONG WaitReason;
-    } SYSTEM_THREAD_INFORMATION, * PSYSTEM_THREAD_INFORMATION;
-
     void __stdcall clb(PVOID DllHandle, DWORD reason, PVOID Reserved);
 
     bool StartAttachProtection(void);
