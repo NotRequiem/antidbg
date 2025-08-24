@@ -61,13 +61,17 @@ static bool CheckReadFileBreakpoint() {
         return FALSE;
     }
 
-    memcpy(pCode, breakpoint_check, sizeof(breakpoint_check));
+    if (memcpy_s(pCode, sizeof(breakpoint_check), breakpoint_check, sizeof(breakpoint_check)) != 0) {
+        VirtualFree(pCode, 0, MEM_RELEASE);
+        CloseHandle(hSelf);
+        return FALSE;
+    }
 
     DWORD dwRead = 0;
     if (!ReadFile(hSelf, pCode, 1, &dwRead, NULL) || dwRead != 1) {
         VirtualFree(pCode, 0, MEM_RELEASE);
         CloseHandle(hSelf);
-        return FALSE; 
+        return FALSE;
     }
 
     CloseHandle(hSelf);
