@@ -54,7 +54,7 @@ inline static void PerformLbrBtfCheck() {
         return;
     }
 
-    unsigned char triggerSequence[] = {
+    const unsigned char triggerSequence[] = {
         0x48, 0xC7, 0xC0, 0x05, 0x00, 0x00, 0x00, // mov rax, 5
         0x48, 0x83, 0xF8, 0x05,                   // cmp rax, 5
         0x74, 0x03,                               // je branch_target

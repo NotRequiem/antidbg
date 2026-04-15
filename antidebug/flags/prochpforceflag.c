@@ -10,13 +10,14 @@ static inline PUINT32 GetForceFlags_x64()
 	return pHeapForceFlags;
 }
 
-bool ProcessHeapForceFlag() {
+bool ProcessHeapForceFlag() 
+{
 	PUINT32 pHeapForceFlags = NULL;
 
 	pHeapForceFlags = GetForceFlags_x64();
 
 	if (*pHeapForceFlags > 0)
-		return TRUE;
+		return true;
 
 	return false;
 }

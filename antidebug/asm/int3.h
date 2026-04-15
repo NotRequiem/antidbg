@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-	bool int3();
+	bool __adbg_int3();
 
 #ifdef __cplusplus
 }

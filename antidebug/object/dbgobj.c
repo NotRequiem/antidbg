@@ -19,12 +19,12 @@ bool CheckNtQueryObject()
 	if (Status >= 0)
 	{
 		if (ObjectInformation->TotalNumberOfObjects == 0)
-			return TRUE;
+			return true;
 		else
-			return FALSE;
+			return false;
 	}
 	else
 	{
-		return FALSE;
+		return false;
 	}
 }

@@ -17,8 +17,8 @@ bool RaiseDbgControl()
         }
         __except (1)
         {
-            return FALSE;
+            return false;
         }
-        return TRUE;
+        return true;
     }
 }

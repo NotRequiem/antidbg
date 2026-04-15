@@ -1,6 +1,7 @@
 #include "loadlib.h"
 
-static bool CheckEndUpdateResource() {
+static bool CheckEndUpdateResource() 
+{
     bool bDetected = FALSE;
     CHAR szTempFile[MAX_PATH];
     char* tempPath = NULL;
@@ -17,14 +18,14 @@ static bool CheckEndUpdateResource() {
 
     free(tempPath);
 
-    HANDLE hFile = CreateFileA(szTempFile, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    const HANDLE hFile = CreateFileA(szTempFile, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
     if (hFile == INVALID_HANDLE_VALUE) {
         return FALSE;
     }
     CloseHandle(hFile);
 
-    HMODULE hLib = LoadLibraryA(szTempFile);
-    HANDLE hUpdate = BeginUpdateResourceA(szTempFile, FALSE);
+    const HMODULE hLib = LoadLibraryA(szTempFile);
+    const HANDLE hUpdate = BeginUpdateResourceA(szTempFile, FALSE);
 
     if (hUpdate != NULL) {
         if (!EndUpdateResourceA(hUpdate, TRUE)) {
@@ -45,43 +46,43 @@ static bool CheckReadFileBreakpoint() {
     bool bDetected = TRUE;
     char szSelfPath[MAX_PATH];
     if (!GetModuleFileNameA(NULL, szSelfPath, MAX_PATH)) {
-        return FALSE;
+        return false;
     }
 
-    HANDLE hSelf = CreateFileA(szSelfPath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+    const HANDLE hSelf = CreateFileA(szSelfPath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
     if (hSelf == INVALID_HANDLE_VALUE) {
-        return FALSE;
+        return false;
     }
 
     unsigned char breakpoint_check[] = { 0xCC }; // int 3
 
-    LPVOID pCode = VirtualAlloc(NULL, sizeof(breakpoint_check), MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+    const LPVOID pCode = VirtualAlloc(NULL, sizeof(breakpoint_check), MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
     if (!pCode) {
         CloseHandle(hSelf);
-        return FALSE;
+        return false;
     }
 
     if (memcpy_s(pCode, sizeof(breakpoint_check), breakpoint_check, sizeof(breakpoint_check)) != 0) {
         VirtualFree(pCode, 0, MEM_RELEASE);
         CloseHandle(hSelf);
-        return FALSE;
+        return false;
     }
 
     DWORD dwRead = 0;
     if (!ReadFile(hSelf, pCode, 1, &dwRead, NULL) || dwRead != 1) {
         VirtualFree(pCode, 0, MEM_RELEASE);
         CloseHandle(hSelf);
-        return FALSE;
+        return false;
     }
 
     CloseHandle(hSelf);
 
     __try {
         ((void(*)())pCode)();
-        bDetected = FALSE;
+        bDetected = false;
     }
     __except (GetExceptionCode() == EXCEPTION_BREAKPOINT ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH) {
-        bDetected = TRUE;
+        bDetected = true;
     }
 
     VirtualFree(pCode, 0, MEM_RELEASE);
@@ -91,28 +92,28 @@ static bool CheckReadFileBreakpoint() {
 bool CheckLoadLibrary() 
 {
     if (CheckReadFileBreakpoint() || CheckEndUpdateResource())
-        return TRUE;
+        return true;
 
-    bool bDebuggerPresent = FALSE;
+    bool bDebuggerPresent = false;
     CHAR szTempPath[MAX_PATH];
     CHAR szTempFile[MAX_PATH];
 
-    if (!GetTempPathA(MAX_PATH, szTempPath)) return FALSE;
-    if (!GetTempFileNameA(szTempPath, "dbg", 0, szTempFile)) return FALSE;
+    if (!GetTempPathA(MAX_PATH, szTempPath)) return false;
+    if (!GetTempFileNameA(szTempPath, "dbg", 0, szTempFile)) return false;
 
-    HANDLE hFile = CreateFileA(szTempFile, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-    if (hFile == INVALID_HANDLE_VALUE) return FALSE;
+    const HANDLE hFile = CreateFileA(szTempFile, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (hFile == INVALID_HANDLE_VALUE) return false;
     CloseHandle(hFile);
 
     // we expect this to fail, but that's okay
-    HMODULE hLib = LoadLibraryA(szTempFile);
+    const HMODULE hLib = LoadLibraryA(szTempFile);
 
     // now, try to open the file with exclusive access
     // a debugger holding a handle will cause this to fail with ERROR_SHARING_VIOLATION
-    HANDLE hFileExclusive = CreateFileA(szTempFile, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    const HANDLE hFileExclusive = CreateFileA(szTempFile, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
     if (hFileExclusive == INVALID_HANDLE_VALUE) {
         if (GetLastError() == ERROR_SHARING_VIOLATION) {
-            bDebuggerPresent = TRUE;
+            bDebuggerPresent = true;
         }
     }
     else {

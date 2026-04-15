@@ -7,6 +7,7 @@
 #include "core\hasher.h"
 #include "core\syscall.h"
 #include "core\handler.h"
+#include "core\debug.h"
 
 #include "api\dbgpresent.h"
 #include "api\rdbgpresent.h"

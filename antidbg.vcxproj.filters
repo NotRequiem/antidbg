@@ -192,6 +192,9 @@
     <ClCompile Include="antidebug\asm\lbr_btf.c">
       <Filter>Source Files\api</Filter>
     </ClCompile>
+    <ClCompile Include="antidebug\core\debug.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="antidebug\api\dbgpresent.h">
@@ -334,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="antidebug\asm\lbr_btf.h">
       <Filter>Header Files\asm</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\core\debug.h">
+      <Filter>Source Files\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -18,9 +18,9 @@ bool ProcessHeapFlag()
     pHeapFlags = GetHeapFlags_x64();
 
     if (pHeapFlags != NULL && *pHeapFlags > 2) {
-        return TRUE;
+        return true;
     }
     else {
-        return FALSE;
+        return false;
     }
 }

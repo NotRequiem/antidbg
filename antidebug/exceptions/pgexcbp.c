@@ -27,7 +27,7 @@ static inline void __fastcall PageExceptionInitialEnum(const HANDLE hProcess)
         for (size_t ofs = 0; ofs < moduleInfo.SizeOfImage; ofs += pageSize)
         {
             SIZE_T returnLength = 0;
-            NTSTATUS  status = DbgNtQueryVirtualMemory(
+            const NTSTATUS status = DbgNtQueryVirtualMemory(
                 hProcess,
                 module + ofs,
                 MemoryBasicInformation,
@@ -69,8 +69,8 @@ static BOOL TestDeltaExecLoss(
     PVOID  addr,
     MEMORY_BASIC_INFORMATION* pInfo)
 {
-    SIZE_T   retLen = 0;
-    NTSTATUS st = DbgNtQueryVirtualMemory(
+    SIZE_T retLen = 0;
+    const NTSTATUS status = DbgNtQueryVirtualMemory(
         hProcess,
         addr,
         MemoryBasicInformation,
@@ -78,7 +78,7 @@ static BOOL TestDeltaExecLoss(
         sizeof(*pInfo),
         &retLen);
 
-    if (st < 0 || retLen < sizeof(*pInfo))
+    if (status < 0 || retLen < sizeof(*pInfo))
         return FALSE;
 
     const DWORD execMask =
@@ -93,14 +93,14 @@ static BOOL TestDeltaExecLoss(
 
 bool PageExceptionBreakpoint(const HANDLE hProcess)
 {
-    bool found = FALSE;
+    bool found = false;
     MEMORY_BASIC_INFORMATION memInfo = { 0 };
 
     if (executablePages == NULL)
     {
         PageExceptionInitialEnum(hProcess);
         if (executablePages == NULL)
-            return FALSE;
+            return false;
     }
 
     // guard / NOACCESS on any module page
@@ -117,11 +117,12 @@ bool PageExceptionBreakpoint(const HANDLE hProcess)
             sizeof(modInfo)))
     {
         freeExecutablePages();
-        return FALSE;
+        return false;
     }
 
-    SYSTEM_INFO si; GetSystemInfo(&si);
-    size_t       pageSize = si.dwPageSize;
+    SYSTEM_INFO si; 
+    GetSystemInfo(&si);
+    size_t pageSize = si.dwPageSize;
     BYTE* base = (BYTE*)modInfo.lpBaseOfDll;
 
     const DWORD execMask =
@@ -132,8 +133,8 @@ bool PageExceptionBreakpoint(const HANDLE hProcess)
 
     for (size_t ofs = 0; ofs < modInfo.SizeOfImage; ofs += pageSize)
     {
-        SIZE_T   retLen = 0;
-        NTSTATUS st = DbgNtQueryVirtualMemory(
+        SIZE_T retLen = 0;
+        const NTSTATUS status = DbgNtQueryVirtualMemory(
             hProcess,
             base + ofs,
             MemoryBasicInformation,
@@ -141,7 +142,7 @@ bool PageExceptionBreakpoint(const HANDLE hProcess)
             sizeof(memInfo),
             &retLen);
 
-        if (st >= 0 && retLen >= sizeof(memInfo))
+        if (status >= 0 && retLen >= sizeof(memInfo))
         {
             // only if this page is executable do we check guard
             if (memInfo.Protect & execMask)
@@ -149,14 +150,14 @@ bool PageExceptionBreakpoint(const HANDLE hProcess)
                 if ((memInfo.Protect & PAGE_GUARD) ||
                     (memInfo.AllocationProtect & PAGE_GUARD))
                 {
-                    found = TRUE;
+                    found = true;
                     break;
                 }
             }
             // NOACCESS check applies to any page
             if (memInfo.Protect & PAGE_NOACCESS)
             {
-                found = TRUE;
+                found = true;
                 break;
             }
         }
@@ -172,7 +173,7 @@ bool PageExceptionBreakpoint(const HANDLE hProcess)
                 executablePages[i],
                 &memInfo))
             {
-                found = TRUE;
+                found = true;
                 break;
             }
         }

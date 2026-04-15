@@ -13,7 +13,7 @@ static bool CheckDebuggerTiming(void)
     const ULONGLONG time2 = GetTickCount64();
 
     // assume we're single-stepped
-    return (time2 - time1 > 0x1A) ? TRUE : FALSE;
+    return (time2 - time1 > 0x1A) ? true : false;
 }
 
 bool TimingAttacks()

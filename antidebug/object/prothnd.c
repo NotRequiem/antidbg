@@ -15,14 +15,14 @@ bool ProtectedHandle()
             ULONG flags = 0;
             DbgNtSetInformationObject(hMutex, ObjectHandleFlagInformation, &flags, sizeof(ULONG));
             DbgNtClose(hMutex);
-            return TRUE;
+            return true;
         }
 
-#pragma warning (disable: 6001)
+    #pragma warning (disable: 6001)
         ULONG flags = 0;
         DbgNtSetInformationObject(hMutex, ObjectHandleFlagInformation, &flags, sizeof(ULONG));
         DbgNtClose(hMutex);
-#pragma warning (default: 6001)
+    #pragma warning (default: 6001)
     }
-    return FALSE;
+    return false;
 }

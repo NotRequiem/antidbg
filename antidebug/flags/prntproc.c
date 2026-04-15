@@ -48,16 +48,16 @@ bool ParentProcesses(const HANDLE hProcess)
 
     HANDLE hSnapshot = INVALID_HANDLE_VALUE;
     PROCESSENTRY32W pe32 = { 0 };
-    bool isSuspicious = TRUE; 
+    bool isSuspicious = true; 
 
     const DWORD ppid = GetParentProcessIdFromHandle(hProcess);
     if (ppid == 0) {
-        return FALSE;
+        return false;
     }
 
     hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     if (hSnapshot == INVALID_HANDLE_VALUE) {
-        return FALSE; 
+        return false;
     }
 
     pe32.dwSize = sizeof(PROCESSENTRY32W);
@@ -67,7 +67,7 @@ bool ParentProcesses(const HANDLE hProcess)
             if (pe32.th32ProcessID == ppid) {
                 for (int i = 0; i < (sizeof(whitelist) / sizeof(whitelist[0])); i++) {
                     if (_wcsicmp(pe32.szExeFile, whitelist[i]) == 0) {
-                        isSuspicious = FALSE;
+                        isSuspicious = false;
                         break;
                     }
                 }
@@ -76,7 +76,7 @@ bool ParentProcesses(const HANDLE hProcess)
         } while (Process32NextW(hSnapshot, &pe32));
     }
     else {
-        isSuspicious = FALSE;
+        isSuspicious = false;
     }
 
     DbgNtClose(hSnapshot);

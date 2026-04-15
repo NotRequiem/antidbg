@@ -13,12 +13,12 @@ bool DebugObjectHandle(const HANDLE hProcess)
     );
 
     if (status != STATUS_ACCESS_VIOLATION) {
-        return TRUE;
+        return true;
     }
 
     if (hDebugObject != NULL) {
-        return TRUE;
+        return true;
     }
 
-    return FALSE;
+    return false;
 }

@@ -33,7 +33,7 @@ static inline int filter(unsigned int code)
 	return EXCEPTION_EXECUTE_HANDLER;
 }
 
-bool int3()
+bool __adbg_int3()
 {
 	__try_interrupt();
 

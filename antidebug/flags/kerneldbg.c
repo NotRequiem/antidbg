@@ -1,7 +1,7 @@
 #include "kerneldbg.h"
 #include "..\core\syscall.h"
 
-static inline BOOL SharedUserData()
+static inline bool SharedUserData()
 {
     const ULONG_PTR UserSharedData = 0x7FFE0000;
 
@@ -10,14 +10,21 @@ static inline BOOL SharedUserData()
     const BOOLEAN KdDebuggerEnabled = (KdDebuggerEnabledByte & 0x1) == 0x1;
     const BOOLEAN KdDebuggerNotPresent = (KdDebuggerEnabledByte & 0x2) == 0;
 
-    if (KdDebuggerEnabled || !KdDebuggerNotPresent)
-        return TRUE;
+    /*
+    * const unsigned char b = *(unsigned char*)0x7ffe02d4; 
+    * if ((b & 0x03) != 0)
+    *    return true;
+    */
 
-    return FALSE;
+    if (KdDebuggerEnabled || !KdDebuggerNotPresent)
+        return true;
+
+    return false;
 }
 
-bool KernelDebugger() {
-    bool sharedUserDataResult = SharedUserData();
+bool KernelDebugger() 
+{
+    const bool sharedUserDataResult = SharedUserData();
 
     if (sharedUserDataResult) {
         return true;
@@ -25,7 +32,7 @@ bool KernelDebugger() {
 
     SYSTEM_KERNEL_DEBUGGER_INFORMATION SystemInfo = { 0 };
 
-    NTSTATUS status = DbgNtQuerySystemInformation(
+    const NTSTATUS status = DbgNtQuerySystemInformation(
         (SYSTEM_INFORMATION_CLASS)SystemKernelDebuggerInformation,
         &SystemInfo,
         sizeof(SystemInfo),

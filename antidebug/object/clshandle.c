@@ -47,17 +47,17 @@ bool CheckCloseHandle()
         CloseHandle((HANDLE)0x99999999ULL);
     }
     __except (EXCEPTION_EXECUTE_HANDLER) {
-        return TRUE;
+        return true;
     }
 
     const DWORD ret = CloseWindow((HWND)0x1234);
     if (ret != 0 || GetLastError() != ERROR_INVALID_WINDOW_HANDLE)
     {
-        return TRUE;
+        return true;
     }
 
     if (NtClose_InvalideHandle())
-        return TRUE;
+        return true;
 
     __try
     {

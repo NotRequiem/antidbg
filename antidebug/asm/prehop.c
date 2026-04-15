@@ -2,7 +2,7 @@
 
 bool PrefixHop()
 {
-    bool found = TRUE;
+    bool found = true;
 
     __try
     {
@@ -16,7 +16,7 @@ bool PrefixHop()
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
-        found = FALSE; // exception handler triggers if INT 3 is skipped
+        found = false; // exception handler triggers if INT 3 is skipped
     }
 
     return found;

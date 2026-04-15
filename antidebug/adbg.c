@@ -5,7 +5,7 @@ DebugCheckResult debuggerChecks[] = {
     {false, "IsRemoteDebuggerPresent", .functionPtrWithProcess = IsRemoteDebuggerPresent},
     {false, "DebuggerBreak", .functionPtr = DebuggerBreak},
     {false, "int2D", .functionPtr = int2D},
-    {false, "int3", .functionPtr = int3},
+    {false, "int3", .functionPtr = __adbg_int3},
     {false, "StackSegmentRegister", .functionPtrWithThread = StackSegmentRegister},
     {false, "PrefixHop", .functionPtr = PrefixHop},
     {false, "RaiseDbgControl", .functionPtr = RaiseDbgControl},
@@ -41,8 +41,8 @@ DebugCheckResult debuggerChecks[] = {
 
 #define NUM_DEBUG_CHECKS (sizeof(debuggerChecks) / sizeof(debuggerChecks[0]))
 
-
 DWORD __stdcall __adbg(LPVOID lpParam) {
+    AdbgLogA("[*] Debug protection thread started");
     const HANDLE hProcess = (HANDLE)(lpParam);
     const HANDLE hThread = (HANDLE)(-2LL);
 
@@ -62,25 +62,19 @@ DWORD __stdcall __adbg(LPVOID lpParam) {
             }
 
             if (debuggerChecks[i].result) {
-            #ifdef _DEBUG
-                printf("[!] Debugger detected in function: %s\n", debuggerChecks[i].functionName);
-            #endif
+                AdbgLogA("[!] Debugger detected in function: %s", debuggerChecks[i].functionName);
                 __fastfail(EXIT_SUCCESS);
             }
 
             // ensure our thread priority was not tampered with
             const int currentPriority = GetThreadPriority(hThread);
             if (currentPriority == THREAD_PRIORITY_ERROR_RETURN) {
-            #ifdef _DEBUG
-                printf("[-] Failed to query thread priority. Error: %d\n", GetLastError());
-            #endif
+                AdbgLogLastErrorA("GetThreadPriority");
             }
 
             if (currentPriority != THREAD_PRIORITY_NORMAL) {
                 if (!SetThreadPriority(hThread, THREAD_PRIORITY_NORMAL)) {
-                #ifdef _DEBUG
-                    printf("[-] Failed to set thread priority. Error: %d\n", GetLastError());
-                #endif
+                    AdbgLogLastErrorA("SetThreadPriority");
                 }
             }
 
@@ -120,6 +114,7 @@ DWORD __stdcall __adbg(LPVOID lpParam) {
 void StartDebugProtection() {
     const PVOID hVeh = AddVectoredExceptionHandler(1, VectoredDebuggerCheck);
     if (!hVeh) {
+        AdbgLogLastErrorA("AddVectoredExceptionHandler");
         __fastfail(STATUS_ACCESS_VIOLATION);
     }
 
@@ -129,7 +124,8 @@ void StartDebugProtection() {
     StartMemoryTracker(hProcess);
 }
 
-bool isProgramBeingDebugged() {
+bool isProgramBeingDebugged() 
+{
     const HANDLE hProcess = (HANDLE)(-1LL);
     const HANDLE hThread = (HANDLE)(-2LL);
 
@@ -148,9 +144,7 @@ bool isProgramBeingDebugged() {
         }
 
         if (debuggerChecks[i].result) {
-        #ifdef _DEBUG
-            printf("[!] Debugger detected in function: %s\n", debuggerChecks[i].functionName);
-        #endif
+            AdbgLogA("[!] Debugger detected in function: %s", debuggerChecks[i].functionName);
             return true;
         }
     }

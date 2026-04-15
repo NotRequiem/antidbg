@@ -271,13 +271,13 @@ static inline bool VirtualAlloc_WriteWatch_CodeWrite()
 bool WriteWatch() 
 {
     if (VirtualAlloc_WriteWatch_BufferOnly())
-        return TRUE;
+        return true;
     if (VirtualAlloc_WriteWatch_APICalls())
-        return TRUE;
+        return true;
     if (VirtualAlloc_WriteWatch_IsDebuggerPresent())
-        return TRUE;
+        return true;
     if (VirtualAlloc_WriteWatch_CodeWrite())
-        return TRUE;
+        return true;
 
-    return FALSE;
+    return false;
 }

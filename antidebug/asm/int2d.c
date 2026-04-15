@@ -15,8 +15,8 @@ bool int2D()
         }
         __except (1)
         {
-            return FALSE;
+            return false;
         }
-        return TRUE;
+        return true;
     }
 }
