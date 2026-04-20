@@ -1,50 +1,45 @@
 #include "int3.h"
 
-static bool SwallowedException = TRUE;
+static volatile bool swallowed_exception = true;
 
-static LONG CALLBACK VectoredHandler(
-	_In_ PEXCEPTION_POINTERS ExceptionInfo
+static LONG __stdcall _vectored_handler(
+    _In_ PEXCEPTION_POINTERS ExceptionInfo
 )
 {
-	SwallowedException = FALSE;
-	if (ExceptionInfo->ExceptionRecord->ExceptionCode == EXCEPTION_BREAKPOINT)
-	{
-		ExceptionInfo->ContextRecord->Rip++;
+    if (ExceptionInfo->ExceptionRecord->ExceptionCode == EXCEPTION_BREAKPOINT)
+    {
+        swallowed_exception = false;
+        ExceptionInfo->ContextRecord->Rip++; 
+        return EXCEPTION_CONTINUE_EXECUTION;
+    }
 
-		return EXCEPTION_CONTINUE_EXECUTION;
-	}
-	return EXCEPTION_CONTINUE_SEARCH;
-}
-
-static bool __try_interrupt()
-{
-	const PVOID Handle = AddVectoredExceptionHandler(1, VectoredHandler);
-	SwallowedException = TRUE;
-	__debugbreak();
-	RemoveVectoredExceptionHandler(Handle);
-	return SwallowedException;
-}
-
-bool g_bDebugged = false;
-
-static inline int filter(unsigned int code)
-{
-	g_bDebugged = code != EXCEPTION_BREAKPOINT;
-	return EXCEPTION_EXECUTE_HANDLER;
+    return EXCEPTION_CONTINUE_SEARCH;
 }
 
 bool __adbg_int3()
 {
-	__try_interrupt();
+    const PVOID veh = AddVectoredExceptionHandler(1, _vectored_handler);
 
-	bool result = false;
-	__try
-	{
-		__debugbreak();
-	}
-	__except (filter(GetExceptionCode()))
-	{
-		result = g_bDebugged;
-	}
-	return result;
+    __debugbreak();
+
+    if (swallowed_exception) {
+        RemoveVectoredExceptionHandler(veh);
+        return swallowed_exception;
+    }
+
+    swallowed_exception = true;
+
+    DebugBreak();
+
+    if (swallowed_exception) {
+        RemoveVectoredExceptionHandler(veh);
+        return swallowed_exception;
+    }
+
+    // swallowed_exception = true;
+    // DebugBreakProcess(process_handle);
+
+    RemoveVectoredExceptionHandler(veh);
+
+    return swallowed_exception;
 }

@@ -1,127 +1,127 @@
 #include "loadlib.h"
 
-static bool CheckEndUpdateResource() 
+static inline bool _check_end_update_resource() 
 {
-    bool bDetected = FALSE;
-    CHAR szTempFile[MAX_PATH];
-    char* tempPath = NULL;
+    bool detected = FALSE;
+    CHAR temp_file[MAX_PATH];
+    char* temp_path = NULL;
     size_t len = 0;
 
-    if (_dupenv_s(&tempPath, &len, "TEMP") != 0 || tempPath == NULL) {
+    if (_dupenv_s(&temp_path, &len, "TEMP") != 0 || temp_path == NULL) {
         return FALSE;
     }
 
-    if (!GetTempFileNameA(tempPath, "dbg", 0, szTempFile)) {
-        free(tempPath);
+    if (!GetTempFileNameA(temp_path, "dbg", 0, temp_file)) {
+        free(temp_path);
         return FALSE;
     }
 
-    free(tempPath);
+    free(temp_path);
 
-    const HANDLE hFile = CreateFileA(szTempFile, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    const HANDLE hFile = CreateFileA(temp_file, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
     if (hFile == INVALID_HANDLE_VALUE) {
         return FALSE;
     }
     CloseHandle(hFile);
 
-    const HMODULE hLib = LoadLibraryA(szTempFile);
-    const HANDLE hUpdate = BeginUpdateResourceA(szTempFile, FALSE);
+    const HMODULE library_handle = LoadLibraryA(temp_file);
+    const HANDLE update_handle = BeginUpdateResourceA(temp_file, FALSE);
 
-    if (hUpdate != NULL) {
-        if (!EndUpdateResourceA(hUpdate, TRUE)) {
-            bDetected = TRUE;
+    if (update_handle != NULL) {
+        if (!EndUpdateResourceA(update_handle, TRUE)) {
+            detected = TRUE;
         }
     }
 
-    if (hLib) {
-        FreeLibrary(hLib);
+    if (library_handle) {
+        FreeLibrary(library_handle);
     }
 
-    DeleteFileA(szTempFile);
+    DeleteFileA(temp_file);
 
-    return bDetected;
+    return detected;
 }
 
-static bool CheckReadFileBreakpoint() {
-    bool bDetected = TRUE;
-    char szSelfPath[MAX_PATH];
-    if (!GetModuleFileNameA(NULL, szSelfPath, MAX_PATH)) {
+static inline bool _check_read_file_breakpoint() {
+    bool detected = TRUE;
+    char self_path[MAX_PATH];
+    if (!GetModuleFileNameA(NULL, self_path, MAX_PATH)) {
         return false;
     }
 
-    const HANDLE hSelf = CreateFileA(szSelfPath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
-    if (hSelf == INVALID_HANDLE_VALUE) {
+    const HANDLE self_handle = CreateFileA(self_path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+    if (self_handle == INVALID_HANDLE_VALUE) {
         return false;
     }
 
     unsigned char breakpoint_check[] = { 0xCC }; // int 3
 
-    const LPVOID pCode = VirtualAlloc(NULL, sizeof(breakpoint_check), MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-    if (!pCode) {
-        CloseHandle(hSelf);
+    const LPVOID code = VirtualAlloc(NULL, sizeof(breakpoint_check), MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+    if (!code) {
+        CloseHandle(self_handle);
         return false;
     }
 
-    if (memcpy_s(pCode, sizeof(breakpoint_check), breakpoint_check, sizeof(breakpoint_check)) != 0) {
-        VirtualFree(pCode, 0, MEM_RELEASE);
-        CloseHandle(hSelf);
+    if (memcpy_s(code, sizeof(breakpoint_check), breakpoint_check, sizeof(breakpoint_check)) != 0) {
+        VirtualFree(code, 0, MEM_RELEASE);
+        CloseHandle(self_handle);
         return false;
     }
 
-    DWORD dwRead = 0;
-    if (!ReadFile(hSelf, pCode, 1, &dwRead, NULL) || dwRead != 1) {
-        VirtualFree(pCode, 0, MEM_RELEASE);
-        CloseHandle(hSelf);
+    DWORD read = 0;
+    if (!ReadFile(self_handle, code, 1, &read, NULL) || read != 1) {
+        VirtualFree(code, 0, MEM_RELEASE);
+        CloseHandle(self_handle);
         return false;
     }
 
-    CloseHandle(hSelf);
+    CloseHandle(self_handle);
 
     __try {
-        ((void(*)())pCode)();
-        bDetected = false;
+        ((void(*)())code)();
+        detected = false;
     }
     __except (GetExceptionCode() == EXCEPTION_BREAKPOINT ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH) {
-        bDetected = true;
+        detected = true;
     }
 
-    VirtualFree(pCode, 0, MEM_RELEASE);
-    return bDetected;
+    VirtualFree(code, 0, MEM_RELEASE);
+    return detected;
 }
 
-bool CheckLoadLibrary() 
+bool __adbg_load_library() 
 {
-    if (CheckReadFileBreakpoint() || CheckEndUpdateResource())
+    if (_check_read_file_breakpoint() || _check_end_update_resource())
         return true;
 
-    bool bDebuggerPresent = false;
-    CHAR szTempPath[MAX_PATH];
-    CHAR szTempFile[MAX_PATH];
+    bool debugged = false;
+    CHAR temp_path[MAX_PATH];
+    CHAR temp_file[MAX_PATH];
 
-    if (!GetTempPathA(MAX_PATH, szTempPath)) return false;
-    if (!GetTempFileNameA(szTempPath, "dbg", 0, szTempFile)) return false;
+    if (!GetTempPathA(MAX_PATH, temp_path)) return false;
+    if (!GetTempFileNameA(temp_path, "dbg", 0, temp_file)) return false;
 
-    const HANDLE hFile = CreateFileA(szTempFile, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-    if (hFile == INVALID_HANDLE_VALUE) return false;
-    CloseHandle(hFile);
+    const HANDLE file_handle = CreateFileA(temp_file, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (file_handle == INVALID_HANDLE_VALUE) return false;
+    CloseHandle(file_handle);
 
     // we expect this to fail, but that's okay
-    const HMODULE hLib = LoadLibraryA(szTempFile);
+    const HMODULE library_handle = LoadLibraryA(temp_file);
 
     // now, try to open the file with exclusive access
     // a debugger holding a handle will cause this to fail with ERROR_SHARING_VIOLATION
-    const HANDLE hFileExclusive = CreateFileA(szTempFile, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-    if (hFileExclusive == INVALID_HANDLE_VALUE) {
+    const HANDLE file_exclusive = CreateFileA(temp_file, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (file_exclusive == INVALID_HANDLE_VALUE) {
         if (GetLastError() == ERROR_SHARING_VIOLATION) {
-            bDebuggerPresent = true;
+            debugged = true;
         }
     }
     else {
-        CloseHandle(hFileExclusive);
+        CloseHandle(file_exclusive);
     }
 
-    if (hLib) FreeLibrary(hLib);
-    DeleteFileA(szTempFile);
+    if (library_handle) FreeLibrary(library_handle);
+    DeleteFileA(temp_file);
 
-    return bDebuggerPresent;
+    return debugged;
 }

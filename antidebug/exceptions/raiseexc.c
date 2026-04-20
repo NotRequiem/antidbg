@@ -1,6 +1,6 @@
 #include "raiseexc.h"
 
-bool RaiseDbgControl()
+bool __adbg_dbg_control()
 {
     __try
     {

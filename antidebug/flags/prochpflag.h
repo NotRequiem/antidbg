@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-	bool ProcessHeapFlag();
+	bool __adbg_heap_flag();
 
 #ifdef __cplusplus
 }

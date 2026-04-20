@@ -1,8 +1,8 @@
 #include "rdbgpresent.h"
 
-bool IsRemoteDebuggerPresent(const HANDLE hProcess)
+bool __adbg_remote_debugger(const HANDLE process_handle)
 {
-    BOOL isRemoteDebuggerPresent = FALSE;
-    CheckRemoteDebuggerPresent(hProcess, &isRemoteDebuggerPresent);
-    return isRemoteDebuggerPresent;
+    BOOL debugged = FALSE;
+    CheckRemoteDebuggerPresent(process_handle, &debugged);
+    return debugged;
 }

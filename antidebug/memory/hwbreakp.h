@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-	bool HardwareBreakpoint(const HANDLE hThread);
+	bool __adbg_hardware_breakpoint(const HANDLE thread_handle);
 
 #ifdef __cplusplus
 }

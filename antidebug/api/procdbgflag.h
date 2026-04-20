@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-	bool DebugFlags(const HANDLE hProcess);
+	bool __adbg_debug_flags(const HANDLE process_handle);
 
 #ifdef __cplusplus
 }

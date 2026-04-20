@@ -1,13 +1,13 @@
 #include "dbgobjhandle.h"
 #include "..\core\syscall.h"
 
-bool DebugObjectHandle(const HANDLE hProcess) 
+bool __adbg_object_handle(const HANDLE process_handle) 
 {
-    HANDLE hDebugObject = NULL;
+    HANDLE debug_object = NULL;
     const NTSTATUS status = DbgNtQueryInformationProcess(
-        hProcess,
+        process_handle,
         ProcessDebugObjectHandle,
-        &hDebugObject,
+        &debug_object,
         sizeof(HANDLE),
         (PULONG)1
     );
@@ -16,7 +16,7 @@ bool DebugObjectHandle(const HANDLE hProcess)
         return true;
     }
 
-    if (hDebugObject != NULL) {
+    if (debug_object != NULL) {
         return true;
     }
 

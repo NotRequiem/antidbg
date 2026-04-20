@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-	bool ProtectedHandle();
+	bool __adbg_protected_handle();
 
 #ifdef __cplusplus
 }

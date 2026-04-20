@@ -1,6 +1,6 @@
 #include "timing.h"
 
-static bool CheckDebuggerTiming(void)
+static bool _time_debugger(void)
 {
     const ULONGLONG time1 = GetTickCount64();
 
@@ -16,7 +16,7 @@ static bool CheckDebuggerTiming(void)
     return (time2 - time1 > 0x1A) ? true : false;
 }
 
-bool TimingAttacks()
+bool __adbg_timing_attack()
 {
 	ULONGLONG x = GetTickCount64(); 
     ULONGLONG y = GetTickCount64();
@@ -54,25 +54,25 @@ bool TimingAttacks()
     detection_value = (end.QuadPart - start.QuadPart) * 1000 / frequency.QuadPart > 100;
     if (detection_value) return true;
 
-    SYSTEMTIME sysStart, sysend;
-    FILETIME fStart, fEnd;
-    ULARGE_INTEGER uiStart = { 0 }, uiEnd = { 0 };
+    SYSTEMTIME sys_start, sysend;
+    FILETIME fstart, fend;
+    ULARGE_INTEGER uistart = { 0 }, uiend = { 0 };
 
-    GetLocalTime(&sysStart);
+    GetLocalTime(&sys_start);
     Sleep(50);
     GetLocalTime(&sysend);
 
-    if (!SystemTimeToFileTime(&sysend, &fEnd))
+    if (!SystemTimeToFileTime(&sysend, &fend))
         return false;
-    if (!SystemTimeToFileTime(&sysStart, &fStart))
+    if (!SystemTimeToFileTime(&sys_start, &fstart))
         return false;
 
-    uiStart.LowPart = fStart.dwLowDateTime;
-    uiStart.HighPart = fStart.dwHighDateTime;
-    uiEnd.LowPart = fEnd.dwLowDateTime;
-    uiEnd.HighPart = fEnd.dwHighDateTime;
+    uistart.LowPart = fstart.dwLowDateTime;
+    uistart.HighPart = fstart.dwHighDateTime;
+    uiend.LowPart = fend.dwLowDateTime;
+    uiend.HighPart = fend.dwHighDateTime;
 
-    detection_value = (((uiEnd.QuadPart - uiStart.QuadPart) * 100) / 1000000) > 100;
-    if (!detection_value) return CheckDebuggerTiming();
+    detection_value = (((uiend.QuadPart - uistart.QuadPart) * 100) / 1000000) > 100;
+    if (!detection_value) return _time_debugger();
     else return true;
 }

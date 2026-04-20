@@ -3,50 +3,51 @@
 
 typedef DWORD(__stdcall* TCsrGetProcessId)(void);
 
-bool CheckOpenProcess()
+// technique can false flag if process legitimately acquires SeDebugPrivilege in older windows versions?
+bool __adbg_open_process()
 {
     // prevents DLL search order hijacking (CWE-427)
-    const HMODULE hNtdll = LoadLibraryEx(_T("ntdll.dll"), NULL, LOAD_LIBRARY_SEARCH_SYSTEM32);
-    if (!hNtdll)
+    const HMODULE ntdll = LoadLibraryEx(_T("ntdll.dll"), NULL, LOAD_LIBRARY_SEARCH_SYSTEM32);
+    if (!ntdll)
     {
         return false;
     }
 
-    TCsrGetProcessId pfnCsrGetProcessId = (TCsrGetProcessId)GetProcAddress(hNtdll, "CsrGetProcessId");
-    if (!pfnCsrGetProcessId)
+    TCsrGetProcessId pfn_csr_get_process_id = (TCsrGetProcessId)GetProcAddress(ntdll, "CsrGetProcessId"); // not using our __get_module function on purpose
+    if (!pfn_csr_get_process_id)
     {
-        FreeLibrary(hNtdll);
+        FreeLibrary(ntdll);
         return false;
     }
 
-    HANDLE hCsr = OpenProcess(((0x000F0000L) | (0x00100000L) | 0xFFFF), FALSE, pfnCsrGetProcessId());
-    if (hCsr != NULL)
+    HANDLE csr_handle = OpenProcess(((0x000F0000L) | (0x00100000L) | 0xFFFF), FALSE, pfn_csr_get_process_id());
+    if (csr_handle != NULL)
     {
-        DbgNtClose(hCsr);
-        FreeLibrary(hNtdll);
+        DbgNtClose(csr_handle);
+        FreeLibrary(ntdll);
         return true;
     }
     else
     {
-        FreeLibrary(hNtdll);
+        FreeLibrary(ntdll);
     }
 
     // syscall part
-    hCsr = NULL;
-    OBJECT_ATTRIBUTES objAttr = { 0 };
-    InitializeObjectAttributes(&objAttr, NULL, 0, NULL, NULL);
+    csr_handle = NULL;
+    OBJECT_ATTRIBUTES object_attributes = { 0 };
+    InitializeObjectAttributes(&object_attributes, NULL, 0, NULL, NULL);
 
-    CLIENT_ID clientId = { 0 };
-    clientId.UniqueProcess = (HANDLE)(ULONG_PTR)pfnCsrGetProcessId();
-    clientId.UniqueThread = 0;
+    CLIENT_ID client_id = { 0 };
+    client_id.UniqueProcess = (HANDLE)(ULONG_PTR)pfn_csr_get_process_id();
+    client_id.UniqueThread = 0;
 
-    ACCESS_MASK desiredAccess = PROCESS_ALL_ACCESS;
+    ACCESS_MASK access = PROCESS_ALL_ACCESS;
 
-    const NTSTATUS status = DbgNtOpenProcess(&hCsr, desiredAccess, &objAttr, &clientId);
+    const NTSTATUS status = DbgNtOpenProcess(&csr_handle, access, &object_attributes, &client_id);
 
-    if (NT_SUCCESS(status) && hCsr != NULL)
+    if (NT_SUCCESS(status) && csr_handle != NULL)
     {
-        DbgNtClose(hCsr);
+        DbgNtClose(csr_handle);
         return true;
     }
     else

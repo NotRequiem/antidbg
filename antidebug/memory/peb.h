@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-	bool CheckPEB();
+	bool __adbg_peb();
 
 #ifdef __cplusplus
 }

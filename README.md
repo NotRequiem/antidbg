@@ -31,8 +31,7 @@ The library is:
   - 16: PEB (direct memory access without using OS api calls)
   - 17: ProcessDebugPort
   - 18: HardwareBreakpoint
-  - 19: HardwareBreakpoint2
-  - 20: MEM_WRITE_WATCH
+  - 19: MEM_WRITE_WATCH
   - 21: DebugActiveProcess
   - 22: InvalidHandle
   - 23: NtQueryObject
@@ -68,7 +67,7 @@ The library is:
 **__10.__** Automatic handling of any exception in your software without interfering with other program's handlers.
 
 ## Detection Modes
-> 1. Guard mode:A thread will start running in your program and continuously monitor for attached debuggers. If a debugger is detected at any time, the program will forcefully exit while preventing other programs from stopping the crash.
+> 1. Guard mode: A thread will start running in your program and continuously monitor for attached debuggers. If a debugger is detected at any time, the program will forcefully exit while preventing other programs from stopping the crash.
 
 `Example Usage:`
 ```c

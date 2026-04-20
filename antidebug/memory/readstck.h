@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-	bool ReadMemoryStack();
+	bool __adbg_stack_memory();
 
 #ifdef __cplusplus
 }

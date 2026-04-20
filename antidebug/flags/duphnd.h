@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-	bool DuplicatedHandles(const HANDLE hProcess);
+	bool __adbg_duplicate_handles(const HANDLE process_handle);
 
 #ifdef __cplusplus
 }

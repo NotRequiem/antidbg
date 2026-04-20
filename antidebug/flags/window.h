@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-	bool CheckWindow();
+	bool __adbg_window();
 
 #ifdef __cplusplus
 }

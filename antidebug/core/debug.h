@@ -1,3 +1,5 @@
+#pragma once
+
 #include <windows.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -6,15 +8,15 @@
 extern "C" {
 #endif
 
-	#ifdef _DEBUG
+	#if defined(_DEBUG)
 
-		void AdbgLogA(_Printf_format_string_ const char* fmt, ...);
-		void AdbgLogLastErrorA(_Printf_format_string_ const char* context);
+		void __log(_Printf_format_string_ const char* fmt, ...);
+		void __log_error(_Printf_format_string_ const char* context);
 
 	#else
 
-		#define AdbgLogA(...) ((void)0)
-		#define AdbgLogLastErrorA(...) ((void)0)
+		#define __log(...)       ((void)0)
+		#define __log_error(...) ((void)0)
 
 	#endif
 

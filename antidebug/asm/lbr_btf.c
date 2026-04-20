@@ -1,10 +1,10 @@
 #include "lbr_btf.h"
 #include "../core/syscall.h"
 
-volatile BOOL g_bDebuggerDetected = FALSE;
+volatile BOOL g_debugger = FALSE;
 
-LONG WINAPI VectoredExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo) {
-    if (pExceptionInfo->ExceptionRecord->ExceptionCode == EXCEPTION_SINGLE_STEP) {
+LONG __stdcall _vectored_handler(PEXCEPTION_POINTERS exception_info) {
+    if (exception_info->ExceptionRecord->ExceptionCode == EXCEPTION_SINGLE_STEP) {
         // The kernel's int 01 (#DB) handler populates ExceptionInformation with the LBR From address
         // if LBR was enabled in DR7. The int 03 (#BP) handler does NOT do this. This is why using
         // icebp is essential for this technique
@@ -12,35 +12,33 @@ LONG WINAPI VectoredExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo) {
         // A debugger tracing this code will likely clear the LBR/BTF bits
         // in DR7 to perform its own single-stepping. This causes the CPU to not record the LBR data,
         // resulting in an empty ExceptionInformation array
-        if (pExceptionInfo->ExceptionRecord->NumberParameters == 0) {
-            g_bDebuggerDetected = TRUE;
+        if (exception_info->ExceptionRecord->NumberParameters == 0) {
+            g_debugger = TRUE;
         }
         else {
             // An advanced debugger might leave LBR enabled but still intercept
             // the exception. The act of trapping into the kernel and back out will pollute the LBR with
             // kernel-mode branch addresses. We can detect this by checking if the address is in user-space
-            ULONG_PTR fromAddr = (ULONG_PTR)pExceptionInfo->ExceptionRecord->ExceptionInformation[0];
+            ULONG_PTR fromAddr = (ULONG_PTR)exception_info->ExceptionRecord->ExceptionInformation[0];
             if (fromAddr > (ULONG_PTR)0x7FFFFFFFFFFFFFFF) {
-                g_bDebuggerDetected = TRUE;
+                g_debugger = TRUE;
             }
         }
 
         // past icebp
-        pExceptionInfo->ContextRecord->Rip++;
+        exception_info->ContextRecord->Rip++;
         return EXCEPTION_CONTINUE_EXECUTION;
     }
 
     return EXCEPTION_CONTINUE_SEARCH;
 }
 
-inline static void PerformLbrBtfCheck() {
+inline static void _lbr_btf(const HANDLE process_handle, const HANDLE thread_handle) {
     CONTEXT ctx = { 0 };
     ctx.ContextFlags = CONTEXT_DEBUG_REGISTERS;
-    const HANDLE hThread = (HANDLE)(-2LL);
-    const HANDLE hProcess = (HANDLE)(-1LL);
     NTSTATUS status = 0;
 
-    status = DbgNtGetContextThread(hThread, &ctx);
+    status = DbgNtGetContextThread(thread_handle, &ctx);
     if (status != 0) {
         return;
     }
@@ -49,12 +47,12 @@ inline static void PerformLbrBtfCheck() {
     // bit 9 of DR7 maps to bit 1 of DebugCtl MSR (BTF - Branch Trap Flag)
     ctx.Dr7 |= (1ULL << 8) | (1ULL << 9);
 
-    status = DbgNtSetContextThread(hThread, &ctx);
+    status = DbgNtSetContextThread(thread_handle, &ctx);
     if (status != 0) {
         return;
     }
 
-    const unsigned char triggerSequence[] = {
+    const unsigned char trigger_sequence[] = {
         0x48, 0xC7, 0xC0, 0x05, 0x00, 0x00, 0x00, // mov rax, 5
         0x48, 0x83, 0xF8, 0x05,                   // cmp rax, 5
         0x74, 0x03,                               // je branch_target
@@ -67,14 +65,14 @@ inline static void PerformLbrBtfCheck() {
         0xC3                                      // ret
     };
 
-    PVOID pExecMem = NULL;
-    SIZE_T regionSize = sizeof(triggerSequence);
+    PVOID exec_mem = NULL;
+    SIZE_T region_size = sizeof(trigger_sequence);
 
     status = DbgNtAllocateVirtualMemory(
-        hProcess,
-        &pExecMem,          
+        process_handle,
+        &exec_mem,          
         0,                  
-        &regionSize,        
+        &region_size,        
         MEM_COMMIT | MEM_RESERVE,
         PAGE_EXECUTE_READWRITE
     );
@@ -83,42 +81,42 @@ inline static void PerformLbrBtfCheck() {
         return;
     }
 
-    memcpy(pExecMem, triggerSequence, sizeof(triggerSequence));
-    void (*pfnTrigger)(void) = (void (*)(void))pExecMem;
+    memcpy(exec_mem, trigger_sequence, sizeof(trigger_sequence));
+    void (*pfn_trigger)(void) = (void (*)(void))exec_mem;
 
     __try {
-        pfnTrigger();
+        pfn_trigger();
     }
     __except (EXCEPTION_EXECUTE_HANDLER) {}
 
-    regionSize = 0;
+    region_size = 0;
     status = DbgNtFreeVirtualMemory(
-        hProcess, 
-        &pExecMem,          
-        &regionSize,      
+        process_handle, 
+        &exec_mem,          
+        &region_size,      
         MEM_RELEASE
     );
 
     ctx.ContextFlags = CONTEXT_DEBUG_REGISTERS;
-    status = DbgNtSetContextThread(hThread, &ctx);
+    status = DbgNtSetContextThread(thread_handle, &ctx);
     if (status == 0) {
         ctx.Dr7 &= ~((1ULL << 8) | (1ULL << 9));
-        DbgNtSetContextThread(hThread, &ctx);
+        DbgNtSetContextThread(thread_handle, &ctx);
     }
 }
 
-bool lbr()
+bool __adbg_lbr(const HANDLE process_handle, const HANDLE thread_handle)
 {
-    const PVOID hVeh = AddVectoredExceptionHandler(1, VectoredExceptionHandler);
-    if (!hVeh) {
+    const PVOID veh = AddVectoredExceptionHandler(1, _vectored_handler);
+    if (!veh) {
         return false;
     }
 
-    PerformLbrBtfCheck();
+    _lbr_btf(process_handle, thread_handle);
 
-    RemoveVectoredExceptionHandler(hVeh);
+    RemoveVectoredExceptionHandler(veh);
 
-    if (g_bDebuggerDetected) {
+    if (g_debugger) {
         return true;
     }
 

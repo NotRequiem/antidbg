@@ -1,6 +1,8 @@
 #include "debug.h"
 
-static inline void AdbgWriteConsoleA(const char* text)
+#if defined(_DEBUG)
+
+static inline void _write_console(const char* text)
 {
     HANDLE h = GetStdHandle(STD_ERROR_HANDLE);
     DWORD written = 0;
@@ -20,7 +22,7 @@ static inline void AdbgWriteConsoleA(const char* text)
     fflush(stderr);
 }
 
-void AdbgLogA(_Printf_format_string_ const char* fmt, ...)
+void __log(_Printf_format_string_ const char* fmt, ...)
 {
     char buffer[2048];
 
@@ -37,37 +39,39 @@ void AdbgLogA(_Printf_format_string_ const char* fmt, ...)
     }
 
     OutputDebugStringA(buffer);
-    AdbgWriteConsoleA(buffer);
+    _write_console(buffer);
 }
 
-void AdbgLogLastErrorA(_Printf_format_string_ const char* context)
+void __log_error(_Printf_format_string_ const char* context)
 {
     DWORD err = GetLastError();
-    char sysMsg[512] = { 0 };
+    char sys_msg[512] = { 0 };
 
     DWORD chars = FormatMessageA(
         FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
         NULL,
         err,
         0,
-        sysMsg,
-        sizeof(sysMsg),
+        sys_msg,
+        sizeof(sys_msg),
         NULL);
 
     if (chars == 0) {
-        AdbgLogA("%s failed. GLE=%lu", context, (unsigned long)err);
+        __log("%s failed. GLE=%lu", context, (unsigned long)err);
         return;
     }
 
     while (chars > 0) {
-        char c = sysMsg[chars - 1];
+        char c = sys_msg[chars - 1];
         if (c == '\r' || c == '\n' || c == ' ') {
-            sysMsg[--chars] = '\0';
+            sys_msg[--chars] = '\0';
         }
         else {
             break;
         }
     }
 
-    AdbgLogA("%s failed. GLE=%lu (%s)", context, (unsigned long)err, sysMsg);
+    __log("%s failed. GLE=%lu (%s)", context, (unsigned long)err, sys_msg);
 }
+
+#endif

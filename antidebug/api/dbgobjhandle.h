@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-	bool DebugObjectHandle(const HANDLE hProcess);
+	bool __adbg_object_handle(const HANDLE process_handle);
 
 #ifdef __cplusplus
 }

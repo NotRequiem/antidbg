@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-	bool TimingAttacks();
+	bool __adbg_timing_attack();
 
 #ifdef __cplusplus
 }

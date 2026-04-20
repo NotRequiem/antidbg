@@ -1,9 +1,9 @@
 #include "peb.h"
 #include "../core/nttypes.h"
 
-bool CheckPEB() 
+bool __adbg_peb() 
 {
-    PEB* peb = (PEB*)__readgsqword(0x60);
+    const PEB* peb = (PEB*)__readgsqword(0x60);
     if (!peb) {
         return false;
     }

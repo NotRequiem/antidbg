@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-	bool IsRemoteDebuggerPresent(const HANDLE hProcess);
+	bool __adbg_remote_debugger(const HANDLE process_handle);
 
 #ifdef __cplusplus
 }

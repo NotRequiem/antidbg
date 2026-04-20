@@ -1,5 +1,11 @@
 #include <windows.h>
 #include <stdbool.h>
+#include <stdint.h>
+
+#ifndef _NTDEF_
+	typedef _Return_type_success_(return >= 0) LONG NTSTATUS;
+	typedef NTSTATUS* PNTSTATUS;
+#endif
 
 typedef struct _Dbg_PEB_LDR_DATA {
 	BYTE Reserved1[8];
@@ -20,7 +26,7 @@ typedef struct _Dbg_PEB {
 	BYTE Reserved2[1];
 	PVOID Reserved3[2];
 	PDbg_PEB_LDR_DATA Ldr;
-} Dbg_PEB, * PDbg_PEB;
+} Dbg_PEB, * pdbg_peb;
 
 typedef struct _UNICODE_STRING
 {
@@ -1762,9 +1768,15 @@ typedef struct _KCONTINUE_ARGUMENT
 	ULONGLONG      Reserved[2];
 } KCONTINUE_ARGUMENT, * PKCONTINUE_ARGUMENT;
 
+typedef struct _PROCESS_INSTRUMENTATION_CALLBACK_INFORMATION {
+	ULONG Version;
+	ULONG Reserved;
+	PVOID Callback;
+} PROCESS_INSTRUMENTATION_CALLBACK_INFORMATION, * PPROCESS_INSTRUMENTATION_CALLBACK_INFORMATION;
+
 typedef struct _PROCESS_BASIC_INFORMATION {
 	PVOID Reserved1;
-	PDbg_PEB PebBaseAddress;
+	pdbg_peb PebBaseAddress;
 	PVOID Reserved2[2];
 	ULONG_PTR UniqueProcessId;
 	PVOID Reserved3;
@@ -1809,6 +1821,20 @@ typedef struct _SYSTEM_PROCESS_INFORMATION
 	LARGE_INTEGER OtherTransferCount;       // The total number of bytes transferred during operations other than read and write operations.
 	// SYSTEM_THREAD_INFORMATION Threads[1];   // This type is not defined in the structure but was added for convenience.
 } SYSTEM_PROCESS_INFORMATION, * PSYSTEM_PROCESS_INFORMATION;
+
+typedef struct _SYSTEM_THREAD_INFORMATION {
+	LARGE_INTEGER KernelTime;
+	LARGE_INTEGER UserTime;
+	LARGE_INTEGER CreateTime;
+	ULONG WaitTime;
+	PVOID StartAddress;
+	CLIENT_ID ClientId;
+	KPRIORITY Priority;
+	LONG BasePriority;
+	ULONG ContextSwitches;
+	ULONG ThreadState;
+	ULONG WaitReason;
+} SYSTEM_THREAD_INFORMATION, * PSYSTEM_THREAD_INFORMATION;
 
 /*
 typedef struct _SYSTEM_HANDLE_TABLE_ENTRY_INFO

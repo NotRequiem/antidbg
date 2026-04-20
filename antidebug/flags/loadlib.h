@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-	bool CheckLoadLibrary();
+	bool __adbg_load_library();
 
 #ifdef __cplusplus
 }

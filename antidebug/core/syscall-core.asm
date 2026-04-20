@@ -1,6 +1,6 @@
 .code
 
-EXTERN Dbg_GetSyscallNumber: PROC
+EXTERN __adbg_syscall: PROC
 
 DbgNtAccessCheck PROC
 	mov [rsp +8], rcx          ; Save registers.
@@ -9,7 +9,7 @@ DbgNtAccessCheck PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08C22C5FDh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -27,7 +27,7 @@ DbgNtWorkerFactoryWorkerReady PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0715B47E5h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -45,7 +45,7 @@ DbgNtAcceptConnectPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E035FBDAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -63,7 +63,7 @@ DbgNtMapUserPhysicalPagesScatter PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E18A2AD6h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -81,7 +81,7 @@ DbgNtWaitForSingleObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00B12E409h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -99,7 +99,7 @@ DbgNtCallbackReturn PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01C867E92h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -117,7 +117,7 @@ DbgNtReadFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E37EF3CBh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -135,7 +135,7 @@ DbgNtDeviceIoControlFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 078E6586Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -153,7 +153,7 @@ DbgNtWriteFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0AD65E7C3h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -171,7 +171,7 @@ DbgNtRemoveIoCompletion PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 05ED51C79h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -189,7 +189,7 @@ DbgNtReleaseSemaphore PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08A9A7486h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -207,7 +207,7 @@ DbgNtReplyWaitReceivePort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0ECBFC720h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -225,7 +225,7 @@ DbgNtReplyPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 06AF47B58h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -243,7 +243,7 @@ DbgNtSetInformationThread PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 038080AA1h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -261,7 +261,7 @@ DbgNtSetEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0084935C0h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -279,7 +279,7 @@ DbgNtClose PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 000951D2Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -297,7 +297,7 @@ DbgNtQueryObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CC95D518h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -315,7 +315,7 @@ DbgNtQueryInformationFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 096071C10h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -333,7 +333,7 @@ DbgNtOpenKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 07AC69BBCh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -351,7 +351,7 @@ DbgNtEnumerateValueKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 049FCABA7h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -369,7 +369,7 @@ DbgNtFindAtom PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0D75BD6C9h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -387,7 +387,7 @@ DbgNtQueryDefaultLocale PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0D158E1CDh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -405,7 +405,7 @@ DbgNtQueryKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 077CD5A5Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -423,7 +423,7 @@ DbgNtQueryValueKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 029B9362Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -441,7 +441,7 @@ DbgNtAllocateVirtualMemory PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CBD3E774h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -459,7 +459,7 @@ DbgNtQueryInformationProcess PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E280F928h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -477,7 +477,7 @@ DbgNtWaitForMultipleObjects32 PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00C812A6Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -495,7 +495,7 @@ DbgNtWriteFileGather PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00DA2370Bh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -513,7 +513,7 @@ DbgNtCreateKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0881B6C01h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -531,7 +531,7 @@ DbgNtFreeVirtualMemory PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0831F8B8Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -549,7 +549,7 @@ DbgNtImpersonateClientOfPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0BC317372h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -567,7 +567,7 @@ DbgNtReleaseMutant PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00C821308h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -585,7 +585,7 @@ DbgNtQueryInformationToken PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0AF9B9530h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -603,7 +603,7 @@ DbgNtRequestWaitReplyPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 020B24D6Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -621,7 +621,7 @@ DbgNtQueryVirtualMemory PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C192D11Bh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -639,7 +639,7 @@ DbgNtOpenThreadToken PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0B314C1F4h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -657,7 +657,7 @@ DbgNtQueryInformationThread PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0183F44FEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -675,7 +675,7 @@ DbgNtOpenProcess PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0752F54BAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -693,7 +693,7 @@ DbgNtSetInformationFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 06CD5AAF6h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -711,7 +711,7 @@ DbgNtMapViewOfSection PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 076A8543Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -729,7 +729,7 @@ DbgNtAccessCheckAndAuditAlarm PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 090551544h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -747,7 +747,7 @@ DbgNtUnmapViewOfSection PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 072AE723Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -765,7 +765,7 @@ DbgNtReplyWaitReceivePortEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0239EEEDAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -783,7 +783,7 @@ DbgNtTerminateProcess PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 007B2062Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -801,7 +801,7 @@ DbgNtSetEventBoostPriority PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01CBB1638h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -819,7 +819,7 @@ DbgNtReadFileScatter PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0A1B26AEEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -837,7 +837,7 @@ DbgNtOpenThreadTokenEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 07AE0AFBDh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -855,7 +855,7 @@ DbgNtOpenProcessTokenEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E602107Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -873,7 +873,7 @@ DbgNtQueryPerformanceCounter PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CBA4E17Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -891,7 +891,7 @@ DbgNtEnumerateKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0B93DD4DAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -909,7 +909,7 @@ DbgNtOpenFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F9B8E90Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -927,7 +927,7 @@ DbgNtDelayExecution PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0FC483E19h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -945,7 +945,7 @@ DbgNtQueryDirectoryFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0252207A4h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -963,7 +963,7 @@ DbgNtQuerySystemInformation PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 03B6317B9h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -981,7 +981,7 @@ DbgNtOpenSection PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 006A6180Bh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -999,7 +999,7 @@ DbgNtQueryTimer PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 043974F0Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1017,7 +1017,7 @@ DbgNtFsControlFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0983F5E84h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1035,7 +1035,7 @@ DbgNtWriteVirtualMemory PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 009970711h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1053,7 +1053,7 @@ DbgNtCloseObjectAuditAlarm PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 03A930ADEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1071,7 +1071,7 @@ DbgNtDuplicateObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0273E53A1h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1089,7 +1089,7 @@ DbgNtQueryAttributesFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 03ABB4C26h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1107,7 +1107,7 @@ DbgNtClearEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0574C72E4h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1125,7 +1125,7 @@ DbgNtReadVirtualMemory PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00B930717h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1143,7 +1143,7 @@ DbgNtOpenEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0189D7F86h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1161,7 +1161,7 @@ DbgNtAdjustPrivilegesToken PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 07DA6EE9Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1179,7 +1179,7 @@ DbgNtDuplicateToken PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 097A1E323h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1197,7 +1197,7 @@ DbgNtContinue PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 006A6D1EEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1215,7 +1215,7 @@ DbgNtQueryDefaultUILanguage PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01FB1D51Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1233,7 +1233,7 @@ DbgNtQueueApcThread PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0FA5FF4EDh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1251,7 +1251,7 @@ DbgNtYieldExecution PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0D417DEF3h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1269,7 +1269,7 @@ DbgNtAddAtom PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01C483DD9h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1287,7 +1287,7 @@ DbgNtCreateEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0B115577Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1305,7 +1305,7 @@ DbgNtQueryVolumeInformationFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0A5066F27h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1323,7 +1323,7 @@ DbgNtCreateSection PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0D08BF015h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1341,7 +1341,7 @@ DbgNtFlushBuffersFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 038BBA59Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1359,7 +1359,7 @@ DbgNtApphelpCacheControl PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00197EBD1h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1377,7 +1377,7 @@ DbgNtCreateProcessEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09FF4AB48h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1395,7 +1395,7 @@ DbgNtCreateThread PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08ED454EAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1413,7 +1413,7 @@ DbgNtIsProcessInJob PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 096501A63h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1431,7 +1431,7 @@ DbgNtProtectVirtualMemory PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 007922B07h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1449,7 +1449,7 @@ DbgNtQuerySection PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0FFF0F965h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1467,7 +1467,7 @@ DbgNtResumeThread PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01820429Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1485,7 +1485,7 @@ DbgNtTerminateThread PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01E5B2C0Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1503,7 +1503,7 @@ DbgNtReadRequestData PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09C100826h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1521,7 +1521,7 @@ DbgNtCreateFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 06179AFD8h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1539,7 +1539,7 @@ DbgNtQueryEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0468C2F58h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1557,7 +1557,7 @@ DbgNtWriteRequestData PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 02CB15A26h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1575,7 +1575,7 @@ DbgNtOpenDirectoryObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0281718AAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1593,7 +1593,7 @@ DbgNtAccessCheckByTypeAndAuditAlarm PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0542B46A6h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1611,7 +1611,7 @@ DbgNtWaitForMultipleObjects PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C122CDA3h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1629,7 +1629,7 @@ DbgNtSetInformationObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01A242499h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1647,7 +1647,7 @@ DbgNtCancelIoFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01CBAD6EEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1665,7 +1665,7 @@ DbgNtTraceEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0DF74D5E2h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1683,7 +1683,7 @@ DbgNtPowerInformation PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0376F33F5h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1701,7 +1701,7 @@ DbgNtSetValueKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 006A2E0BDh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1719,7 +1719,7 @@ DbgNtCancelTimer PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 04FE77548h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1737,7 +1737,7 @@ DbgNtSetTimer PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 03D9B1520h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1755,7 +1755,7 @@ DbgNtAccessCheckByType PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09E78C54Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1773,7 +1773,7 @@ DbgNtAccessCheckByTypeResultList PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E1A4D0E1h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1791,7 +1791,7 @@ DbgNtAccessCheckByTypeResultListAndAuditAlarm PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 036A999A6h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1809,7 +1809,7 @@ DbgNtAccessCheckByTypeResultListAndAuditAlarmByHandle PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0B5B9852Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1827,7 +1827,7 @@ DbgNtAcquireProcessActivityReference PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0BA8BBB2Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1845,7 +1845,7 @@ DbgNtAddAtomEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09991D4A4h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1863,7 +1863,7 @@ DbgNtAddBootEntry PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00998130Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1881,7 +1881,7 @@ DbgNtAddDriverEntry PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08611E6F7h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1899,7 +1899,7 @@ DbgNtAdjustGroupsToken PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 083A600BAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1917,7 +1917,7 @@ DbgNtAdjustTokenClaimsAndDeviceGroups PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 063F5416Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1935,7 +1935,7 @@ DbgNtAlertResumeThread PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E4DE2BF5h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1953,7 +1953,7 @@ DbgNtAlertThread PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0AC8FA629h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1971,7 +1971,7 @@ DbgNtAlertThreadByThreadId PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 092B235AAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -1989,7 +1989,7 @@ DbgNtAllocateLocallyUniqueId PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 073EB14E8h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2007,7 +2007,7 @@ DbgNtAllocateReserveObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 007181787h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2025,7 +2025,7 @@ DbgNtAllocateUserPhysicalPages PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0331F08B0h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2043,7 +2043,7 @@ DbgNtAllocateUuids PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 06BEAFBE5h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2061,7 +2061,7 @@ DbgNtAllocateVirtualMemoryEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0B4A36EE1h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2079,7 +2079,7 @@ DbgNtAlpcAcceptConnectPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E4B3DFFCh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2097,7 +2097,7 @@ DbgNtAlpcCancelMessage PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 093305F81h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2115,7 +2115,7 @@ DbgNtAlpcConnectPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 05E80BFDEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2133,7 +2133,7 @@ DbgNtAlpcConnectPortEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0615EDD9Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2151,7 +2151,7 @@ DbgNtAlpcCreatePort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 020B02538h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2169,7 +2169,7 @@ DbgNtAlpcCreatePortSection PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0FB63C7CAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2187,7 +2187,7 @@ DbgNtAlpcCreateResourceReserve PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 077663852h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2205,7 +2205,7 @@ DbgNtAlpcCreateSectionView PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F4ABF335h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2223,7 +2223,7 @@ DbgNtAlpcCreateSecurityContext PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 022A33520h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2241,7 +2241,7 @@ DbgNtAlpcDeletePortSection PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0D68BFCCFh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2259,7 +2259,7 @@ DbgNtAlpcDeleteResourceReserve PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 05CA4B827h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2277,7 +2277,7 @@ DbgNtAlpcDeleteSectionView PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 028B43D2Bh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2295,7 +2295,7 @@ DbgNtAlpcDeleteSecurityContext PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09E4B9BC2h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2313,7 +2313,7 @@ DbgNtAlpcDisconnectPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 022B23F1Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2331,7 +2331,7 @@ DbgNtAlpcImpersonateClientContainerOfPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 020B2D1E8h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2349,7 +2349,7 @@ DbgNtAlpcImpersonateClientOfPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0BB30BCA3h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2367,7 +2367,7 @@ DbgNtAlpcOpenSenderProcess PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F1ADE843h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2385,7 +2385,7 @@ DbgNtAlpcOpenSenderThread PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01AB5C40Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2403,7 +2403,7 @@ DbgNtAlpcQueryInformation PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 05CCC5A59h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2421,7 +2421,7 @@ DbgNtAlpcQueryInformationMessage PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 007B0D888h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2439,7 +2439,7 @@ DbgNtAlpcRevokeSecurityContext PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 04E9A793Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2457,7 +2457,7 @@ DbgNtAlpcSendWaitReceivePort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 026B7C1DCh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2475,7 +2475,7 @@ DbgNtAlpcSetInformation PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01EB85C6Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2493,7 +2493,7 @@ DbgNtAreMappedFilesTheSame PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0A42EA1B7h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2511,7 +2511,7 @@ DbgNtAssignProcessToJobObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F9560818h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2529,7 +2529,7 @@ DbgNtAssociateWaitCompletionPacket PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00D3477DAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2547,7 +2547,7 @@ DbgNtCallEnclave PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00AACC180h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2565,7 +2565,7 @@ DbgNtCancelIoFileEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CE55170Bh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2583,7 +2583,7 @@ DbgNtCancelSynchronousIoFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01E543282h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2601,7 +2601,7 @@ DbgNtCancelTimer2 PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 007A8DC25h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2619,7 +2619,7 @@ DbgNtCancelWaitCompletionPacket PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0396C1FDEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2637,7 +2637,7 @@ DbgNtCommitComplete PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0269D3636h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2655,7 +2655,7 @@ DbgNtCommitEnlistment PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0B923F0F1h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2673,7 +2673,7 @@ DbgNtCommitRegistryTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09E30B8A5h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2691,7 +2691,7 @@ DbgNtCommitTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 096CC5491h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2709,7 +2709,7 @@ DbgNtCompactKeys PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 023B62600h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2727,7 +2727,7 @@ DbgNtCompareObjects PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0AE3D90FEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2745,7 +2745,7 @@ DbgNtCompareSigningLevels PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 032E8006Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2763,7 +2763,7 @@ DbgNtCompareTokens PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 07DD51731h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2781,7 +2781,7 @@ DbgNtCompleteConnectPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 064B2411Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2799,7 +2799,7 @@ DbgNtCompressKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 088155B4Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2817,7 +2817,7 @@ DbgNtConnectPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 07AF5796Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2835,7 +2835,7 @@ DbgNtConvertBetweenAuxiliaryCounterAndPerformanceCounter PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 02FA0473Bh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2853,7 +2853,7 @@ DbgNtCreateDebugObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 016BF6A77h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2871,7 +2871,7 @@ DbgNtCreateDirectoryObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 098A9A0E5h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2889,7 +2889,7 @@ DbgNtCreateDirectoryObjectEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0B24DF6F0h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2907,7 +2907,7 @@ DbgNtCreateEnclave PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0D1ACF97Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2925,7 +2925,7 @@ DbgNtCreateEnlistment PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 007C519AFh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2943,7 +2943,7 @@ DbgNtCreateEventPair PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 080D2AE0Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2961,7 +2961,7 @@ DbgNtCreateIRTimer PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 023931934h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2979,7 +2979,7 @@ DbgNtCreateIoCompletion PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0920B9699h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -2997,7 +2997,7 @@ DbgNtCreateJobObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 016BCC1E7h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3015,7 +3015,7 @@ DbgNtCreateJobSet PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08009F8E5h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3033,7 +3033,7 @@ DbgNtCreateKeyTransacted PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09EC115EFh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3051,7 +3051,7 @@ DbgNtCreateKeyedEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 074AE0F48h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3069,7 +3069,7 @@ DbgNtCreateLowBoxToken PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0AF1AF5B2h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3087,7 +3087,7 @@ DbgNtCreateMailslotFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 03D9CACA8h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3105,7 +3105,7 @@ DbgNtCreateMutant PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 032AC353Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3123,7 +3123,7 @@ DbgNtCreateNamedPipeFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 074BB4A68h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3141,7 +3141,7 @@ DbgNtCreatePagingFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0ACFD5EAAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3159,7 +3159,7 @@ DbgNtCreatePartition PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 004B26421h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3177,7 +3177,7 @@ DbgNtCreatePort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F57FE8F7h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3195,7 +3195,7 @@ DbgNtCreatePrivateNamespace PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 088D649FBh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3213,7 +3213,7 @@ DbgNtCreateProcess PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 05B99246Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3231,7 +3231,7 @@ DbgNtCreateProfile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 034A27A0Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3249,7 +3249,7 @@ DbgNtCreateProfileEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 042A9BCDFh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3267,7 +3267,7 @@ DbgNtCreateRegistryTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00C902C01h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3285,7 +3285,7 @@ DbgNtCreateResourceManager PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08132D3EEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3303,7 +3303,7 @@ DbgNtCreateSemaphore PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0188F4436h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3321,7 +3321,7 @@ DbgNtCreateSymbolicLinkObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 044DE4243h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3339,7 +3339,7 @@ DbgNtCreateThreadEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0D03F0E79h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3357,7 +3357,7 @@ DbgNtCreateTimer PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09A1FA093h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3375,7 +3375,7 @@ DbgNtCreateTimer2 PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00985895Bh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3393,7 +3393,7 @@ DbgNtCreateToken PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 043DC4F46h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3411,7 +3411,7 @@ DbgNtCreateTokenEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 07A9D3866h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3429,7 +3429,7 @@ DbgNtCreateTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C4E5E2B1h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3447,7 +3447,7 @@ DbgNtCreateTransactionManager PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09E29B2BBh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3465,7 +3465,7 @@ DbgNtCreateUserProcess PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E2B3C32Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3483,7 +3483,7 @@ DbgNtCreateWaitCompletionPacket PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0FFA1FB31h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3501,7 +3501,7 @@ DbgNtCreateWaitablePort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0A476C9EEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3519,7 +3519,7 @@ DbgNtCreateWnfStateName PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0FADAD54Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3537,7 +3537,7 @@ DbgNtCreateWorkerFactory PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 03893D4F4h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3555,7 +3555,7 @@ DbgNtDebugActiveProcess PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00FA5083Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3573,7 +3573,7 @@ DbgNtDebugContinue PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F25DFDF2h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3591,7 +3591,7 @@ DbgNtDeleteAtom PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01AC90740h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3609,7 +3609,7 @@ DbgNtDeleteBootEntry PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08C10F4E1h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3627,7 +3627,7 @@ DbgNtDeleteDriverEntry PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C191DF16h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3645,7 +3645,7 @@ DbgNtDeleteFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 073DBECE9h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3663,7 +3663,7 @@ DbgNtDeleteKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 006D2E6ACh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3681,7 +3681,7 @@ DbgNtDeleteObjectAuditAlarm PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 036993E06h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3699,7 +3699,7 @@ DbgNtDeletePrivateNamespace PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 016AFDFFBh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3717,7 +3717,7 @@ DbgNtDeleteValueKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CEF32DA8h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3735,7 +3735,7 @@ DbgNtDeleteWnfStateData PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0BE058A52h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3753,7 +3753,7 @@ DbgNtDeleteWnfStateName PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0940BBF8Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3771,7 +3771,7 @@ DbgNtDisableLastKnownGood PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 068D92A7Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3789,7 +3789,7 @@ DbgNtDisplayString PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CED8F25Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3807,7 +3807,7 @@ DbgNtDrawText PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C131FAB7h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3825,7 +3825,7 @@ DbgNtEnableLastKnownGood PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 079EF7544h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3843,7 +3843,7 @@ DbgNtEnumerateBootEntries PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0AC8CC774h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3861,7 +3861,7 @@ DbgNtEnumerateDriverEntries PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0AC97B41Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3879,7 +3879,7 @@ DbgNtEnumerateSystemEnvironmentValuesEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0172B5BDFh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3897,7 +3897,7 @@ DbgNtEnumerateTransactionObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01A38F344h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3915,7 +3915,7 @@ DbgNtExtendSection PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0544D76D9h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3933,7 +3933,7 @@ DbgNtFilterBootOption PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09C979F0Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3951,7 +3951,7 @@ DbgNtFilterToken PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 06DB15D10h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3969,7 +3969,7 @@ DbgNtFilterTokenEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 028A2F6F4h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -3987,7 +3987,7 @@ DbgNtFlushBuffersFileEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01D2457F7h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4005,7 +4005,7 @@ DbgNtFlushInstallUILanguage PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C457F38Bh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4023,7 +4023,7 @@ DbgNtFlushInstructionCache PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01C3A5EE3h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4041,7 +4041,7 @@ DbgNtFlushKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 087B49A20h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4059,7 +4059,7 @@ DbgNtFlushProcessWriteBuffers PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 044E47854h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4077,7 +4077,7 @@ DbgNtFlushVirtualMemory PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0FD6F1903h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4095,7 +4095,7 @@ DbgNtFlushWriteBuffer PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0032B6BD2h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4113,7 +4113,7 @@ DbgNtFreeUserPhysicalPages PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 009B83234h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4131,7 +4131,7 @@ DbgNtFreezeRegistry PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 04CED467Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4149,7 +4149,7 @@ DbgNtFreezeTransactions PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CC12D49Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4167,7 +4167,7 @@ DbgNtGetCachedSigningLevel PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 02C996244h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4185,7 +4185,7 @@ DbgNtGetCompleteWnfStateSubscription PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0736931B9h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4203,7 +4203,7 @@ DbgNtGetContextThread PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 074582EE1h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4221,7 +4221,7 @@ DbgNtGetCurrentProcessorNumber PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08698F25Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4239,7 +4239,7 @@ DbgNtGetCurrentProcessorNumberEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 07CC385BDh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4257,7 +4257,7 @@ DbgNtGetDevicePowerState PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CE4DFEE6h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4275,7 +4275,7 @@ DbgNtGetMUIRegistryInfo PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0D47D1821h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4293,7 +4293,7 @@ DbgNtGetNextProcess PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 04D2742BCh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4311,7 +4311,7 @@ DbgNtGetNextThread PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00EBDFEEEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4329,7 +4329,7 @@ DbgNtGetNlsSectionPtr PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 022122B89h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4347,7 +4347,7 @@ DbgNtGetNotificationResourceManager PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CE11D2BFh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4365,7 +4365,7 @@ DbgNtGetWriteWatch PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08CC3B99Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4383,7 +4383,7 @@ DbgNtImpersonateAnonymousToken PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 061D536ECh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4401,7 +4401,7 @@ DbgNtImpersonateThread PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0722AAC90h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4419,7 +4419,7 @@ DbgNtInitializeEnclave PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 026DE4FDCh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4437,7 +4437,7 @@ DbgNtInitializeNlsFiles PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 080BAAF18h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4455,7 +4455,7 @@ DbgNtInitializeRegistry PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 014893A1Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4473,7 +4473,7 @@ DbgNtInitiatePowerAction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0BC24937Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4491,7 +4491,7 @@ DbgNtIsSystemResumeAutomatic PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0178150A3h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4509,7 +4509,7 @@ DbgNtIsUILanguageComitted PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0DE621FDFh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4527,7 +4527,7 @@ DbgNtListenPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0AEB2AB38h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4545,7 +4545,7 @@ DbgNtLoadDriver PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0947DCD56h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4563,7 +4563,7 @@ DbgNtLoadEnclaveData PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0D00B4338h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4581,7 +4581,7 @@ DbgNtLoadHotPatch PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0FC63F3F4h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4599,7 +4599,7 @@ DbgNtLoadKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F55EC4E6h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4617,7 +4617,7 @@ DbgNtLoadKey2 PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 013AA49AEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4635,7 +4635,7 @@ DbgNtLoadKeyEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08BB945FEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4653,7 +4653,7 @@ DbgNtLockFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E372EDE7h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4671,7 +4671,7 @@ DbgNtLockProductActivationKeys PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 03797203Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4689,7 +4689,7 @@ DbgNtLockRegistryKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00229FF2Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4707,7 +4707,7 @@ DbgNtLockVirtualMemory PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C05D2530h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4725,7 +4725,7 @@ DbgNtMakePermanentObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0253543E7h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4743,7 +4743,7 @@ DbgNtMakeTemporaryObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 085BDAB07h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4761,7 +4761,7 @@ DbgNtManagePartition PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00EA00E33h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4779,7 +4779,7 @@ DbgNtMapCMFModule PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 06EC17246h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4797,7 +4797,7 @@ DbgNtMapUserPhysicalPages PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 002A49BB0h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4815,7 +4815,7 @@ DbgNtMapViewOfSectionEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0AE956DCFh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4833,7 +4833,7 @@ DbgNtModifyBootEntry PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01D9B0F00h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4851,7 +4851,7 @@ DbgNtModifyDriverEntry PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00B963CD8h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4869,7 +4869,7 @@ DbgNtNotifyChangeDirectoryFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0A4838418h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4887,7 +4887,7 @@ DbgNtNotifyChangeDirectoryFileEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0809B04A7h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4905,7 +4905,7 @@ DbgNtNotifyChangeKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C93FD0ACh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4923,7 +4923,7 @@ DbgNtNotifyChangeMultipleKeys PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0AD16BE90h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4941,7 +4941,7 @@ DbgNtNotifyChangeSession PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09651A4F1h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4959,7 +4959,7 @@ DbgNtOpenEnlistment PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F9650D02h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4977,7 +4977,7 @@ DbgNtOpenEventPair PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 040134C8Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -4995,7 +4995,7 @@ DbgNtOpenIoCompletion PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 093059590h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5013,7 +5013,7 @@ DbgNtOpenJobObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 004B9EDC5h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5031,7 +5031,7 @@ DbgNtOpenKeyEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0597B5FC6h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5049,7 +5049,7 @@ DbgNtOpenKeyTransacted PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0A49B5C86h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5067,7 +5067,7 @@ DbgNtOpenKeyTransactedEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C81C0A46h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5085,7 +5085,7 @@ DbgNtOpenKeyedEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 04ED56D42h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5103,7 +5103,7 @@ DbgNtOpenMutant PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 034B27378h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5121,7 +5121,7 @@ DbgNtOpenObjectAuditAlarm PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 03E9ED8CAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5139,7 +5139,7 @@ DbgNtOpenPartition PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0414A21D9h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5157,7 +5157,7 @@ DbgNtOpenPrivateNamespace PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0BF13C08Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5175,7 +5175,7 @@ DbgNtOpenProcessToken PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09DA0F3A0h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5193,7 +5193,7 @@ DbgNtOpenRegistryTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 05E987005h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5211,7 +5211,7 @@ DbgNtOpenResourceManager PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 03BA1436Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5229,7 +5229,7 @@ DbgNtOpenSemaphore PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00A9A33C6h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5247,7 +5247,7 @@ DbgNtOpenSession PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C707DB84h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5265,7 +5265,7 @@ DbgNtOpenSymbolicLinkObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0A638C0E5h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5283,7 +5283,7 @@ DbgNtOpenThread PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 07EAA7E09h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5301,7 +5301,7 @@ DbgNtOpenTimer PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C9983FE0h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5319,7 +5319,7 @@ DbgNtOpenTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 063487FFBh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5337,7 +5337,7 @@ DbgNtOpenTransactionManager PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01840C00Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5355,7 +5355,7 @@ DbgNtPlugPlayControl PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 009DA0D41h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5373,7 +5373,7 @@ DbgNtPrePrepareComplete PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 03AA7C8B8h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5391,7 +5391,7 @@ DbgNtPrePrepareEnlistment PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F9A105D2h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5409,7 +5409,7 @@ DbgNtPrepareComplete PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 028B04FB2h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5427,7 +5427,7 @@ DbgNtPrepareEnlistment PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 009A72475h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5445,7 +5445,7 @@ DbgNtPrivilegeCheck PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 02685FBC7h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5463,7 +5463,7 @@ DbgNtPrivilegeObjectAuditAlarm PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0A5211F77h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5481,7 +5481,7 @@ DbgNtPrivilegedServiceAuditAlarm PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0B0A25233h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5499,7 +5499,7 @@ DbgNtPropagationComplete PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09B2461B9h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5517,7 +5517,7 @@ DbgNtPropagationFailed PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0201B50CEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5535,7 +5535,7 @@ DbgNtPulseEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0182A2DE2h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5553,7 +5553,7 @@ DbgNtQueryAuxiliaryCounterFrequency PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0AA19C7FCh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5571,7 +5571,7 @@ DbgNtQueryBootEntryOrder PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F357FDCBh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5589,7 +5589,7 @@ DbgNtQueryBootOptions PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 04BA53149h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5607,7 +5607,7 @@ DbgNtQueryDebugFilterState PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 002942A1Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5625,7 +5625,7 @@ DbgNtQueryDirectoryFileEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 038874205h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5643,7 +5643,7 @@ DbgNtQueryDirectoryObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 002A3F5A3h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5661,7 +5661,7 @@ DbgNtQueryDriverEntryOrder PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 02409EF53h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5679,7 +5679,7 @@ DbgNtQueryEaFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 058F3A6AAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5697,7 +5697,7 @@ DbgNtQueryFullAttributesFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0A604B6AEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5715,7 +5715,7 @@ DbgNtQueryInformationAtom PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0B621DBA0h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5733,7 +5733,7 @@ DbgNtQueryInformationByName PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 03CD84F0Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5751,7 +5751,7 @@ DbgNtQueryInformationEnlistment PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0AB25AEB3h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5769,7 +5769,7 @@ DbgNtQueryInformationJobObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08892F618h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5787,7 +5787,7 @@ DbgNtQueryInformationPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0B22CD7BEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5805,7 +5805,7 @@ DbgNtQueryInformationResourceManager PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09330A190h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5823,7 +5823,7 @@ DbgNtQueryInformationTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 002950E0Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5841,7 +5841,7 @@ DbgNtQueryInformationTransactionManager PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 005B69396h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5859,7 +5859,7 @@ DbgNtQueryInformationWorkerFactory PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00D5E1BD0h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5877,7 +5877,7 @@ DbgNtQueryInstallUILanguage PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E85BFBE3h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5895,7 +5895,7 @@ DbgNtQueryIntervalProfile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08CB80F9Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5913,7 +5913,7 @@ DbgNtQueryIoCompletion PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 048636A37h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5931,7 +5931,7 @@ DbgNtQueryLicenseValue PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00C5B17E4h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5949,7 +5949,7 @@ DbgNtQueryMultipleValueKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0962F7737h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5967,7 +5967,7 @@ DbgNtQueryMutant PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 012B21B26h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -5985,7 +5985,7 @@ DbgNtQueryOpenSubKeys PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0AAD18175h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6003,7 +6003,7 @@ DbgNtQueryOpenSubKeysEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0B5A5EB62h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6021,7 +6021,7 @@ DbgNtQueryPortInformationProcess PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0832D9AA0h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6039,7 +6039,7 @@ DbgNtQueryQuotaInformationFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0FE6FF0FCh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6057,7 +6057,7 @@ DbgNtQuerySecurityAttributesToken PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 02B8A110Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6075,7 +6075,7 @@ DbgNtQuerySecurityObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0FC783F27h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6093,7 +6093,7 @@ DbgNtQuerySecurityPolicy PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0963DABF9h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6111,7 +6111,7 @@ DbgNtQuerySemaphore PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0608849C4h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6129,7 +6129,7 @@ DbgNtQuerySymbolicLinkObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00581777Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6147,7 +6147,7 @@ DbgNtQuerySystemEnvironmentValue PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0B3A92296h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6165,7 +6165,7 @@ DbgNtQuerySystemEnvironmentValueEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01D3855F8h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6183,7 +6183,7 @@ DbgNtQuerySystemInformationEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 02CDA5628h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6201,7 +6201,7 @@ DbgNtQueryTimerResolution PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 018B6DD9Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6219,7 +6219,7 @@ DbgNtQueryWnfStateData PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 02F00B121h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6237,7 +6237,7 @@ DbgNtQueryWnfStateNameInformation PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0949A6F8Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6255,7 +6255,7 @@ DbgNtQueueApcThreadEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08CB142C6h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6273,7 +6273,7 @@ DbgNtRaiseException PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 076329421h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6291,7 +6291,7 @@ DbgNtRaiseHardError PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0DF8EFADDh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6309,7 +6309,7 @@ DbgNtReadOnlyEnlistment PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01A2710B1h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6327,7 +6327,7 @@ DbgNtRecoverEnlistment PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0D946FEDDh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6345,7 +6345,7 @@ DbgNtRecoverResourceManager PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E3B2749Bh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6363,7 +6363,7 @@ DbgNtRecoverTransactionManager PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 087339198h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6381,7 +6381,7 @@ DbgNtRegisterProtocolAddressInformation PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01D8B0318h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6399,7 +6399,7 @@ DbgNtRegisterThreadTerminatePort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E4B1DF1Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6417,7 +6417,7 @@ DbgNtReleaseKeyedEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00A8F1302h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6435,7 +6435,7 @@ DbgNtReleaseWorkerFactoryWorker PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0604916ADh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6453,7 +6453,7 @@ DbgNtRemoveIoCompletionEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 058AD0478h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6471,7 +6471,7 @@ DbgNtRemoveProcessDebug PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08A2B9D9Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6489,7 +6489,7 @@ DbgNtRenameKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CDF0D268h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6507,7 +6507,7 @@ DbgNtRenameTransactionManager PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01A4002CAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6525,7 +6525,7 @@ DbgNtReplaceKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 016A2C2F1h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6543,7 +6543,7 @@ DbgNtReplacePartitionUnit PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0FB7BDF23h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6561,7 +6561,7 @@ DbgNtReplyWaitReplyPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0A0319F9Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6579,7 +6579,7 @@ DbgNtRequestPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E572E2E9h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6597,7 +6597,7 @@ DbgNtResetEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00AA82B1Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6615,7 +6615,7 @@ DbgNtResetWriteWatch PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 03CBF4A62h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6633,7 +6633,7 @@ DbgNtRestoreKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 006DAF6A0h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6651,7 +6651,7 @@ DbgNtResumeProcess PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0B52ECAC4h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6669,7 +6669,7 @@ DbgNtRevertContainerImpersonation PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0089F060Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6687,7 +6687,7 @@ DbgNtRollbackComplete PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0483558BEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6705,7 +6705,7 @@ DbgNtRollbackEnlistment PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 001DF1C5Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6723,7 +6723,7 @@ DbgNtRollbackRegistryTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C8922E02h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6741,7 +6741,7 @@ DbgNtRollbackTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 006992409h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6759,7 +6759,7 @@ DbgNtRollforwardTransactionManager PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01B2269C2h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6777,7 +6777,7 @@ DbgNtSaveKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 06BBF86D9h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6795,7 +6795,7 @@ DbgNtSaveKeyEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0296111A6h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6813,7 +6813,7 @@ DbgNtSaveMergedKeys PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08737BCA0h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6831,7 +6831,7 @@ DbgNtSecureConnectPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 066FF796Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6849,7 +6849,7 @@ DbgNtSerializeBoot PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0AB3E6078h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6867,7 +6867,7 @@ DbgNtSetBootEntryOrder PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0D7CDC76Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6885,7 +6885,7 @@ DbgNtSetBootOptions PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0DF9B0CDCh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6903,7 +6903,7 @@ DbgNtSetCachedSigningLevel PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0D61A94A4h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6921,7 +6921,7 @@ DbgNtSetCachedSigningLevel2 PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 072CD5DDCh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6939,7 +6939,7 @@ DbgNtSetContextThread PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09430D695h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6957,7 +6957,7 @@ DbgNtSetDebugFilterState PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0548DB2CCh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6975,7 +6975,7 @@ DbgNtSetDefaultHardErrorPort PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0268E271Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -6993,7 +6993,7 @@ DbgNtSetDefaultLocale PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 067AF117Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7011,7 +7011,7 @@ DbgNtSetDefaultUILanguage PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09FBC9824h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7029,7 +7029,7 @@ DbgNtSetDriverEntryOrder PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0131675E3h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7047,7 +7047,7 @@ DbgNtSetEaFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00215EC1Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7065,7 +7065,7 @@ DbgNtSetHighEventPair PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C64F869Dh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7083,7 +7083,7 @@ DbgNtSetHighWaitLowEventPair PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 070D66C5Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7101,7 +7101,7 @@ DbgNtSetIRTimer PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0035F220Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7119,7 +7119,7 @@ DbgNtSetInformationDebugObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F3590553h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7137,7 +7137,7 @@ DbgNtSetInformationEnlistment PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 02A3233A6h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7155,7 +7155,7 @@ DbgNtSetInformationJobObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0BA85DA18h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7173,7 +7173,7 @@ DbgNtSetInformationKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01CE20F79h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7191,7 +7191,7 @@ DbgNtSetInformationResourceManager PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00BB2E8C3h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7209,7 +7209,7 @@ DbgNtSetInformationSymbolicLink PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0EE7BE6EEh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7227,7 +7227,7 @@ DbgNtSetInformationToken PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08D92F71Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7245,7 +7245,7 @@ DbgNtSetInformationTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F0B9DE65h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7263,7 +7263,7 @@ DbgNtSetInformationTransactionManager PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0015427ECh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7281,7 +7281,7 @@ DbgNtSetInformationVirtualMemory PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00D9F415Bh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7299,7 +7299,7 @@ DbgNtSetInformationWorkerFactory PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0865790CAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7317,7 +7317,7 @@ DbgNtSetIntervalProfile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C582BB58h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7335,7 +7335,7 @@ DbgNtSetIoCompletion PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 006EC263Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7353,7 +7353,7 @@ DbgNtSetIoCompletionEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 038D37416h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7371,7 +7371,7 @@ DbgNtSetLdtEntries PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0A80DC1E9h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7389,7 +7389,7 @@ DbgNtSetLowEventPair PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 02F30AF27h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7407,7 +7407,7 @@ DbgNtSetLowWaitHighEventPair PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 096B25AEFh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7425,7 +7425,7 @@ DbgNtSetQuotaInformationFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0AB36AB93h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7443,7 +7443,7 @@ DbgNtSetSecurityObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08CA7A43Bh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7461,7 +7461,7 @@ DbgNtSetSystemEnvironmentValue PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0FC3B2C80h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7479,7 +7479,7 @@ DbgNtSetSystemEnvironmentValueEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 040BB0C00h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7497,7 +7497,7 @@ DbgNtSetSystemInformation PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0DC4680EBh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7515,7 +7515,7 @@ DbgNtSetSystemPowerState PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 036380EA7h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7533,7 +7533,7 @@ DbgNtSetSystemTime PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 02EAA2F37h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7551,7 +7551,7 @@ DbgNtSetThreadExecutionState PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 002AD7C28h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7569,7 +7569,7 @@ DbgNtSetTimer2 PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01DA6FCB9h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7587,7 +7587,7 @@ DbgNtSetTimerEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0B2B8FC7Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7605,7 +7605,7 @@ DbgNtSetTimerResolution PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CA5C0401h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7623,7 +7623,7 @@ DbgNtSetUuidSeed PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 087ADCF81h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7641,7 +7641,7 @@ DbgNtSetVolumeInformationFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E577F1CBh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7659,7 +7659,7 @@ DbgNtSetWnfProcessNotificationEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 030BA0D72h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7677,7 +7677,7 @@ DbgNtShutdownSystem PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 022801F50h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7695,7 +7695,7 @@ DbgNtShutdownWorkerFactory PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 002962A38h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7713,7 +7713,7 @@ DbgNtSignalAndWaitForSingleObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 085959509h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7731,7 +7731,7 @@ DbgNtSinglePhaseReject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0882798BBh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7749,7 +7749,7 @@ DbgNtStartProfile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F095FB33h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7767,7 +7767,7 @@ DbgNtStopProfile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 067A699FDh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7785,7 +7785,7 @@ DbgNtSubscribeWnfStateChange PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 044E15944h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7803,7 +7803,7 @@ DbgNtSuspendProcess PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CE20D7AFh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7821,7 +7821,7 @@ DbgNtSuspendThread PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E73FEF94h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7839,7 +7839,7 @@ DbgNtSystemDebugControl PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C397CD05h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7857,7 +7857,7 @@ DbgNtTerminateEnclave PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 074D3627Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7875,7 +7875,7 @@ DbgNtTerminateJobObject PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 08BA5B9EBh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7893,7 +7893,7 @@ DbgNtTestAlert PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01E3727BAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7911,7 +7911,7 @@ DbgNtThawRegistry PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C24DD723h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7929,7 +7929,7 @@ DbgNtThawTransactions PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 07FA5673Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7947,7 +7947,7 @@ DbgNtTraceControl PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0B41B300Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7965,7 +7965,7 @@ DbgNtTranslateFilePath PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 056EC7360h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -7983,7 +7983,7 @@ DbgNtUmsThreadYield PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0EA566373h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8001,7 +8001,7 @@ DbgNtUnloadDriver PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00EC75E06h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8019,7 +8019,7 @@ DbgNtUnloadKey PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 009DFE8A8h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8037,7 +8037,7 @@ DbgNtUnloadKey2 PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0A1D66544h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8055,7 +8055,7 @@ DbgNtUnloadKeyEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0FB742C28h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8073,7 +8073,7 @@ DbgNtUnlockFile PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 03E37402Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8091,7 +8091,7 @@ DbgNtUnlockVirtualMemory PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00791111Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8109,7 +8109,7 @@ DbgNtUnmapViewOfSectionEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0809357CDh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8127,7 +8127,7 @@ DbgNtUnsubscribeWnfStateChange PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F85DDE04h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8145,7 +8145,7 @@ DbgNtUpdateWnfStateData PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 02D04B739h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8163,7 +8163,7 @@ DbgNtVdmControl PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 003940707h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8181,7 +8181,7 @@ DbgNtWaitForAlertByThreadId PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 07AAF9ED4h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8199,7 +8199,7 @@ DbgNtWaitForDebugEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CA40E3D2h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8217,7 +8217,7 @@ DbgNtWaitForKeyedEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 03A917D5Ah        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8235,7 +8235,7 @@ DbgNtWaitForWorkViaWorkerFactory PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09C8AE07Fh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8253,7 +8253,7 @@ DbgNtWaitHighEventPair PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 02EB1AAA4h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8271,7 +8271,7 @@ DbgNtWaitLowEventPair PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 061D3FAF6h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8289,7 +8289,7 @@ DbgNtAcquireCMFViewOwnership PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 09D42C3EBh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8307,7 +8307,7 @@ DbgNtCancelDeviceWakeupRequest PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 05F85511Eh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8325,7 +8325,7 @@ DbgNtClearAllSavepointsTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0E04BE0D9h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8343,7 +8343,7 @@ DbgNtClearSavepointTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F850E6C3h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8361,7 +8361,7 @@ DbgNtRollbackSavepointTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0970FF006h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8379,7 +8379,7 @@ DbgNtSavepointTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0D04BF6DBh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8397,7 +8397,7 @@ DbgNtSavepointComplete PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CD4222CAh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8415,7 +8415,7 @@ DbgNtCreateSectionEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 02C9FEFC5h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8433,7 +8433,7 @@ DbgNtCreateCrossVmEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 040044D94h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8451,7 +8451,7 @@ DbgNtGetPlugPlayEvent PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 006AC3AE4h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8469,7 +8469,7 @@ DbgNtListTransactions PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 01B8904E3h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8487,7 +8487,7 @@ DbgNtMarshallTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CB24EBB6h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8505,7 +8505,7 @@ DbgNtPullTransaction PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0C28AE05Bh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8523,7 +8523,7 @@ DbgNtReleaseCMFViewOwnership PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F22CDCF2h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8541,7 +8541,7 @@ DbgNtWaitForWnfNotifications PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 00DDF2E89h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8559,7 +8559,7 @@ DbgNtStartTm PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 03F925D6Ch        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8577,7 +8577,7 @@ DbgNtSetInformationProcess PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0811F9F74h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8595,7 +8595,7 @@ DbgNtRequestDeviceWakeup PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0CD950BC2h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8613,7 +8613,7 @@ DbgNtRequestWakeupLatency PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0035B28CFh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8631,7 +8631,7 @@ DbgNtQuerySystemTime PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F46FFDCBh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8649,7 +8649,7 @@ DbgNtManageHotPatch PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0F549F9FCh        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]
@@ -8667,7 +8667,7 @@ DbgNtContinueEx PROC
 	mov [rsp+32], r9
 	sub rsp, 28h
 	mov ecx, 0D7493035h        ; Load function hash into ECX.
-	call Dbg_GetSyscallNumber              ; Resolve function hash into syscall number.
+	call __adbg_syscall              ; Resolve function hash into syscall number.
 	add rsp, 28h
 	mov rcx, [rsp+8]                      ; Restore registers.
 	mov rdx, [rsp+16]

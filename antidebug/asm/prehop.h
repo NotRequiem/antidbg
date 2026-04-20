@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-	bool PrefixHop();
+	bool __adbg_prefix_hop();
 
 #ifdef __cplusplus
 }

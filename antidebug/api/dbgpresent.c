@@ -1,6 +1,6 @@
 #include "dbgpresent.h"
 
-bool IsBeingDebugged()
+bool __adbg_is_debugger_present()
 {
-    return IsDebuggerPresent() == TRUE;
+    return IsDebuggerPresent() == TRUE; // inline hooks for this call are performed in monitor.c
 }

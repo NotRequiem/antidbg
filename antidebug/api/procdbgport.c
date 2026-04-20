@@ -1,19 +1,20 @@
 #include "procdbgport.h"
 #include "..\core\syscall.h"
 
-bool DebugPort(const HANDLE hProcess)
+bool __adbg_debug_port(const HANDLE process_handle)
 {
-    DWORD_PTR dwDebugPort = 0;
+    DWORD_PTR debug_port = 0;
+
     const NTSTATUS status = DbgNtQueryInformationProcess(
-        hProcess,
+        process_handle,
         ProcessDebugPort,
-        &dwDebugPort,
-        sizeof(dwDebugPort),
+        &debug_port,
+        sizeof(debug_port),
         NULL);
 
-    if (status == 0x00000000 && dwDebugPort != 0) {
-        return TRUE;
+    if (status == 0x00000000 && debug_port != 0) {
+        return true;
     }
 
-    return FALSE;
+    return false;
 }

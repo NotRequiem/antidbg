@@ -15,7 +15,7 @@ extern "C" {
 
 #define NT_GLOBAL_FLAG_DEBUGGED (FLG_HEAP_ENABLE_TAIL_CHECK | FLG_HEAP_ENABLE_FREE_CHECK | FLG_HEAP_VALIDATE_PARAMETERS)
 
-	bool NtGlobalFlag();
+	bool __adbg_nt_global_flag();
 
 #ifdef __cplusplus
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <windows.h>
-#include <tlhelp32.h>
 #include <string.h>
 #include <stdbool.h>
 
@@ -9,7 +8,7 @@
 extern "C" {
 #endif
 
-	bool ParentProcesses(const HANDLE hProcess);
+	bool __adbg_parent_processes(const HANDLE process_handle);
 
 #ifdef __cplusplus
 }
