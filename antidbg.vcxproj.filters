@@ -407,4 +407,9 @@
       <Filter>Source Files\core</Filter>
     </MASM>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="antidebug\core\syscall-core.S">
+      <Filter>Source Files\core</Filter>
+    </None>
+  </ItemGroup>
 </Project>

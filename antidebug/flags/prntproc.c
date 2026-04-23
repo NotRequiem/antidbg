@@ -123,7 +123,7 @@ bool __adbg_parent_processes(const HANDLE process_handle)
             const DWORD current_pid = (DWORD)(ULONG_PTR)spi->UniqueProcessId;
 
             if (current_pid == ppid) {
-                for (int i = 0; i < (sizeof(whitelist) / sizeof(whitelist[0])); i++) {
+                for (size_t i = 0; i < (sizeof(whitelist) / sizeof(whitelist[0])); i++) {
                     if (_compare_str(&spi->ImageName, whitelist[i])) {
                         is_suspicious = false;
                         break;

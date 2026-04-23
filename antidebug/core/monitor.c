@@ -58,10 +58,10 @@ static inline void _enable_privilege(LPCWSTR privilege_name, const HANDLE proces
     return;
 }
 
-static _force_inline uint32_t __hash_section(const HMODULE module_handle, const DWORD sectionRVA, const DWORD sectionSize)
 #if (__clang__ || __GNUC__)
 __attribute__((__target__("crc32")))
 #endif
+static _force_inline uint32_t __hash_section(const HMODULE module_handle, const DWORD sectionRVA, const DWORD sectionSize)
 {
     PIMAGE_DOS_HEADER dos_header = (PIMAGE_DOS_HEADER)module_handle;
     if (dos_header->e_magic != IMAGE_DOS_SIGNATURE) return 0;
@@ -94,6 +94,9 @@ __attribute__((__target__("crc32")))
     return (uint32_t)crc;
 }
 
+#if (__clang__ || __GNUC__)
+__attribute__((__target__("crc32")))
+#endif
 void __start_monitor(const HANDLE process_handle)
 {
     HMODULE       modules[1024] = { 0 };

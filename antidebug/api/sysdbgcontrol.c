@@ -1,7 +1,7 @@
 #include "sysdbgcontrol.h"
 #include "..\core\syscall.h"
 
-static bool _enable_privilege(const HANDLE process_handle)
+static inline bool _enable_privilege(const HANDLE process_handle)
 {
     HANDLE token_handle = NULL;
     NTSTATUS status;
@@ -25,7 +25,7 @@ static bool _enable_privilege(const HANDLE process_handle)
     return NT_SUCCESS(status);
 }
 
-static void _disable_privilege(const HANDLE process_handle)
+static inline void _disable_privilege(const HANDLE process_handle)
 {
     HANDLE token_handle = NULL;
 
@@ -42,57 +42,73 @@ static void _disable_privilege(const HANDLE process_handle)
     DbgNtClose(token_handle);
 }
 
-bool __adbg_system_debug_control(const HANDLE process_handle)
+static inline bool __adbg_is_admin(const HANDLE process_handle)
 {
-    if (!_enable_privilege(process_handle)) {
+    HANDLE token_handle = NULL;
+    NTSTATUS status;
+
+    status = DbgNtOpenProcessToken(process_handle, TOKEN_QUERY, &token_handle);
+    if (!NT_SUCCESS(status))
+    {
         return false;
     }
 
-    UCHAR output_buffer[1024] = { 0 };
-    const UCHAR MAGIC_PATTERN = 0xAA;
+    TOKEN_ELEVATION elevation = { 0 };
+    ULONG return_length = 0;
 
-    // memset
-    for (size_t i = 0; i < sizeof(output_buffer); i++)
-    {
-        output_buffer[i] = MAGIC_PATTERN;
+    status = DbgNtQueryInformationToken(
+        token_handle,
+        TokenElevation,
+        &elevation,
+        sizeof(elevation),
+        &return_length
+    );
+
+    DbgNtClose(token_handle);
+
+    return NT_SUCCESS(status) && (elevation.TokenIsElevated != 0);
+}
+
+bool __adbg_system_debug_control(const HANDLE process_handle)
+{
+    if (!_enable_privilege(process_handle) || !__adbg_is_admin(process_handle)) {
+        return false;
+    }
+
+    volatile UCHAR output_buffer[1024] = { 0 };
+    for (size_t i = 0; i < sizeof(output_buffer); i++) {
+        ((UCHAR*)output_buffer)[i] = 0xAA;
     }
 
     ULONG return_length = 0;
 
-    const NTSTATUS status = DbgNtSystemDebugControl(
+    NTSTATUS status = DbgNtSystemDebugControl(
         SysDbgGetTriageDump,
-        NULL,                 
-        0,                    
-        output_buffer,         
-        sizeof(output_buffer),  
-        &return_length         
+        NULL,
+        0,
+        (PVOID)output_buffer,
+        sizeof(output_buffer),
+        &return_length
     );
 
     _disable_privilege(process_handle);
 
     // if a debugger blocks this specific command
-    if (status == STATUS_ACCESS_DENIED)
-    {
+    if (status == STATUS_ACCESS_DENIED) {
         return true;
     }
 
-    // check if the output buffer was actually touched
-    if (NT_SUCCESS(status))
-    {
-        bool was_modified = false;
+    // check if they actually touched the buffer
+    if (NT_SUCCESS(status)) {
+        const volatile UCHAR* buf = output_buffer;
 
-        for (size_t i = 0; i < sizeof(output_buffer); i++)
-        {
-            if (output_buffer[i] != MAGIC_PATTERN)
-            {
-                was_modified = true;
-                break;
+        for (size_t i = 0; i < sizeof(output_buffer); i++) {
+            if (buf[i] != 0xAA) {
+                return false;  
             }
         }
 
-        if (!was_modified) {
-            return true;
-        }
+        return true;           
     }
 
     return false;

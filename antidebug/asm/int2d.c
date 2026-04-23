@@ -44,14 +44,14 @@ static inline bool _non_stealth() {
 
 #else
 
-    thread_local volatile bool g_exception_fired = false;
+    _Thread_local volatile bool g_exception_triggered = false;
 
     static LONG __stdcall _excp_handler(PEXCEPTION_POINTERS ep)
     {
         DWORD code = ep->ExceptionRecord->ExceptionCode;
         if (code == EXCEPTION_SINGLE_STEP || code == EXCEPTION_BREAKPOINT)
         {
-            g_exception_fired = true;
+            g_exception_triggered = true;
 
             // clear TF and DR6 so we don't infinitely single-step
             ep->ContextRecord->EFlags &= ~0x100;
@@ -65,7 +65,7 @@ static inline bool _non_stealth() {
 
     static inline bool __trap(void (*_trap_func)())
     {
-        g_exception_fired = false;
+        g_exception_triggered = false;
         PVOID veh = AddVectoredExceptionHandler(1, _excp_handler);
         if (!veh) return true;
 
@@ -73,7 +73,7 @@ static inline bool _non_stealth() {
 
         RemoveVectoredExceptionHandler(veh);
 
-        return !g_exception_fired;
+        return !g_exception_triggered;
     }
 
     static void _asm_int2d() { __asm__ __volatile__("int $0x2D \n\tnop \n\t"); }
@@ -81,7 +81,7 @@ static inline bool _non_stealth() {
     bool __adbg_int2d()
     {
         if (_non_stealth()) return true;
-        __trap(_asm_int2d);
+        return __trap(_asm_int2d);
     }
 
 #endif

@@ -12,7 +12,7 @@ bool __adbg_object_handle(const HANDLE process_handle)
         (PULONG)1
     );
 
-    if (status != STATUS_ACCESS_VIOLATION) {
+    if (status != (NTSTATUS)STATUS_ACCESS_VIOLATION) {
         return true;
     }
 

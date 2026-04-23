@@ -50,6 +50,7 @@
 #include "memory\dbgp.h"
 #include "memory\heap.h"
 #include "memory\workset.h"
+#include "memory\mapview.h"
 
 #include "object\clshandle.h"
 #include "object\dbgobj.h"

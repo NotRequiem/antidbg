@@ -12,11 +12,15 @@
 	#define _force_inline inline
 #endif
 
+#ifndef NT_SUCCESS
+	#define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	bool __adbg_heap_magic();
+	bool __adbg_heap_magic(const HANDLE process_handle);
 
 #ifdef __cplusplus
 }

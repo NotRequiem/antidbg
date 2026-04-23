@@ -40,7 +40,7 @@ static inline bool _non_stealth() {
 
 #else
 
-    thread_local volatile bool g_exception_fired = false;
+    _Thread_local volatile bool g_exception_fired = false;
 
     static LONG __stdcall _excp_handler(PEXCEPTION_POINTERS ep)
     {
@@ -86,7 +86,7 @@ static inline bool _non_stealth() {
     bool __adbg_popf()
     {
         if (_non_stealth()) return true;
-        __trap(_asm_popf);
+        return __trap(_asm_popf);
     }
 
 #endif

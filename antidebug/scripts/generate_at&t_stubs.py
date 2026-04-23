@@ -83,7 +83,6 @@ class SyscallAsmGenerator:
             
             # AT&T assembly format for GCC/Clang
             stub = f""".global DbgNt{base_name}
-.type DbgNt{base_name}, @function
 DbgNt{base_name}:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)

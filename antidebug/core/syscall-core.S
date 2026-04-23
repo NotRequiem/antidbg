@@ -1,7 +1,6 @@
 .text
 
 .global DbgNtAccessCheck
-.type DbgNtAccessCheck, @function
 DbgNtAccessCheck:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -20,7 +19,6 @@ DbgNtAccessCheck:
     ret
 
 .global DbgNtWorkerFactoryWorkerReady
-.type DbgNtWorkerFactoryWorkerReady, @function
 DbgNtWorkerFactoryWorkerReady:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -39,7 +37,6 @@ DbgNtWorkerFactoryWorkerReady:
     ret
 
 .global DbgNtAcceptConnectPort
-.type DbgNtAcceptConnectPort, @function
 DbgNtAcceptConnectPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -58,7 +55,6 @@ DbgNtAcceptConnectPort:
     ret
 
 .global DbgNtMapUserPhysicalPagesScatter
-.type DbgNtMapUserPhysicalPagesScatter, @function
 DbgNtMapUserPhysicalPagesScatter:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -77,7 +73,6 @@ DbgNtMapUserPhysicalPagesScatter:
     ret
 
 .global DbgNtWaitForSingleObject
-.type DbgNtWaitForSingleObject, @function
 DbgNtWaitForSingleObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -96,7 +91,6 @@ DbgNtWaitForSingleObject:
     ret
 
 .global DbgNtCallbackReturn
-.type DbgNtCallbackReturn, @function
 DbgNtCallbackReturn:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -115,7 +109,6 @@ DbgNtCallbackReturn:
     ret
 
 .global DbgNtReadFile
-.type DbgNtReadFile, @function
 DbgNtReadFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -134,7 +127,6 @@ DbgNtReadFile:
     ret
 
 .global DbgNtDeviceIoControlFile
-.type DbgNtDeviceIoControlFile, @function
 DbgNtDeviceIoControlFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -153,7 +145,6 @@ DbgNtDeviceIoControlFile:
     ret
 
 .global DbgNtWriteFile
-.type DbgNtWriteFile, @function
 DbgNtWriteFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -172,7 +163,6 @@ DbgNtWriteFile:
     ret
 
 .global DbgNtRemoveIoCompletion
-.type DbgNtRemoveIoCompletion, @function
 DbgNtRemoveIoCompletion:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -191,7 +181,6 @@ DbgNtRemoveIoCompletion:
     ret
 
 .global DbgNtReleaseSemaphore
-.type DbgNtReleaseSemaphore, @function
 DbgNtReleaseSemaphore:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -210,7 +199,6 @@ DbgNtReleaseSemaphore:
     ret
 
 .global DbgNtReplyWaitReceivePort
-.type DbgNtReplyWaitReceivePort, @function
 DbgNtReplyWaitReceivePort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -229,7 +217,6 @@ DbgNtReplyWaitReceivePort:
     ret
 
 .global DbgNtReplyPort
-.type DbgNtReplyPort, @function
 DbgNtReplyPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -248,7 +235,6 @@ DbgNtReplyPort:
     ret
 
 .global DbgNtSetInformationThread
-.type DbgNtSetInformationThread, @function
 DbgNtSetInformationThread:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -267,7 +253,6 @@ DbgNtSetInformationThread:
     ret
 
 .global DbgNtSetEvent
-.type DbgNtSetEvent, @function
 DbgNtSetEvent:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -286,7 +271,6 @@ DbgNtSetEvent:
     ret
 
 .global DbgNtClose
-.type DbgNtClose, @function
 DbgNtClose:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -305,7 +289,6 @@ DbgNtClose:
     ret
 
 .global DbgNtQueryObject
-.type DbgNtQueryObject, @function
 DbgNtQueryObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -324,7 +307,6 @@ DbgNtQueryObject:
     ret
 
 .global DbgNtQueryInformationFile
-.type DbgNtQueryInformationFile, @function
 DbgNtQueryInformationFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -343,7 +325,6 @@ DbgNtQueryInformationFile:
     ret
 
 .global DbgNtOpenKey
-.type DbgNtOpenKey, @function
 DbgNtOpenKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -362,7 +343,6 @@ DbgNtOpenKey:
     ret
 
 .global DbgNtEnumerateValueKey
-.type DbgNtEnumerateValueKey, @function
 DbgNtEnumerateValueKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -381,7 +361,6 @@ DbgNtEnumerateValueKey:
     ret
 
 .global DbgNtFindAtom
-.type DbgNtFindAtom, @function
 DbgNtFindAtom:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -400,7 +379,6 @@ DbgNtFindAtom:
     ret
 
 .global DbgNtQueryDefaultLocale
-.type DbgNtQueryDefaultLocale, @function
 DbgNtQueryDefaultLocale:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -419,7 +397,6 @@ DbgNtQueryDefaultLocale:
     ret
 
 .global DbgNtQueryKey
-.type DbgNtQueryKey, @function
 DbgNtQueryKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -438,7 +415,6 @@ DbgNtQueryKey:
     ret
 
 .global DbgNtQueryValueKey
-.type DbgNtQueryValueKey, @function
 DbgNtQueryValueKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -457,7 +433,6 @@ DbgNtQueryValueKey:
     ret
 
 .global DbgNtAllocateVirtualMemory
-.type DbgNtAllocateVirtualMemory, @function
 DbgNtAllocateVirtualMemory:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -476,7 +451,6 @@ DbgNtAllocateVirtualMemory:
     ret
 
 .global DbgNtQueryInformationProcess
-.type DbgNtQueryInformationProcess, @function
 DbgNtQueryInformationProcess:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -495,7 +469,6 @@ DbgNtQueryInformationProcess:
     ret
 
 .global DbgNtWaitForMultipleObjects32
-.type DbgNtWaitForMultipleObjects32, @function
 DbgNtWaitForMultipleObjects32:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -514,7 +487,6 @@ DbgNtWaitForMultipleObjects32:
     ret
 
 .global DbgNtWriteFileGather
-.type DbgNtWriteFileGather, @function
 DbgNtWriteFileGather:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -533,7 +505,6 @@ DbgNtWriteFileGather:
     ret
 
 .global DbgNtCreateKey
-.type DbgNtCreateKey, @function
 DbgNtCreateKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -552,7 +523,6 @@ DbgNtCreateKey:
     ret
 
 .global DbgNtFreeVirtualMemory
-.type DbgNtFreeVirtualMemory, @function
 DbgNtFreeVirtualMemory:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -571,7 +541,6 @@ DbgNtFreeVirtualMemory:
     ret
 
 .global DbgNtImpersonateClientOfPort
-.type DbgNtImpersonateClientOfPort, @function
 DbgNtImpersonateClientOfPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -590,7 +559,6 @@ DbgNtImpersonateClientOfPort:
     ret
 
 .global DbgNtReleaseMutant
-.type DbgNtReleaseMutant, @function
 DbgNtReleaseMutant:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -609,7 +577,6 @@ DbgNtReleaseMutant:
     ret
 
 .global DbgNtQueryInformationToken
-.type DbgNtQueryInformationToken, @function
 DbgNtQueryInformationToken:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -628,7 +595,6 @@ DbgNtQueryInformationToken:
     ret
 
 .global DbgNtRequestWaitReplyPort
-.type DbgNtRequestWaitReplyPort, @function
 DbgNtRequestWaitReplyPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -647,7 +613,6 @@ DbgNtRequestWaitReplyPort:
     ret
 
 .global DbgNtQueryVirtualMemory
-.type DbgNtQueryVirtualMemory, @function
 DbgNtQueryVirtualMemory:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -666,7 +631,6 @@ DbgNtQueryVirtualMemory:
     ret
 
 .global DbgNtOpenThreadToken
-.type DbgNtOpenThreadToken, @function
 DbgNtOpenThreadToken:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -685,7 +649,6 @@ DbgNtOpenThreadToken:
     ret
 
 .global DbgNtQueryInformationThread
-.type DbgNtQueryInformationThread, @function
 DbgNtQueryInformationThread:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -704,7 +667,6 @@ DbgNtQueryInformationThread:
     ret
 
 .global DbgNtOpenProcess
-.type DbgNtOpenProcess, @function
 DbgNtOpenProcess:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -723,7 +685,6 @@ DbgNtOpenProcess:
     ret
 
 .global DbgNtSetInformationFile
-.type DbgNtSetInformationFile, @function
 DbgNtSetInformationFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -742,7 +703,6 @@ DbgNtSetInformationFile:
     ret
 
 .global DbgNtMapViewOfSection
-.type DbgNtMapViewOfSection, @function
 DbgNtMapViewOfSection:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -761,7 +721,6 @@ DbgNtMapViewOfSection:
     ret
 
 .global DbgNtAccessCheckAndAuditAlarm
-.type DbgNtAccessCheckAndAuditAlarm, @function
 DbgNtAccessCheckAndAuditAlarm:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -780,7 +739,6 @@ DbgNtAccessCheckAndAuditAlarm:
     ret
 
 .global DbgNtUnmapViewOfSection
-.type DbgNtUnmapViewOfSection, @function
 DbgNtUnmapViewOfSection:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -799,7 +757,6 @@ DbgNtUnmapViewOfSection:
     ret
 
 .global DbgNtReplyWaitReceivePortEx
-.type DbgNtReplyWaitReceivePortEx, @function
 DbgNtReplyWaitReceivePortEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -818,7 +775,6 @@ DbgNtReplyWaitReceivePortEx:
     ret
 
 .global DbgNtTerminateProcess
-.type DbgNtTerminateProcess, @function
 DbgNtTerminateProcess:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -837,7 +793,6 @@ DbgNtTerminateProcess:
     ret
 
 .global DbgNtSetEventBoostPriority
-.type DbgNtSetEventBoostPriority, @function
 DbgNtSetEventBoostPriority:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -856,7 +811,6 @@ DbgNtSetEventBoostPriority:
     ret
 
 .global DbgNtReadFileScatter
-.type DbgNtReadFileScatter, @function
 DbgNtReadFileScatter:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -875,7 +829,6 @@ DbgNtReadFileScatter:
     ret
 
 .global DbgNtOpenThreadTokenEx
-.type DbgNtOpenThreadTokenEx, @function
 DbgNtOpenThreadTokenEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -894,7 +847,6 @@ DbgNtOpenThreadTokenEx:
     ret
 
 .global DbgNtOpenProcessTokenEx
-.type DbgNtOpenProcessTokenEx, @function
 DbgNtOpenProcessTokenEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -913,7 +865,6 @@ DbgNtOpenProcessTokenEx:
     ret
 
 .global DbgNtQueryPerformanceCounter
-.type DbgNtQueryPerformanceCounter, @function
 DbgNtQueryPerformanceCounter:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -932,7 +883,6 @@ DbgNtQueryPerformanceCounter:
     ret
 
 .global DbgNtEnumerateKey
-.type DbgNtEnumerateKey, @function
 DbgNtEnumerateKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -951,7 +901,6 @@ DbgNtEnumerateKey:
     ret
 
 .global DbgNtOpenFile
-.type DbgNtOpenFile, @function
 DbgNtOpenFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -970,7 +919,6 @@ DbgNtOpenFile:
     ret
 
 .global DbgNtDelayExecution
-.type DbgNtDelayExecution, @function
 DbgNtDelayExecution:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -989,7 +937,6 @@ DbgNtDelayExecution:
     ret
 
 .global DbgNtQueryDirectoryFile
-.type DbgNtQueryDirectoryFile, @function
 DbgNtQueryDirectoryFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1008,7 +955,6 @@ DbgNtQueryDirectoryFile:
     ret
 
 .global DbgNtQuerySystemInformation
-.type DbgNtQuerySystemInformation, @function
 DbgNtQuerySystemInformation:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1027,7 +973,6 @@ DbgNtQuerySystemInformation:
     ret
 
 .global DbgNtOpenSection
-.type DbgNtOpenSection, @function
 DbgNtOpenSection:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1046,7 +991,6 @@ DbgNtOpenSection:
     ret
 
 .global DbgNtQueryTimer
-.type DbgNtQueryTimer, @function
 DbgNtQueryTimer:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1065,7 +1009,6 @@ DbgNtQueryTimer:
     ret
 
 .global DbgNtFsControlFile
-.type DbgNtFsControlFile, @function
 DbgNtFsControlFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1084,7 +1027,6 @@ DbgNtFsControlFile:
     ret
 
 .global DbgNtWriteVirtualMemory
-.type DbgNtWriteVirtualMemory, @function
 DbgNtWriteVirtualMemory:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1103,7 +1045,6 @@ DbgNtWriteVirtualMemory:
     ret
 
 .global DbgNtCloseObjectAuditAlarm
-.type DbgNtCloseObjectAuditAlarm, @function
 DbgNtCloseObjectAuditAlarm:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1122,7 +1063,6 @@ DbgNtCloseObjectAuditAlarm:
     ret
 
 .global DbgNtDuplicateObject
-.type DbgNtDuplicateObject, @function
 DbgNtDuplicateObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1141,7 +1081,6 @@ DbgNtDuplicateObject:
     ret
 
 .global DbgNtQueryAttributesFile
-.type DbgNtQueryAttributesFile, @function
 DbgNtQueryAttributesFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1160,7 +1099,6 @@ DbgNtQueryAttributesFile:
     ret
 
 .global DbgNtClearEvent
-.type DbgNtClearEvent, @function
 DbgNtClearEvent:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1179,7 +1117,6 @@ DbgNtClearEvent:
     ret
 
 .global DbgNtReadVirtualMemory
-.type DbgNtReadVirtualMemory, @function
 DbgNtReadVirtualMemory:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1198,7 +1135,6 @@ DbgNtReadVirtualMemory:
     ret
 
 .global DbgNtOpenEvent
-.type DbgNtOpenEvent, @function
 DbgNtOpenEvent:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1217,7 +1153,6 @@ DbgNtOpenEvent:
     ret
 
 .global DbgNtAdjustPrivilegesToken
-.type DbgNtAdjustPrivilegesToken, @function
 DbgNtAdjustPrivilegesToken:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1236,7 +1171,6 @@ DbgNtAdjustPrivilegesToken:
     ret
 
 .global DbgNtDuplicateToken
-.type DbgNtDuplicateToken, @function
 DbgNtDuplicateToken:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1255,7 +1189,6 @@ DbgNtDuplicateToken:
     ret
 
 .global DbgNtContinue
-.type DbgNtContinue, @function
 DbgNtContinue:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1274,7 +1207,6 @@ DbgNtContinue:
     ret
 
 .global DbgNtQueryDefaultUILanguage
-.type DbgNtQueryDefaultUILanguage, @function
 DbgNtQueryDefaultUILanguage:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1293,7 +1225,6 @@ DbgNtQueryDefaultUILanguage:
     ret
 
 .global DbgNtQueueApcThread
-.type DbgNtQueueApcThread, @function
 DbgNtQueueApcThread:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1312,7 +1243,6 @@ DbgNtQueueApcThread:
     ret
 
 .global DbgNtYieldExecution
-.type DbgNtYieldExecution, @function
 DbgNtYieldExecution:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1331,7 +1261,6 @@ DbgNtYieldExecution:
     ret
 
 .global DbgNtAddAtom
-.type DbgNtAddAtom, @function
 DbgNtAddAtom:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1350,7 +1279,6 @@ DbgNtAddAtom:
     ret
 
 .global DbgNtCreateEvent
-.type DbgNtCreateEvent, @function
 DbgNtCreateEvent:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1369,7 +1297,6 @@ DbgNtCreateEvent:
     ret
 
 .global DbgNtQueryVolumeInformationFile
-.type DbgNtQueryVolumeInformationFile, @function
 DbgNtQueryVolumeInformationFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1388,7 +1315,6 @@ DbgNtQueryVolumeInformationFile:
     ret
 
 .global DbgNtCreateSection
-.type DbgNtCreateSection, @function
 DbgNtCreateSection:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1407,7 +1333,6 @@ DbgNtCreateSection:
     ret
 
 .global DbgNtFlushBuffersFile
-.type DbgNtFlushBuffersFile, @function
 DbgNtFlushBuffersFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1426,7 +1351,6 @@ DbgNtFlushBuffersFile:
     ret
 
 .global DbgNtApphelpCacheControl
-.type DbgNtApphelpCacheControl, @function
 DbgNtApphelpCacheControl:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1445,7 +1369,6 @@ DbgNtApphelpCacheControl:
     ret
 
 .global DbgNtCreateProcessEx
-.type DbgNtCreateProcessEx, @function
 DbgNtCreateProcessEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1464,7 +1387,6 @@ DbgNtCreateProcessEx:
     ret
 
 .global DbgNtCreateThread
-.type DbgNtCreateThread, @function
 DbgNtCreateThread:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1483,7 +1405,6 @@ DbgNtCreateThread:
     ret
 
 .global DbgNtIsProcessInJob
-.type DbgNtIsProcessInJob, @function
 DbgNtIsProcessInJob:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1502,7 +1423,6 @@ DbgNtIsProcessInJob:
     ret
 
 .global DbgNtProtectVirtualMemory
-.type DbgNtProtectVirtualMemory, @function
 DbgNtProtectVirtualMemory:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1521,7 +1441,6 @@ DbgNtProtectVirtualMemory:
     ret
 
 .global DbgNtQuerySection
-.type DbgNtQuerySection, @function
 DbgNtQuerySection:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1540,7 +1459,6 @@ DbgNtQuerySection:
     ret
 
 .global DbgNtResumeThread
-.type DbgNtResumeThread, @function
 DbgNtResumeThread:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1559,7 +1477,6 @@ DbgNtResumeThread:
     ret
 
 .global DbgNtTerminateThread
-.type DbgNtTerminateThread, @function
 DbgNtTerminateThread:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1578,7 +1495,6 @@ DbgNtTerminateThread:
     ret
 
 .global DbgNtReadRequestData
-.type DbgNtReadRequestData, @function
 DbgNtReadRequestData:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1597,7 +1513,6 @@ DbgNtReadRequestData:
     ret
 
 .global DbgNtCreateFile
-.type DbgNtCreateFile, @function
 DbgNtCreateFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1616,7 +1531,6 @@ DbgNtCreateFile:
     ret
 
 .global DbgNtQueryEvent
-.type DbgNtQueryEvent, @function
 DbgNtQueryEvent:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1635,7 +1549,6 @@ DbgNtQueryEvent:
     ret
 
 .global DbgNtWriteRequestData
-.type DbgNtWriteRequestData, @function
 DbgNtWriteRequestData:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1654,7 +1567,6 @@ DbgNtWriteRequestData:
     ret
 
 .global DbgNtOpenDirectoryObject
-.type DbgNtOpenDirectoryObject, @function
 DbgNtOpenDirectoryObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1673,7 +1585,6 @@ DbgNtOpenDirectoryObject:
     ret
 
 .global DbgNtAccessCheckByTypeAndAuditAlarm
-.type DbgNtAccessCheckByTypeAndAuditAlarm, @function
 DbgNtAccessCheckByTypeAndAuditAlarm:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1692,7 +1603,6 @@ DbgNtAccessCheckByTypeAndAuditAlarm:
     ret
 
 .global DbgNtWaitForMultipleObjects
-.type DbgNtWaitForMultipleObjects, @function
 DbgNtWaitForMultipleObjects:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1711,7 +1621,6 @@ DbgNtWaitForMultipleObjects:
     ret
 
 .global DbgNtSetInformationObject
-.type DbgNtSetInformationObject, @function
 DbgNtSetInformationObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1730,7 +1639,6 @@ DbgNtSetInformationObject:
     ret
 
 .global DbgNtCancelIoFile
-.type DbgNtCancelIoFile, @function
 DbgNtCancelIoFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1749,7 +1657,6 @@ DbgNtCancelIoFile:
     ret
 
 .global DbgNtTraceEvent
-.type DbgNtTraceEvent, @function
 DbgNtTraceEvent:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1768,7 +1675,6 @@ DbgNtTraceEvent:
     ret
 
 .global DbgNtPowerInformation
-.type DbgNtPowerInformation, @function
 DbgNtPowerInformation:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1787,7 +1693,6 @@ DbgNtPowerInformation:
     ret
 
 .global DbgNtSetValueKey
-.type DbgNtSetValueKey, @function
 DbgNtSetValueKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1806,7 +1711,6 @@ DbgNtSetValueKey:
     ret
 
 .global DbgNtCancelTimer
-.type DbgNtCancelTimer, @function
 DbgNtCancelTimer:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1825,7 +1729,6 @@ DbgNtCancelTimer:
     ret
 
 .global DbgNtSetTimer
-.type DbgNtSetTimer, @function
 DbgNtSetTimer:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1844,7 +1747,6 @@ DbgNtSetTimer:
     ret
 
 .global DbgNtAccessCheckByType
-.type DbgNtAccessCheckByType, @function
 DbgNtAccessCheckByType:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1863,7 +1765,6 @@ DbgNtAccessCheckByType:
     ret
 
 .global DbgNtAccessCheckByTypeResultList
-.type DbgNtAccessCheckByTypeResultList, @function
 DbgNtAccessCheckByTypeResultList:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1882,7 +1783,6 @@ DbgNtAccessCheckByTypeResultList:
     ret
 
 .global DbgNtAccessCheckByTypeResultListAndAuditAlarm
-.type DbgNtAccessCheckByTypeResultListAndAuditAlarm, @function
 DbgNtAccessCheckByTypeResultListAndAuditAlarm:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1901,7 +1801,6 @@ DbgNtAccessCheckByTypeResultListAndAuditAlarm:
     ret
 
 .global DbgNtAccessCheckByTypeResultListAndAuditAlarmByHandle
-.type DbgNtAccessCheckByTypeResultListAndAuditAlarmByHandle, @function
 DbgNtAccessCheckByTypeResultListAndAuditAlarmByHandle:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1920,7 +1819,6 @@ DbgNtAccessCheckByTypeResultListAndAuditAlarmByHandle:
     ret
 
 .global DbgNtAcquireProcessActivityReference
-.type DbgNtAcquireProcessActivityReference, @function
 DbgNtAcquireProcessActivityReference:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1939,7 +1837,6 @@ DbgNtAcquireProcessActivityReference:
     ret
 
 .global DbgNtAddAtomEx
-.type DbgNtAddAtomEx, @function
 DbgNtAddAtomEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1958,7 +1855,6 @@ DbgNtAddAtomEx:
     ret
 
 .global DbgNtAddBootEntry
-.type DbgNtAddBootEntry, @function
 DbgNtAddBootEntry:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1977,7 +1873,6 @@ DbgNtAddBootEntry:
     ret
 
 .global DbgNtAddDriverEntry
-.type DbgNtAddDriverEntry, @function
 DbgNtAddDriverEntry:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -1996,7 +1891,6 @@ DbgNtAddDriverEntry:
     ret
 
 .global DbgNtAdjustGroupsToken
-.type DbgNtAdjustGroupsToken, @function
 DbgNtAdjustGroupsToken:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2015,7 +1909,6 @@ DbgNtAdjustGroupsToken:
     ret
 
 .global DbgNtAdjustTokenClaimsAndDeviceGroups
-.type DbgNtAdjustTokenClaimsAndDeviceGroups, @function
 DbgNtAdjustTokenClaimsAndDeviceGroups:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2034,7 +1927,6 @@ DbgNtAdjustTokenClaimsAndDeviceGroups:
     ret
 
 .global DbgNtAlertResumeThread
-.type DbgNtAlertResumeThread, @function
 DbgNtAlertResumeThread:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2053,7 +1945,6 @@ DbgNtAlertResumeThread:
     ret
 
 .global DbgNtAlertThread
-.type DbgNtAlertThread, @function
 DbgNtAlertThread:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2072,7 +1963,6 @@ DbgNtAlertThread:
     ret
 
 .global DbgNtAlertThreadByThreadId
-.type DbgNtAlertThreadByThreadId, @function
 DbgNtAlertThreadByThreadId:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2091,7 +1981,6 @@ DbgNtAlertThreadByThreadId:
     ret
 
 .global DbgNtAllocateLocallyUniqueId
-.type DbgNtAllocateLocallyUniqueId, @function
 DbgNtAllocateLocallyUniqueId:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2110,7 +1999,6 @@ DbgNtAllocateLocallyUniqueId:
     ret
 
 .global DbgNtAllocateReserveObject
-.type DbgNtAllocateReserveObject, @function
 DbgNtAllocateReserveObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2129,7 +2017,6 @@ DbgNtAllocateReserveObject:
     ret
 
 .global DbgNtAllocateUserPhysicalPages
-.type DbgNtAllocateUserPhysicalPages, @function
 DbgNtAllocateUserPhysicalPages:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2148,7 +2035,6 @@ DbgNtAllocateUserPhysicalPages:
     ret
 
 .global DbgNtAllocateUuids
-.type DbgNtAllocateUuids, @function
 DbgNtAllocateUuids:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2167,7 +2053,6 @@ DbgNtAllocateUuids:
     ret
 
 .global DbgNtAllocateVirtualMemoryEx
-.type DbgNtAllocateVirtualMemoryEx, @function
 DbgNtAllocateVirtualMemoryEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2186,7 +2071,6 @@ DbgNtAllocateVirtualMemoryEx:
     ret
 
 .global DbgNtAlpcAcceptConnectPort
-.type DbgNtAlpcAcceptConnectPort, @function
 DbgNtAlpcAcceptConnectPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2205,7 +2089,6 @@ DbgNtAlpcAcceptConnectPort:
     ret
 
 .global DbgNtAlpcCancelMessage
-.type DbgNtAlpcCancelMessage, @function
 DbgNtAlpcCancelMessage:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2224,7 +2107,6 @@ DbgNtAlpcCancelMessage:
     ret
 
 .global DbgNtAlpcConnectPort
-.type DbgNtAlpcConnectPort, @function
 DbgNtAlpcConnectPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2243,7 +2125,6 @@ DbgNtAlpcConnectPort:
     ret
 
 .global DbgNtAlpcConnectPortEx
-.type DbgNtAlpcConnectPortEx, @function
 DbgNtAlpcConnectPortEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2262,7 +2143,6 @@ DbgNtAlpcConnectPortEx:
     ret
 
 .global DbgNtAlpcCreatePort
-.type DbgNtAlpcCreatePort, @function
 DbgNtAlpcCreatePort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2281,7 +2161,6 @@ DbgNtAlpcCreatePort:
     ret
 
 .global DbgNtAlpcCreatePortSection
-.type DbgNtAlpcCreatePortSection, @function
 DbgNtAlpcCreatePortSection:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2300,7 +2179,6 @@ DbgNtAlpcCreatePortSection:
     ret
 
 .global DbgNtAlpcCreateResourceReserve
-.type DbgNtAlpcCreateResourceReserve, @function
 DbgNtAlpcCreateResourceReserve:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2319,7 +2197,6 @@ DbgNtAlpcCreateResourceReserve:
     ret
 
 .global DbgNtAlpcCreateSectionView
-.type DbgNtAlpcCreateSectionView, @function
 DbgNtAlpcCreateSectionView:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2338,7 +2215,6 @@ DbgNtAlpcCreateSectionView:
     ret
 
 .global DbgNtAlpcCreateSecurityContext
-.type DbgNtAlpcCreateSecurityContext, @function
 DbgNtAlpcCreateSecurityContext:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2357,7 +2233,6 @@ DbgNtAlpcCreateSecurityContext:
     ret
 
 .global DbgNtAlpcDeletePortSection
-.type DbgNtAlpcDeletePortSection, @function
 DbgNtAlpcDeletePortSection:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2376,7 +2251,6 @@ DbgNtAlpcDeletePortSection:
     ret
 
 .global DbgNtAlpcDeleteResourceReserve
-.type DbgNtAlpcDeleteResourceReserve, @function
 DbgNtAlpcDeleteResourceReserve:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2395,7 +2269,6 @@ DbgNtAlpcDeleteResourceReserve:
     ret
 
 .global DbgNtAlpcDeleteSectionView
-.type DbgNtAlpcDeleteSectionView, @function
 DbgNtAlpcDeleteSectionView:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2414,7 +2287,6 @@ DbgNtAlpcDeleteSectionView:
     ret
 
 .global DbgNtAlpcDeleteSecurityContext
-.type DbgNtAlpcDeleteSecurityContext, @function
 DbgNtAlpcDeleteSecurityContext:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2433,7 +2305,6 @@ DbgNtAlpcDeleteSecurityContext:
     ret
 
 .global DbgNtAlpcDisconnectPort
-.type DbgNtAlpcDisconnectPort, @function
 DbgNtAlpcDisconnectPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2452,7 +2323,6 @@ DbgNtAlpcDisconnectPort:
     ret
 
 .global DbgNtAlpcImpersonateClientContainerOfPort
-.type DbgNtAlpcImpersonateClientContainerOfPort, @function
 DbgNtAlpcImpersonateClientContainerOfPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2471,7 +2341,6 @@ DbgNtAlpcImpersonateClientContainerOfPort:
     ret
 
 .global DbgNtAlpcImpersonateClientOfPort
-.type DbgNtAlpcImpersonateClientOfPort, @function
 DbgNtAlpcImpersonateClientOfPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2490,7 +2359,6 @@ DbgNtAlpcImpersonateClientOfPort:
     ret
 
 .global DbgNtAlpcOpenSenderProcess
-.type DbgNtAlpcOpenSenderProcess, @function
 DbgNtAlpcOpenSenderProcess:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2509,7 +2377,6 @@ DbgNtAlpcOpenSenderProcess:
     ret
 
 .global DbgNtAlpcOpenSenderThread
-.type DbgNtAlpcOpenSenderThread, @function
 DbgNtAlpcOpenSenderThread:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2528,7 +2395,6 @@ DbgNtAlpcOpenSenderThread:
     ret
 
 .global DbgNtAlpcQueryInformation
-.type DbgNtAlpcQueryInformation, @function
 DbgNtAlpcQueryInformation:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2547,7 +2413,6 @@ DbgNtAlpcQueryInformation:
     ret
 
 .global DbgNtAlpcQueryInformationMessage
-.type DbgNtAlpcQueryInformationMessage, @function
 DbgNtAlpcQueryInformationMessage:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2566,7 +2431,6 @@ DbgNtAlpcQueryInformationMessage:
     ret
 
 .global DbgNtAlpcRevokeSecurityContext
-.type DbgNtAlpcRevokeSecurityContext, @function
 DbgNtAlpcRevokeSecurityContext:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2585,7 +2449,6 @@ DbgNtAlpcRevokeSecurityContext:
     ret
 
 .global DbgNtAlpcSendWaitReceivePort
-.type DbgNtAlpcSendWaitReceivePort, @function
 DbgNtAlpcSendWaitReceivePort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2604,7 +2467,6 @@ DbgNtAlpcSendWaitReceivePort:
     ret
 
 .global DbgNtAlpcSetInformation
-.type DbgNtAlpcSetInformation, @function
 DbgNtAlpcSetInformation:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2623,7 +2485,6 @@ DbgNtAlpcSetInformation:
     ret
 
 .global DbgNtAreMappedFilesTheSame
-.type DbgNtAreMappedFilesTheSame, @function
 DbgNtAreMappedFilesTheSame:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2642,7 +2503,6 @@ DbgNtAreMappedFilesTheSame:
     ret
 
 .global DbgNtAssignProcessToJobObject
-.type DbgNtAssignProcessToJobObject, @function
 DbgNtAssignProcessToJobObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2661,7 +2521,6 @@ DbgNtAssignProcessToJobObject:
     ret
 
 .global DbgNtAssociateWaitCompletionPacket
-.type DbgNtAssociateWaitCompletionPacket, @function
 DbgNtAssociateWaitCompletionPacket:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2680,7 +2539,6 @@ DbgNtAssociateWaitCompletionPacket:
     ret
 
 .global DbgNtCallEnclave
-.type DbgNtCallEnclave, @function
 DbgNtCallEnclave:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2699,7 +2557,6 @@ DbgNtCallEnclave:
     ret
 
 .global DbgNtCancelIoFileEx
-.type DbgNtCancelIoFileEx, @function
 DbgNtCancelIoFileEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2718,7 +2575,6 @@ DbgNtCancelIoFileEx:
     ret
 
 .global DbgNtCancelSynchronousIoFile
-.type DbgNtCancelSynchronousIoFile, @function
 DbgNtCancelSynchronousIoFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2737,7 +2593,6 @@ DbgNtCancelSynchronousIoFile:
     ret
 
 .global DbgNtCancelTimer2
-.type DbgNtCancelTimer2, @function
 DbgNtCancelTimer2:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2756,7 +2611,6 @@ DbgNtCancelTimer2:
     ret
 
 .global DbgNtCancelWaitCompletionPacket
-.type DbgNtCancelWaitCompletionPacket, @function
 DbgNtCancelWaitCompletionPacket:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2775,7 +2629,6 @@ DbgNtCancelWaitCompletionPacket:
     ret
 
 .global DbgNtCommitComplete
-.type DbgNtCommitComplete, @function
 DbgNtCommitComplete:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2794,7 +2647,6 @@ DbgNtCommitComplete:
     ret
 
 .global DbgNtCommitEnlistment
-.type DbgNtCommitEnlistment, @function
 DbgNtCommitEnlistment:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2813,7 +2665,6 @@ DbgNtCommitEnlistment:
     ret
 
 .global DbgNtCommitRegistryTransaction
-.type DbgNtCommitRegistryTransaction, @function
 DbgNtCommitRegistryTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2832,7 +2683,6 @@ DbgNtCommitRegistryTransaction:
     ret
 
 .global DbgNtCommitTransaction
-.type DbgNtCommitTransaction, @function
 DbgNtCommitTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2851,7 +2701,6 @@ DbgNtCommitTransaction:
     ret
 
 .global DbgNtCompactKeys
-.type DbgNtCompactKeys, @function
 DbgNtCompactKeys:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2870,7 +2719,6 @@ DbgNtCompactKeys:
     ret
 
 .global DbgNtCompareObjects
-.type DbgNtCompareObjects, @function
 DbgNtCompareObjects:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2889,7 +2737,6 @@ DbgNtCompareObjects:
     ret
 
 .global DbgNtCompareSigningLevels
-.type DbgNtCompareSigningLevels, @function
 DbgNtCompareSigningLevels:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2908,7 +2755,6 @@ DbgNtCompareSigningLevels:
     ret
 
 .global DbgNtCompareTokens
-.type DbgNtCompareTokens, @function
 DbgNtCompareTokens:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2927,7 +2773,6 @@ DbgNtCompareTokens:
     ret
 
 .global DbgNtCompleteConnectPort
-.type DbgNtCompleteConnectPort, @function
 DbgNtCompleteConnectPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2946,7 +2791,6 @@ DbgNtCompleteConnectPort:
     ret
 
 .global DbgNtCompressKey
-.type DbgNtCompressKey, @function
 DbgNtCompressKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2965,7 +2809,6 @@ DbgNtCompressKey:
     ret
 
 .global DbgNtConnectPort
-.type DbgNtConnectPort, @function
 DbgNtConnectPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -2984,7 +2827,6 @@ DbgNtConnectPort:
     ret
 
 .global DbgNtConvertBetweenAuxiliaryCounterAndPerformanceCounter
-.type DbgNtConvertBetweenAuxiliaryCounterAndPerformanceCounter, @function
 DbgNtConvertBetweenAuxiliaryCounterAndPerformanceCounter:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3003,7 +2845,6 @@ DbgNtConvertBetweenAuxiliaryCounterAndPerformanceCounter:
     ret
 
 .global DbgNtCreateDebugObject
-.type DbgNtCreateDebugObject, @function
 DbgNtCreateDebugObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3022,7 +2863,6 @@ DbgNtCreateDebugObject:
     ret
 
 .global DbgNtCreateDirectoryObject
-.type DbgNtCreateDirectoryObject, @function
 DbgNtCreateDirectoryObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3041,7 +2881,6 @@ DbgNtCreateDirectoryObject:
     ret
 
 .global DbgNtCreateDirectoryObjectEx
-.type DbgNtCreateDirectoryObjectEx, @function
 DbgNtCreateDirectoryObjectEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3060,7 +2899,6 @@ DbgNtCreateDirectoryObjectEx:
     ret
 
 .global DbgNtCreateEnclave
-.type DbgNtCreateEnclave, @function
 DbgNtCreateEnclave:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3079,7 +2917,6 @@ DbgNtCreateEnclave:
     ret
 
 .global DbgNtCreateEnlistment
-.type DbgNtCreateEnlistment, @function
 DbgNtCreateEnlistment:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3098,7 +2935,6 @@ DbgNtCreateEnlistment:
     ret
 
 .global DbgNtCreateEventPair
-.type DbgNtCreateEventPair, @function
 DbgNtCreateEventPair:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3117,7 +2953,6 @@ DbgNtCreateEventPair:
     ret
 
 .global DbgNtCreateIRTimer
-.type DbgNtCreateIRTimer, @function
 DbgNtCreateIRTimer:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3136,7 +2971,6 @@ DbgNtCreateIRTimer:
     ret
 
 .global DbgNtCreateIoCompletion
-.type DbgNtCreateIoCompletion, @function
 DbgNtCreateIoCompletion:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3155,7 +2989,6 @@ DbgNtCreateIoCompletion:
     ret
 
 .global DbgNtCreateJobObject
-.type DbgNtCreateJobObject, @function
 DbgNtCreateJobObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3174,7 +3007,6 @@ DbgNtCreateJobObject:
     ret
 
 .global DbgNtCreateJobSet
-.type DbgNtCreateJobSet, @function
 DbgNtCreateJobSet:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3193,7 +3025,6 @@ DbgNtCreateJobSet:
     ret
 
 .global DbgNtCreateKeyTransacted
-.type DbgNtCreateKeyTransacted, @function
 DbgNtCreateKeyTransacted:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3212,7 +3043,6 @@ DbgNtCreateKeyTransacted:
     ret
 
 .global DbgNtCreateKeyedEvent
-.type DbgNtCreateKeyedEvent, @function
 DbgNtCreateKeyedEvent:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3231,7 +3061,6 @@ DbgNtCreateKeyedEvent:
     ret
 
 .global DbgNtCreateLowBoxToken
-.type DbgNtCreateLowBoxToken, @function
 DbgNtCreateLowBoxToken:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3250,7 +3079,6 @@ DbgNtCreateLowBoxToken:
     ret
 
 .global DbgNtCreateMailslotFile
-.type DbgNtCreateMailslotFile, @function
 DbgNtCreateMailslotFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3269,7 +3097,6 @@ DbgNtCreateMailslotFile:
     ret
 
 .global DbgNtCreateMutant
-.type DbgNtCreateMutant, @function
 DbgNtCreateMutant:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3288,7 +3115,6 @@ DbgNtCreateMutant:
     ret
 
 .global DbgNtCreateNamedPipeFile
-.type DbgNtCreateNamedPipeFile, @function
 DbgNtCreateNamedPipeFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3307,7 +3133,6 @@ DbgNtCreateNamedPipeFile:
     ret
 
 .global DbgNtCreatePagingFile
-.type DbgNtCreatePagingFile, @function
 DbgNtCreatePagingFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3326,7 +3151,6 @@ DbgNtCreatePagingFile:
     ret
 
 .global DbgNtCreatePartition
-.type DbgNtCreatePartition, @function
 DbgNtCreatePartition:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3345,7 +3169,6 @@ DbgNtCreatePartition:
     ret
 
 .global DbgNtCreatePort
-.type DbgNtCreatePort, @function
 DbgNtCreatePort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3364,7 +3187,6 @@ DbgNtCreatePort:
     ret
 
 .global DbgNtCreatePrivateNamespace
-.type DbgNtCreatePrivateNamespace, @function
 DbgNtCreatePrivateNamespace:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3383,7 +3205,6 @@ DbgNtCreatePrivateNamespace:
     ret
 
 .global DbgNtCreateProcess
-.type DbgNtCreateProcess, @function
 DbgNtCreateProcess:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3402,7 +3223,6 @@ DbgNtCreateProcess:
     ret
 
 .global DbgNtCreateProfile
-.type DbgNtCreateProfile, @function
 DbgNtCreateProfile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3421,7 +3241,6 @@ DbgNtCreateProfile:
     ret
 
 .global DbgNtCreateProfileEx
-.type DbgNtCreateProfileEx, @function
 DbgNtCreateProfileEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3440,7 +3259,6 @@ DbgNtCreateProfileEx:
     ret
 
 .global DbgNtCreateRegistryTransaction
-.type DbgNtCreateRegistryTransaction, @function
 DbgNtCreateRegistryTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3459,7 +3277,6 @@ DbgNtCreateRegistryTransaction:
     ret
 
 .global DbgNtCreateResourceManager
-.type DbgNtCreateResourceManager, @function
 DbgNtCreateResourceManager:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3478,7 +3295,6 @@ DbgNtCreateResourceManager:
     ret
 
 .global DbgNtCreateSemaphore
-.type DbgNtCreateSemaphore, @function
 DbgNtCreateSemaphore:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3497,7 +3313,6 @@ DbgNtCreateSemaphore:
     ret
 
 .global DbgNtCreateSymbolicLinkObject
-.type DbgNtCreateSymbolicLinkObject, @function
 DbgNtCreateSymbolicLinkObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3516,7 +3331,6 @@ DbgNtCreateSymbolicLinkObject:
     ret
 
 .global DbgNtCreateThreadEx
-.type DbgNtCreateThreadEx, @function
 DbgNtCreateThreadEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3535,7 +3349,6 @@ DbgNtCreateThreadEx:
     ret
 
 .global DbgNtCreateTimer
-.type DbgNtCreateTimer, @function
 DbgNtCreateTimer:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3554,7 +3367,6 @@ DbgNtCreateTimer:
     ret
 
 .global DbgNtCreateTimer2
-.type DbgNtCreateTimer2, @function
 DbgNtCreateTimer2:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3573,7 +3385,6 @@ DbgNtCreateTimer2:
     ret
 
 .global DbgNtCreateToken
-.type DbgNtCreateToken, @function
 DbgNtCreateToken:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3592,7 +3403,6 @@ DbgNtCreateToken:
     ret
 
 .global DbgNtCreateTokenEx
-.type DbgNtCreateTokenEx, @function
 DbgNtCreateTokenEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3611,7 +3421,6 @@ DbgNtCreateTokenEx:
     ret
 
 .global DbgNtCreateTransaction
-.type DbgNtCreateTransaction, @function
 DbgNtCreateTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3630,7 +3439,6 @@ DbgNtCreateTransaction:
     ret
 
 .global DbgNtCreateTransactionManager
-.type DbgNtCreateTransactionManager, @function
 DbgNtCreateTransactionManager:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3649,7 +3457,6 @@ DbgNtCreateTransactionManager:
     ret
 
 .global DbgNtCreateUserProcess
-.type DbgNtCreateUserProcess, @function
 DbgNtCreateUserProcess:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3668,7 +3475,6 @@ DbgNtCreateUserProcess:
     ret
 
 .global DbgNtCreateWaitCompletionPacket
-.type DbgNtCreateWaitCompletionPacket, @function
 DbgNtCreateWaitCompletionPacket:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3687,7 +3493,6 @@ DbgNtCreateWaitCompletionPacket:
     ret
 
 .global DbgNtCreateWaitablePort
-.type DbgNtCreateWaitablePort, @function
 DbgNtCreateWaitablePort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3706,7 +3511,6 @@ DbgNtCreateWaitablePort:
     ret
 
 .global DbgNtCreateWnfStateName
-.type DbgNtCreateWnfStateName, @function
 DbgNtCreateWnfStateName:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3725,7 +3529,6 @@ DbgNtCreateWnfStateName:
     ret
 
 .global DbgNtCreateWorkerFactory
-.type DbgNtCreateWorkerFactory, @function
 DbgNtCreateWorkerFactory:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3744,7 +3547,6 @@ DbgNtCreateWorkerFactory:
     ret
 
 .global DbgNtDebugActiveProcess
-.type DbgNtDebugActiveProcess, @function
 DbgNtDebugActiveProcess:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3763,7 +3565,6 @@ DbgNtDebugActiveProcess:
     ret
 
 .global DbgNtDebugContinue
-.type DbgNtDebugContinue, @function
 DbgNtDebugContinue:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3782,7 +3583,6 @@ DbgNtDebugContinue:
     ret
 
 .global DbgNtDeleteAtom
-.type DbgNtDeleteAtom, @function
 DbgNtDeleteAtom:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3801,7 +3601,6 @@ DbgNtDeleteAtom:
     ret
 
 .global DbgNtDeleteBootEntry
-.type DbgNtDeleteBootEntry, @function
 DbgNtDeleteBootEntry:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3820,7 +3619,6 @@ DbgNtDeleteBootEntry:
     ret
 
 .global DbgNtDeleteDriverEntry
-.type DbgNtDeleteDriverEntry, @function
 DbgNtDeleteDriverEntry:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3839,7 +3637,6 @@ DbgNtDeleteDriverEntry:
     ret
 
 .global DbgNtDeleteFile
-.type DbgNtDeleteFile, @function
 DbgNtDeleteFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3858,7 +3655,6 @@ DbgNtDeleteFile:
     ret
 
 .global DbgNtDeleteKey
-.type DbgNtDeleteKey, @function
 DbgNtDeleteKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3877,7 +3673,6 @@ DbgNtDeleteKey:
     ret
 
 .global DbgNtDeleteObjectAuditAlarm
-.type DbgNtDeleteObjectAuditAlarm, @function
 DbgNtDeleteObjectAuditAlarm:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3896,7 +3691,6 @@ DbgNtDeleteObjectAuditAlarm:
     ret
 
 .global DbgNtDeletePrivateNamespace
-.type DbgNtDeletePrivateNamespace, @function
 DbgNtDeletePrivateNamespace:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3915,7 +3709,6 @@ DbgNtDeletePrivateNamespace:
     ret
 
 .global DbgNtDeleteValueKey
-.type DbgNtDeleteValueKey, @function
 DbgNtDeleteValueKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3934,7 +3727,6 @@ DbgNtDeleteValueKey:
     ret
 
 .global DbgNtDeleteWnfStateData
-.type DbgNtDeleteWnfStateData, @function
 DbgNtDeleteWnfStateData:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3953,7 +3745,6 @@ DbgNtDeleteWnfStateData:
     ret
 
 .global DbgNtDeleteWnfStateName
-.type DbgNtDeleteWnfStateName, @function
 DbgNtDeleteWnfStateName:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3972,7 +3763,6 @@ DbgNtDeleteWnfStateName:
     ret
 
 .global DbgNtDisableLastKnownGood
-.type DbgNtDisableLastKnownGood, @function
 DbgNtDisableLastKnownGood:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -3991,7 +3781,6 @@ DbgNtDisableLastKnownGood:
     ret
 
 .global DbgNtDisplayString
-.type DbgNtDisplayString, @function
 DbgNtDisplayString:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4010,7 +3799,6 @@ DbgNtDisplayString:
     ret
 
 .global DbgNtDrawText
-.type DbgNtDrawText, @function
 DbgNtDrawText:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4029,7 +3817,6 @@ DbgNtDrawText:
     ret
 
 .global DbgNtEnableLastKnownGood
-.type DbgNtEnableLastKnownGood, @function
 DbgNtEnableLastKnownGood:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4048,7 +3835,6 @@ DbgNtEnableLastKnownGood:
     ret
 
 .global DbgNtEnumerateBootEntries
-.type DbgNtEnumerateBootEntries, @function
 DbgNtEnumerateBootEntries:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4067,7 +3853,6 @@ DbgNtEnumerateBootEntries:
     ret
 
 .global DbgNtEnumerateDriverEntries
-.type DbgNtEnumerateDriverEntries, @function
 DbgNtEnumerateDriverEntries:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4086,7 +3871,6 @@ DbgNtEnumerateDriverEntries:
     ret
 
 .global DbgNtEnumerateSystemEnvironmentValuesEx
-.type DbgNtEnumerateSystemEnvironmentValuesEx, @function
 DbgNtEnumerateSystemEnvironmentValuesEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4105,7 +3889,6 @@ DbgNtEnumerateSystemEnvironmentValuesEx:
     ret
 
 .global DbgNtEnumerateTransactionObject
-.type DbgNtEnumerateTransactionObject, @function
 DbgNtEnumerateTransactionObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4124,7 +3907,6 @@ DbgNtEnumerateTransactionObject:
     ret
 
 .global DbgNtExtendSection
-.type DbgNtExtendSection, @function
 DbgNtExtendSection:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4143,7 +3925,6 @@ DbgNtExtendSection:
     ret
 
 .global DbgNtFilterBootOption
-.type DbgNtFilterBootOption, @function
 DbgNtFilterBootOption:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4162,7 +3943,6 @@ DbgNtFilterBootOption:
     ret
 
 .global DbgNtFilterToken
-.type DbgNtFilterToken, @function
 DbgNtFilterToken:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4181,7 +3961,6 @@ DbgNtFilterToken:
     ret
 
 .global DbgNtFilterTokenEx
-.type DbgNtFilterTokenEx, @function
 DbgNtFilterTokenEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4200,7 +3979,6 @@ DbgNtFilterTokenEx:
     ret
 
 .global DbgNtFlushBuffersFileEx
-.type DbgNtFlushBuffersFileEx, @function
 DbgNtFlushBuffersFileEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4219,7 +3997,6 @@ DbgNtFlushBuffersFileEx:
     ret
 
 .global DbgNtFlushInstallUILanguage
-.type DbgNtFlushInstallUILanguage, @function
 DbgNtFlushInstallUILanguage:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4238,7 +4015,6 @@ DbgNtFlushInstallUILanguage:
     ret
 
 .global DbgNtFlushInstructionCache
-.type DbgNtFlushInstructionCache, @function
 DbgNtFlushInstructionCache:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4257,7 +4033,6 @@ DbgNtFlushInstructionCache:
     ret
 
 .global DbgNtFlushKey
-.type DbgNtFlushKey, @function
 DbgNtFlushKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4276,7 +4051,6 @@ DbgNtFlushKey:
     ret
 
 .global DbgNtFlushProcessWriteBuffers
-.type DbgNtFlushProcessWriteBuffers, @function
 DbgNtFlushProcessWriteBuffers:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4295,7 +4069,6 @@ DbgNtFlushProcessWriteBuffers:
     ret
 
 .global DbgNtFlushVirtualMemory
-.type DbgNtFlushVirtualMemory, @function
 DbgNtFlushVirtualMemory:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4314,7 +4087,6 @@ DbgNtFlushVirtualMemory:
     ret
 
 .global DbgNtFlushWriteBuffer
-.type DbgNtFlushWriteBuffer, @function
 DbgNtFlushWriteBuffer:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4333,7 +4105,6 @@ DbgNtFlushWriteBuffer:
     ret
 
 .global DbgNtFreeUserPhysicalPages
-.type DbgNtFreeUserPhysicalPages, @function
 DbgNtFreeUserPhysicalPages:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4352,7 +4123,6 @@ DbgNtFreeUserPhysicalPages:
     ret
 
 .global DbgNtFreezeRegistry
-.type DbgNtFreezeRegistry, @function
 DbgNtFreezeRegistry:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4371,7 +4141,6 @@ DbgNtFreezeRegistry:
     ret
 
 .global DbgNtFreezeTransactions
-.type DbgNtFreezeTransactions, @function
 DbgNtFreezeTransactions:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4390,7 +4159,6 @@ DbgNtFreezeTransactions:
     ret
 
 .global DbgNtGetCachedSigningLevel
-.type DbgNtGetCachedSigningLevel, @function
 DbgNtGetCachedSigningLevel:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4409,7 +4177,6 @@ DbgNtGetCachedSigningLevel:
     ret
 
 .global DbgNtGetCompleteWnfStateSubscription
-.type DbgNtGetCompleteWnfStateSubscription, @function
 DbgNtGetCompleteWnfStateSubscription:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4428,7 +4195,6 @@ DbgNtGetCompleteWnfStateSubscription:
     ret
 
 .global DbgNtGetContextThread
-.type DbgNtGetContextThread, @function
 DbgNtGetContextThread:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4447,7 +4213,6 @@ DbgNtGetContextThread:
     ret
 
 .global DbgNtGetCurrentProcessorNumber
-.type DbgNtGetCurrentProcessorNumber, @function
 DbgNtGetCurrentProcessorNumber:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4466,7 +4231,6 @@ DbgNtGetCurrentProcessorNumber:
     ret
 
 .global DbgNtGetCurrentProcessorNumberEx
-.type DbgNtGetCurrentProcessorNumberEx, @function
 DbgNtGetCurrentProcessorNumberEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4485,7 +4249,6 @@ DbgNtGetCurrentProcessorNumberEx:
     ret
 
 .global DbgNtGetDevicePowerState
-.type DbgNtGetDevicePowerState, @function
 DbgNtGetDevicePowerState:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4504,7 +4267,6 @@ DbgNtGetDevicePowerState:
     ret
 
 .global DbgNtGetMUIRegistryInfo
-.type DbgNtGetMUIRegistryInfo, @function
 DbgNtGetMUIRegistryInfo:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4523,7 +4285,6 @@ DbgNtGetMUIRegistryInfo:
     ret
 
 .global DbgNtGetNextProcess
-.type DbgNtGetNextProcess, @function
 DbgNtGetNextProcess:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4542,7 +4303,6 @@ DbgNtGetNextProcess:
     ret
 
 .global DbgNtGetNextThread
-.type DbgNtGetNextThread, @function
 DbgNtGetNextThread:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4561,7 +4321,6 @@ DbgNtGetNextThread:
     ret
 
 .global DbgNtGetNlsSectionPtr
-.type DbgNtGetNlsSectionPtr, @function
 DbgNtGetNlsSectionPtr:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4580,7 +4339,6 @@ DbgNtGetNlsSectionPtr:
     ret
 
 .global DbgNtGetNotificationResourceManager
-.type DbgNtGetNotificationResourceManager, @function
 DbgNtGetNotificationResourceManager:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4599,7 +4357,6 @@ DbgNtGetNotificationResourceManager:
     ret
 
 .global DbgNtGetWriteWatch
-.type DbgNtGetWriteWatch, @function
 DbgNtGetWriteWatch:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4618,7 +4375,6 @@ DbgNtGetWriteWatch:
     ret
 
 .global DbgNtImpersonateAnonymousToken
-.type DbgNtImpersonateAnonymousToken, @function
 DbgNtImpersonateAnonymousToken:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4637,7 +4393,6 @@ DbgNtImpersonateAnonymousToken:
     ret
 
 .global DbgNtImpersonateThread
-.type DbgNtImpersonateThread, @function
 DbgNtImpersonateThread:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4656,7 +4411,6 @@ DbgNtImpersonateThread:
     ret
 
 .global DbgNtInitializeEnclave
-.type DbgNtInitializeEnclave, @function
 DbgNtInitializeEnclave:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4675,7 +4429,6 @@ DbgNtInitializeEnclave:
     ret
 
 .global DbgNtInitializeNlsFiles
-.type DbgNtInitializeNlsFiles, @function
 DbgNtInitializeNlsFiles:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4694,7 +4447,6 @@ DbgNtInitializeNlsFiles:
     ret
 
 .global DbgNtInitializeRegistry
-.type DbgNtInitializeRegistry, @function
 DbgNtInitializeRegistry:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4713,7 +4465,6 @@ DbgNtInitializeRegistry:
     ret
 
 .global DbgNtInitiatePowerAction
-.type DbgNtInitiatePowerAction, @function
 DbgNtInitiatePowerAction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4732,7 +4483,6 @@ DbgNtInitiatePowerAction:
     ret
 
 .global DbgNtIsSystemResumeAutomatic
-.type DbgNtIsSystemResumeAutomatic, @function
 DbgNtIsSystemResumeAutomatic:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4751,7 +4501,6 @@ DbgNtIsSystemResumeAutomatic:
     ret
 
 .global DbgNtIsUILanguageComitted
-.type DbgNtIsUILanguageComitted, @function
 DbgNtIsUILanguageComitted:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4770,7 +4519,6 @@ DbgNtIsUILanguageComitted:
     ret
 
 .global DbgNtListenPort
-.type DbgNtListenPort, @function
 DbgNtListenPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4789,7 +4537,6 @@ DbgNtListenPort:
     ret
 
 .global DbgNtLoadDriver
-.type DbgNtLoadDriver, @function
 DbgNtLoadDriver:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4808,7 +4555,6 @@ DbgNtLoadDriver:
     ret
 
 .global DbgNtLoadEnclaveData
-.type DbgNtLoadEnclaveData, @function
 DbgNtLoadEnclaveData:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4827,7 +4573,6 @@ DbgNtLoadEnclaveData:
     ret
 
 .global DbgNtLoadHotPatch
-.type DbgNtLoadHotPatch, @function
 DbgNtLoadHotPatch:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4846,7 +4591,6 @@ DbgNtLoadHotPatch:
     ret
 
 .global DbgNtLoadKey
-.type DbgNtLoadKey, @function
 DbgNtLoadKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4865,7 +4609,6 @@ DbgNtLoadKey:
     ret
 
 .global DbgNtLoadKey2
-.type DbgNtLoadKey2, @function
 DbgNtLoadKey2:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4884,7 +4627,6 @@ DbgNtLoadKey2:
     ret
 
 .global DbgNtLoadKeyEx
-.type DbgNtLoadKeyEx, @function
 DbgNtLoadKeyEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4903,7 +4645,6 @@ DbgNtLoadKeyEx:
     ret
 
 .global DbgNtLockFile
-.type DbgNtLockFile, @function
 DbgNtLockFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4922,7 +4663,6 @@ DbgNtLockFile:
     ret
 
 .global DbgNtLockProductActivationKeys
-.type DbgNtLockProductActivationKeys, @function
 DbgNtLockProductActivationKeys:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4941,7 +4681,6 @@ DbgNtLockProductActivationKeys:
     ret
 
 .global DbgNtLockRegistryKey
-.type DbgNtLockRegistryKey, @function
 DbgNtLockRegistryKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4960,7 +4699,6 @@ DbgNtLockRegistryKey:
     ret
 
 .global DbgNtLockVirtualMemory
-.type DbgNtLockVirtualMemory, @function
 DbgNtLockVirtualMemory:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4979,7 +4717,6 @@ DbgNtLockVirtualMemory:
     ret
 
 .global DbgNtMakePermanentObject
-.type DbgNtMakePermanentObject, @function
 DbgNtMakePermanentObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -4998,7 +4735,6 @@ DbgNtMakePermanentObject:
     ret
 
 .global DbgNtMakeTemporaryObject
-.type DbgNtMakeTemporaryObject, @function
 DbgNtMakeTemporaryObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5017,7 +4753,6 @@ DbgNtMakeTemporaryObject:
     ret
 
 .global DbgNtManagePartition
-.type DbgNtManagePartition, @function
 DbgNtManagePartition:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5036,7 +4771,6 @@ DbgNtManagePartition:
     ret
 
 .global DbgNtMapCMFModule
-.type DbgNtMapCMFModule, @function
 DbgNtMapCMFModule:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5055,7 +4789,6 @@ DbgNtMapCMFModule:
     ret
 
 .global DbgNtMapUserPhysicalPages
-.type DbgNtMapUserPhysicalPages, @function
 DbgNtMapUserPhysicalPages:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5074,7 +4807,6 @@ DbgNtMapUserPhysicalPages:
     ret
 
 .global DbgNtMapViewOfSectionEx
-.type DbgNtMapViewOfSectionEx, @function
 DbgNtMapViewOfSectionEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5093,7 +4825,6 @@ DbgNtMapViewOfSectionEx:
     ret
 
 .global DbgNtModifyBootEntry
-.type DbgNtModifyBootEntry, @function
 DbgNtModifyBootEntry:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5112,7 +4843,6 @@ DbgNtModifyBootEntry:
     ret
 
 .global DbgNtModifyDriverEntry
-.type DbgNtModifyDriverEntry, @function
 DbgNtModifyDriverEntry:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5131,7 +4861,6 @@ DbgNtModifyDriverEntry:
     ret
 
 .global DbgNtNotifyChangeDirectoryFile
-.type DbgNtNotifyChangeDirectoryFile, @function
 DbgNtNotifyChangeDirectoryFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5150,7 +4879,6 @@ DbgNtNotifyChangeDirectoryFile:
     ret
 
 .global DbgNtNotifyChangeDirectoryFileEx
-.type DbgNtNotifyChangeDirectoryFileEx, @function
 DbgNtNotifyChangeDirectoryFileEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5169,7 +4897,6 @@ DbgNtNotifyChangeDirectoryFileEx:
     ret
 
 .global DbgNtNotifyChangeKey
-.type DbgNtNotifyChangeKey, @function
 DbgNtNotifyChangeKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5188,7 +4915,6 @@ DbgNtNotifyChangeKey:
     ret
 
 .global DbgNtNotifyChangeMultipleKeys
-.type DbgNtNotifyChangeMultipleKeys, @function
 DbgNtNotifyChangeMultipleKeys:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5207,7 +4933,6 @@ DbgNtNotifyChangeMultipleKeys:
     ret
 
 .global DbgNtNotifyChangeSession
-.type DbgNtNotifyChangeSession, @function
 DbgNtNotifyChangeSession:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5226,7 +4951,6 @@ DbgNtNotifyChangeSession:
     ret
 
 .global DbgNtOpenEnlistment
-.type DbgNtOpenEnlistment, @function
 DbgNtOpenEnlistment:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5245,7 +4969,6 @@ DbgNtOpenEnlistment:
     ret
 
 .global DbgNtOpenEventPair
-.type DbgNtOpenEventPair, @function
 DbgNtOpenEventPair:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5264,7 +4987,6 @@ DbgNtOpenEventPair:
     ret
 
 .global DbgNtOpenIoCompletion
-.type DbgNtOpenIoCompletion, @function
 DbgNtOpenIoCompletion:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5283,7 +5005,6 @@ DbgNtOpenIoCompletion:
     ret
 
 .global DbgNtOpenJobObject
-.type DbgNtOpenJobObject, @function
 DbgNtOpenJobObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5302,7 +5023,6 @@ DbgNtOpenJobObject:
     ret
 
 .global DbgNtOpenKeyEx
-.type DbgNtOpenKeyEx, @function
 DbgNtOpenKeyEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5321,7 +5041,6 @@ DbgNtOpenKeyEx:
     ret
 
 .global DbgNtOpenKeyTransacted
-.type DbgNtOpenKeyTransacted, @function
 DbgNtOpenKeyTransacted:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5340,7 +5059,6 @@ DbgNtOpenKeyTransacted:
     ret
 
 .global DbgNtOpenKeyTransactedEx
-.type DbgNtOpenKeyTransactedEx, @function
 DbgNtOpenKeyTransactedEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5359,7 +5077,6 @@ DbgNtOpenKeyTransactedEx:
     ret
 
 .global DbgNtOpenKeyedEvent
-.type DbgNtOpenKeyedEvent, @function
 DbgNtOpenKeyedEvent:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5378,7 +5095,6 @@ DbgNtOpenKeyedEvent:
     ret
 
 .global DbgNtOpenMutant
-.type DbgNtOpenMutant, @function
 DbgNtOpenMutant:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5397,7 +5113,6 @@ DbgNtOpenMutant:
     ret
 
 .global DbgNtOpenObjectAuditAlarm
-.type DbgNtOpenObjectAuditAlarm, @function
 DbgNtOpenObjectAuditAlarm:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5416,7 +5131,6 @@ DbgNtOpenObjectAuditAlarm:
     ret
 
 .global DbgNtOpenPartition
-.type DbgNtOpenPartition, @function
 DbgNtOpenPartition:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5435,7 +5149,6 @@ DbgNtOpenPartition:
     ret
 
 .global DbgNtOpenPrivateNamespace
-.type DbgNtOpenPrivateNamespace, @function
 DbgNtOpenPrivateNamespace:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5454,7 +5167,6 @@ DbgNtOpenPrivateNamespace:
     ret
 
 .global DbgNtOpenProcessToken
-.type DbgNtOpenProcessToken, @function
 DbgNtOpenProcessToken:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5473,7 +5185,6 @@ DbgNtOpenProcessToken:
     ret
 
 .global DbgNtOpenRegistryTransaction
-.type DbgNtOpenRegistryTransaction, @function
 DbgNtOpenRegistryTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5492,7 +5203,6 @@ DbgNtOpenRegistryTransaction:
     ret
 
 .global DbgNtOpenResourceManager
-.type DbgNtOpenResourceManager, @function
 DbgNtOpenResourceManager:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5511,7 +5221,6 @@ DbgNtOpenResourceManager:
     ret
 
 .global DbgNtOpenSemaphore
-.type DbgNtOpenSemaphore, @function
 DbgNtOpenSemaphore:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5530,7 +5239,6 @@ DbgNtOpenSemaphore:
     ret
 
 .global DbgNtOpenSession
-.type DbgNtOpenSession, @function
 DbgNtOpenSession:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5549,7 +5257,6 @@ DbgNtOpenSession:
     ret
 
 .global DbgNtOpenSymbolicLinkObject
-.type DbgNtOpenSymbolicLinkObject, @function
 DbgNtOpenSymbolicLinkObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5568,7 +5275,6 @@ DbgNtOpenSymbolicLinkObject:
     ret
 
 .global DbgNtOpenThread
-.type DbgNtOpenThread, @function
 DbgNtOpenThread:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5587,7 +5293,6 @@ DbgNtOpenThread:
     ret
 
 .global DbgNtOpenTimer
-.type DbgNtOpenTimer, @function
 DbgNtOpenTimer:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5606,7 +5311,6 @@ DbgNtOpenTimer:
     ret
 
 .global DbgNtOpenTransaction
-.type DbgNtOpenTransaction, @function
 DbgNtOpenTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5625,7 +5329,6 @@ DbgNtOpenTransaction:
     ret
 
 .global DbgNtOpenTransactionManager
-.type DbgNtOpenTransactionManager, @function
 DbgNtOpenTransactionManager:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5644,7 +5347,6 @@ DbgNtOpenTransactionManager:
     ret
 
 .global DbgNtPlugPlayControl
-.type DbgNtPlugPlayControl, @function
 DbgNtPlugPlayControl:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5663,7 +5365,6 @@ DbgNtPlugPlayControl:
     ret
 
 .global DbgNtPrePrepareComplete
-.type DbgNtPrePrepareComplete, @function
 DbgNtPrePrepareComplete:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5682,7 +5383,6 @@ DbgNtPrePrepareComplete:
     ret
 
 .global DbgNtPrePrepareEnlistment
-.type DbgNtPrePrepareEnlistment, @function
 DbgNtPrePrepareEnlistment:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5701,7 +5401,6 @@ DbgNtPrePrepareEnlistment:
     ret
 
 .global DbgNtPrepareComplete
-.type DbgNtPrepareComplete, @function
 DbgNtPrepareComplete:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5720,7 +5419,6 @@ DbgNtPrepareComplete:
     ret
 
 .global DbgNtPrepareEnlistment
-.type DbgNtPrepareEnlistment, @function
 DbgNtPrepareEnlistment:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5739,7 +5437,6 @@ DbgNtPrepareEnlistment:
     ret
 
 .global DbgNtPrivilegeCheck
-.type DbgNtPrivilegeCheck, @function
 DbgNtPrivilegeCheck:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5758,7 +5455,6 @@ DbgNtPrivilegeCheck:
     ret
 
 .global DbgNtPrivilegeObjectAuditAlarm
-.type DbgNtPrivilegeObjectAuditAlarm, @function
 DbgNtPrivilegeObjectAuditAlarm:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5777,7 +5473,6 @@ DbgNtPrivilegeObjectAuditAlarm:
     ret
 
 .global DbgNtPrivilegedServiceAuditAlarm
-.type DbgNtPrivilegedServiceAuditAlarm, @function
 DbgNtPrivilegedServiceAuditAlarm:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5796,7 +5491,6 @@ DbgNtPrivilegedServiceAuditAlarm:
     ret
 
 .global DbgNtPropagationComplete
-.type DbgNtPropagationComplete, @function
 DbgNtPropagationComplete:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5815,7 +5509,6 @@ DbgNtPropagationComplete:
     ret
 
 .global DbgNtPropagationFailed
-.type DbgNtPropagationFailed, @function
 DbgNtPropagationFailed:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5834,7 +5527,6 @@ DbgNtPropagationFailed:
     ret
 
 .global DbgNtPulseEvent
-.type DbgNtPulseEvent, @function
 DbgNtPulseEvent:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5853,7 +5545,6 @@ DbgNtPulseEvent:
     ret
 
 .global DbgNtQueryAuxiliaryCounterFrequency
-.type DbgNtQueryAuxiliaryCounterFrequency, @function
 DbgNtQueryAuxiliaryCounterFrequency:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5872,7 +5563,6 @@ DbgNtQueryAuxiliaryCounterFrequency:
     ret
 
 .global DbgNtQueryBootEntryOrder
-.type DbgNtQueryBootEntryOrder, @function
 DbgNtQueryBootEntryOrder:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5891,7 +5581,6 @@ DbgNtQueryBootEntryOrder:
     ret
 
 .global DbgNtQueryBootOptions
-.type DbgNtQueryBootOptions, @function
 DbgNtQueryBootOptions:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5910,7 +5599,6 @@ DbgNtQueryBootOptions:
     ret
 
 .global DbgNtQueryDebugFilterState
-.type DbgNtQueryDebugFilterState, @function
 DbgNtQueryDebugFilterState:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5929,7 +5617,6 @@ DbgNtQueryDebugFilterState:
     ret
 
 .global DbgNtQueryDirectoryFileEx
-.type DbgNtQueryDirectoryFileEx, @function
 DbgNtQueryDirectoryFileEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5948,7 +5635,6 @@ DbgNtQueryDirectoryFileEx:
     ret
 
 .global DbgNtQueryDirectoryObject
-.type DbgNtQueryDirectoryObject, @function
 DbgNtQueryDirectoryObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5967,7 +5653,6 @@ DbgNtQueryDirectoryObject:
     ret
 
 .global DbgNtQueryDriverEntryOrder
-.type DbgNtQueryDriverEntryOrder, @function
 DbgNtQueryDriverEntryOrder:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -5986,7 +5671,6 @@ DbgNtQueryDriverEntryOrder:
     ret
 
 .global DbgNtQueryEaFile
-.type DbgNtQueryEaFile, @function
 DbgNtQueryEaFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6005,7 +5689,6 @@ DbgNtQueryEaFile:
     ret
 
 .global DbgNtQueryFullAttributesFile
-.type DbgNtQueryFullAttributesFile, @function
 DbgNtQueryFullAttributesFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6024,7 +5707,6 @@ DbgNtQueryFullAttributesFile:
     ret
 
 .global DbgNtQueryInformationAtom
-.type DbgNtQueryInformationAtom, @function
 DbgNtQueryInformationAtom:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6043,7 +5725,6 @@ DbgNtQueryInformationAtom:
     ret
 
 .global DbgNtQueryInformationByName
-.type DbgNtQueryInformationByName, @function
 DbgNtQueryInformationByName:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6062,7 +5743,6 @@ DbgNtQueryInformationByName:
     ret
 
 .global DbgNtQueryInformationEnlistment
-.type DbgNtQueryInformationEnlistment, @function
 DbgNtQueryInformationEnlistment:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6081,7 +5761,6 @@ DbgNtQueryInformationEnlistment:
     ret
 
 .global DbgNtQueryInformationJobObject
-.type DbgNtQueryInformationJobObject, @function
 DbgNtQueryInformationJobObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6100,7 +5779,6 @@ DbgNtQueryInformationJobObject:
     ret
 
 .global DbgNtQueryInformationPort
-.type DbgNtQueryInformationPort, @function
 DbgNtQueryInformationPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6119,7 +5797,6 @@ DbgNtQueryInformationPort:
     ret
 
 .global DbgNtQueryInformationResourceManager
-.type DbgNtQueryInformationResourceManager, @function
 DbgNtQueryInformationResourceManager:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6138,7 +5815,6 @@ DbgNtQueryInformationResourceManager:
     ret
 
 .global DbgNtQueryInformationTransaction
-.type DbgNtQueryInformationTransaction, @function
 DbgNtQueryInformationTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6157,7 +5833,6 @@ DbgNtQueryInformationTransaction:
     ret
 
 .global DbgNtQueryInformationTransactionManager
-.type DbgNtQueryInformationTransactionManager, @function
 DbgNtQueryInformationTransactionManager:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6176,7 +5851,6 @@ DbgNtQueryInformationTransactionManager:
     ret
 
 .global DbgNtQueryInformationWorkerFactory
-.type DbgNtQueryInformationWorkerFactory, @function
 DbgNtQueryInformationWorkerFactory:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6195,7 +5869,6 @@ DbgNtQueryInformationWorkerFactory:
     ret
 
 .global DbgNtQueryInstallUILanguage
-.type DbgNtQueryInstallUILanguage, @function
 DbgNtQueryInstallUILanguage:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6214,7 +5887,6 @@ DbgNtQueryInstallUILanguage:
     ret
 
 .global DbgNtQueryIntervalProfile
-.type DbgNtQueryIntervalProfile, @function
 DbgNtQueryIntervalProfile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6233,7 +5905,6 @@ DbgNtQueryIntervalProfile:
     ret
 
 .global DbgNtQueryIoCompletion
-.type DbgNtQueryIoCompletion, @function
 DbgNtQueryIoCompletion:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6252,7 +5923,6 @@ DbgNtQueryIoCompletion:
     ret
 
 .global DbgNtQueryLicenseValue
-.type DbgNtQueryLicenseValue, @function
 DbgNtQueryLicenseValue:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6271,7 +5941,6 @@ DbgNtQueryLicenseValue:
     ret
 
 .global DbgNtQueryMultipleValueKey
-.type DbgNtQueryMultipleValueKey, @function
 DbgNtQueryMultipleValueKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6290,7 +5959,6 @@ DbgNtQueryMultipleValueKey:
     ret
 
 .global DbgNtQueryMutant
-.type DbgNtQueryMutant, @function
 DbgNtQueryMutant:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6309,7 +5977,6 @@ DbgNtQueryMutant:
     ret
 
 .global DbgNtQueryOpenSubKeys
-.type DbgNtQueryOpenSubKeys, @function
 DbgNtQueryOpenSubKeys:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6328,7 +5995,6 @@ DbgNtQueryOpenSubKeys:
     ret
 
 .global DbgNtQueryOpenSubKeysEx
-.type DbgNtQueryOpenSubKeysEx, @function
 DbgNtQueryOpenSubKeysEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6347,7 +6013,6 @@ DbgNtQueryOpenSubKeysEx:
     ret
 
 .global DbgNtQueryPortInformationProcess
-.type DbgNtQueryPortInformationProcess, @function
 DbgNtQueryPortInformationProcess:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6366,7 +6031,6 @@ DbgNtQueryPortInformationProcess:
     ret
 
 .global DbgNtQueryQuotaInformationFile
-.type DbgNtQueryQuotaInformationFile, @function
 DbgNtQueryQuotaInformationFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6385,7 +6049,6 @@ DbgNtQueryQuotaInformationFile:
     ret
 
 .global DbgNtQuerySecurityAttributesToken
-.type DbgNtQuerySecurityAttributesToken, @function
 DbgNtQuerySecurityAttributesToken:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6404,7 +6067,6 @@ DbgNtQuerySecurityAttributesToken:
     ret
 
 .global DbgNtQuerySecurityObject
-.type DbgNtQuerySecurityObject, @function
 DbgNtQuerySecurityObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6423,7 +6085,6 @@ DbgNtQuerySecurityObject:
     ret
 
 .global DbgNtQuerySecurityPolicy
-.type DbgNtQuerySecurityPolicy, @function
 DbgNtQuerySecurityPolicy:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6442,7 +6103,6 @@ DbgNtQuerySecurityPolicy:
     ret
 
 .global DbgNtQuerySemaphore
-.type DbgNtQuerySemaphore, @function
 DbgNtQuerySemaphore:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6461,7 +6121,6 @@ DbgNtQuerySemaphore:
     ret
 
 .global DbgNtQuerySymbolicLinkObject
-.type DbgNtQuerySymbolicLinkObject, @function
 DbgNtQuerySymbolicLinkObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6480,7 +6139,6 @@ DbgNtQuerySymbolicLinkObject:
     ret
 
 .global DbgNtQuerySystemEnvironmentValue
-.type DbgNtQuerySystemEnvironmentValue, @function
 DbgNtQuerySystemEnvironmentValue:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6499,7 +6157,6 @@ DbgNtQuerySystemEnvironmentValue:
     ret
 
 .global DbgNtQuerySystemEnvironmentValueEx
-.type DbgNtQuerySystemEnvironmentValueEx, @function
 DbgNtQuerySystemEnvironmentValueEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6518,7 +6175,6 @@ DbgNtQuerySystemEnvironmentValueEx:
     ret
 
 .global DbgNtQuerySystemInformationEx
-.type DbgNtQuerySystemInformationEx, @function
 DbgNtQuerySystemInformationEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6537,7 +6193,6 @@ DbgNtQuerySystemInformationEx:
     ret
 
 .global DbgNtQueryTimerResolution
-.type DbgNtQueryTimerResolution, @function
 DbgNtQueryTimerResolution:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6556,7 +6211,6 @@ DbgNtQueryTimerResolution:
     ret
 
 .global DbgNtQueryWnfStateData
-.type DbgNtQueryWnfStateData, @function
 DbgNtQueryWnfStateData:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6575,7 +6229,6 @@ DbgNtQueryWnfStateData:
     ret
 
 .global DbgNtQueryWnfStateNameInformation
-.type DbgNtQueryWnfStateNameInformation, @function
 DbgNtQueryWnfStateNameInformation:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6594,7 +6247,6 @@ DbgNtQueryWnfStateNameInformation:
     ret
 
 .global DbgNtQueueApcThreadEx
-.type DbgNtQueueApcThreadEx, @function
 DbgNtQueueApcThreadEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6613,7 +6265,6 @@ DbgNtQueueApcThreadEx:
     ret
 
 .global DbgNtRaiseException
-.type DbgNtRaiseException, @function
 DbgNtRaiseException:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6632,7 +6283,6 @@ DbgNtRaiseException:
     ret
 
 .global DbgNtRaiseHardError
-.type DbgNtRaiseHardError, @function
 DbgNtRaiseHardError:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6651,7 +6301,6 @@ DbgNtRaiseHardError:
     ret
 
 .global DbgNtReadOnlyEnlistment
-.type DbgNtReadOnlyEnlistment, @function
 DbgNtReadOnlyEnlistment:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6670,7 +6319,6 @@ DbgNtReadOnlyEnlistment:
     ret
 
 .global DbgNtRecoverEnlistment
-.type DbgNtRecoverEnlistment, @function
 DbgNtRecoverEnlistment:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6689,7 +6337,6 @@ DbgNtRecoverEnlistment:
     ret
 
 .global DbgNtRecoverResourceManager
-.type DbgNtRecoverResourceManager, @function
 DbgNtRecoverResourceManager:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6708,7 +6355,6 @@ DbgNtRecoverResourceManager:
     ret
 
 .global DbgNtRecoverTransactionManager
-.type DbgNtRecoverTransactionManager, @function
 DbgNtRecoverTransactionManager:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6727,7 +6373,6 @@ DbgNtRecoverTransactionManager:
     ret
 
 .global DbgNtRegisterProtocolAddressInformation
-.type DbgNtRegisterProtocolAddressInformation, @function
 DbgNtRegisterProtocolAddressInformation:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6746,7 +6391,6 @@ DbgNtRegisterProtocolAddressInformation:
     ret
 
 .global DbgNtRegisterThreadTerminatePort
-.type DbgNtRegisterThreadTerminatePort, @function
 DbgNtRegisterThreadTerminatePort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6765,7 +6409,6 @@ DbgNtRegisterThreadTerminatePort:
     ret
 
 .global DbgNtReleaseKeyedEvent
-.type DbgNtReleaseKeyedEvent, @function
 DbgNtReleaseKeyedEvent:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6784,7 +6427,6 @@ DbgNtReleaseKeyedEvent:
     ret
 
 .global DbgNtReleaseWorkerFactoryWorker
-.type DbgNtReleaseWorkerFactoryWorker, @function
 DbgNtReleaseWorkerFactoryWorker:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6803,7 +6445,6 @@ DbgNtReleaseWorkerFactoryWorker:
     ret
 
 .global DbgNtRemoveIoCompletionEx
-.type DbgNtRemoveIoCompletionEx, @function
 DbgNtRemoveIoCompletionEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6822,7 +6463,6 @@ DbgNtRemoveIoCompletionEx:
     ret
 
 .global DbgNtRemoveProcessDebug
-.type DbgNtRemoveProcessDebug, @function
 DbgNtRemoveProcessDebug:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6841,7 +6481,6 @@ DbgNtRemoveProcessDebug:
     ret
 
 .global DbgNtRenameKey
-.type DbgNtRenameKey, @function
 DbgNtRenameKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6860,7 +6499,6 @@ DbgNtRenameKey:
     ret
 
 .global DbgNtRenameTransactionManager
-.type DbgNtRenameTransactionManager, @function
 DbgNtRenameTransactionManager:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6879,7 +6517,6 @@ DbgNtRenameTransactionManager:
     ret
 
 .global DbgNtReplaceKey
-.type DbgNtReplaceKey, @function
 DbgNtReplaceKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6898,7 +6535,6 @@ DbgNtReplaceKey:
     ret
 
 .global DbgNtReplacePartitionUnit
-.type DbgNtReplacePartitionUnit, @function
 DbgNtReplacePartitionUnit:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6917,7 +6553,6 @@ DbgNtReplacePartitionUnit:
     ret
 
 .global DbgNtReplyWaitReplyPort
-.type DbgNtReplyWaitReplyPort, @function
 DbgNtReplyWaitReplyPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6936,7 +6571,6 @@ DbgNtReplyWaitReplyPort:
     ret
 
 .global DbgNtRequestPort
-.type DbgNtRequestPort, @function
 DbgNtRequestPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6955,7 +6589,6 @@ DbgNtRequestPort:
     ret
 
 .global DbgNtResetEvent
-.type DbgNtResetEvent, @function
 DbgNtResetEvent:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6974,7 +6607,6 @@ DbgNtResetEvent:
     ret
 
 .global DbgNtResetWriteWatch
-.type DbgNtResetWriteWatch, @function
 DbgNtResetWriteWatch:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -6993,7 +6625,6 @@ DbgNtResetWriteWatch:
     ret
 
 .global DbgNtRestoreKey
-.type DbgNtRestoreKey, @function
 DbgNtRestoreKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7012,7 +6643,6 @@ DbgNtRestoreKey:
     ret
 
 .global DbgNtResumeProcess
-.type DbgNtResumeProcess, @function
 DbgNtResumeProcess:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7031,7 +6661,6 @@ DbgNtResumeProcess:
     ret
 
 .global DbgNtRevertContainerImpersonation
-.type DbgNtRevertContainerImpersonation, @function
 DbgNtRevertContainerImpersonation:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7050,7 +6679,6 @@ DbgNtRevertContainerImpersonation:
     ret
 
 .global DbgNtRollbackComplete
-.type DbgNtRollbackComplete, @function
 DbgNtRollbackComplete:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7069,7 +6697,6 @@ DbgNtRollbackComplete:
     ret
 
 .global DbgNtRollbackEnlistment
-.type DbgNtRollbackEnlistment, @function
 DbgNtRollbackEnlistment:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7088,7 +6715,6 @@ DbgNtRollbackEnlistment:
     ret
 
 .global DbgNtRollbackRegistryTransaction
-.type DbgNtRollbackRegistryTransaction, @function
 DbgNtRollbackRegistryTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7107,7 +6733,6 @@ DbgNtRollbackRegistryTransaction:
     ret
 
 .global DbgNtRollbackTransaction
-.type DbgNtRollbackTransaction, @function
 DbgNtRollbackTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7126,7 +6751,6 @@ DbgNtRollbackTransaction:
     ret
 
 .global DbgNtRollforwardTransactionManager
-.type DbgNtRollforwardTransactionManager, @function
 DbgNtRollforwardTransactionManager:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7145,7 +6769,6 @@ DbgNtRollforwardTransactionManager:
     ret
 
 .global DbgNtSaveKey
-.type DbgNtSaveKey, @function
 DbgNtSaveKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7164,7 +6787,6 @@ DbgNtSaveKey:
     ret
 
 .global DbgNtSaveKeyEx
-.type DbgNtSaveKeyEx, @function
 DbgNtSaveKeyEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7183,7 +6805,6 @@ DbgNtSaveKeyEx:
     ret
 
 .global DbgNtSaveMergedKeys
-.type DbgNtSaveMergedKeys, @function
 DbgNtSaveMergedKeys:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7202,7 +6823,6 @@ DbgNtSaveMergedKeys:
     ret
 
 .global DbgNtSecureConnectPort
-.type DbgNtSecureConnectPort, @function
 DbgNtSecureConnectPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7221,7 +6841,6 @@ DbgNtSecureConnectPort:
     ret
 
 .global DbgNtSerializeBoot
-.type DbgNtSerializeBoot, @function
 DbgNtSerializeBoot:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7240,7 +6859,6 @@ DbgNtSerializeBoot:
     ret
 
 .global DbgNtSetBootEntryOrder
-.type DbgNtSetBootEntryOrder, @function
 DbgNtSetBootEntryOrder:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7259,7 +6877,6 @@ DbgNtSetBootEntryOrder:
     ret
 
 .global DbgNtSetBootOptions
-.type DbgNtSetBootOptions, @function
 DbgNtSetBootOptions:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7278,7 +6895,6 @@ DbgNtSetBootOptions:
     ret
 
 .global DbgNtSetCachedSigningLevel
-.type DbgNtSetCachedSigningLevel, @function
 DbgNtSetCachedSigningLevel:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7297,7 +6913,6 @@ DbgNtSetCachedSigningLevel:
     ret
 
 .global DbgNtSetCachedSigningLevel2
-.type DbgNtSetCachedSigningLevel2, @function
 DbgNtSetCachedSigningLevel2:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7316,7 +6931,6 @@ DbgNtSetCachedSigningLevel2:
     ret
 
 .global DbgNtSetContextThread
-.type DbgNtSetContextThread, @function
 DbgNtSetContextThread:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7335,7 +6949,6 @@ DbgNtSetContextThread:
     ret
 
 .global DbgNtSetDebugFilterState
-.type DbgNtSetDebugFilterState, @function
 DbgNtSetDebugFilterState:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7354,7 +6967,6 @@ DbgNtSetDebugFilterState:
     ret
 
 .global DbgNtSetDefaultHardErrorPort
-.type DbgNtSetDefaultHardErrorPort, @function
 DbgNtSetDefaultHardErrorPort:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7373,7 +6985,6 @@ DbgNtSetDefaultHardErrorPort:
     ret
 
 .global DbgNtSetDefaultLocale
-.type DbgNtSetDefaultLocale, @function
 DbgNtSetDefaultLocale:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7392,7 +7003,6 @@ DbgNtSetDefaultLocale:
     ret
 
 .global DbgNtSetDefaultUILanguage
-.type DbgNtSetDefaultUILanguage, @function
 DbgNtSetDefaultUILanguage:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7411,7 +7021,6 @@ DbgNtSetDefaultUILanguage:
     ret
 
 .global DbgNtSetDriverEntryOrder
-.type DbgNtSetDriverEntryOrder, @function
 DbgNtSetDriverEntryOrder:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7430,7 +7039,6 @@ DbgNtSetDriverEntryOrder:
     ret
 
 .global DbgNtSetEaFile
-.type DbgNtSetEaFile, @function
 DbgNtSetEaFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7449,7 +7057,6 @@ DbgNtSetEaFile:
     ret
 
 .global DbgNtSetHighEventPair
-.type DbgNtSetHighEventPair, @function
 DbgNtSetHighEventPair:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7468,7 +7075,6 @@ DbgNtSetHighEventPair:
     ret
 
 .global DbgNtSetHighWaitLowEventPair
-.type DbgNtSetHighWaitLowEventPair, @function
 DbgNtSetHighWaitLowEventPair:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7487,7 +7093,6 @@ DbgNtSetHighWaitLowEventPair:
     ret
 
 .global DbgNtSetIRTimer
-.type DbgNtSetIRTimer, @function
 DbgNtSetIRTimer:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7506,7 +7111,6 @@ DbgNtSetIRTimer:
     ret
 
 .global DbgNtSetInformationDebugObject
-.type DbgNtSetInformationDebugObject, @function
 DbgNtSetInformationDebugObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7525,7 +7129,6 @@ DbgNtSetInformationDebugObject:
     ret
 
 .global DbgNtSetInformationEnlistment
-.type DbgNtSetInformationEnlistment, @function
 DbgNtSetInformationEnlistment:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7544,7 +7147,6 @@ DbgNtSetInformationEnlistment:
     ret
 
 .global DbgNtSetInformationJobObject
-.type DbgNtSetInformationJobObject, @function
 DbgNtSetInformationJobObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7563,7 +7165,6 @@ DbgNtSetInformationJobObject:
     ret
 
 .global DbgNtSetInformationKey
-.type DbgNtSetInformationKey, @function
 DbgNtSetInformationKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7582,7 +7183,6 @@ DbgNtSetInformationKey:
     ret
 
 .global DbgNtSetInformationResourceManager
-.type DbgNtSetInformationResourceManager, @function
 DbgNtSetInformationResourceManager:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7601,7 +7201,6 @@ DbgNtSetInformationResourceManager:
     ret
 
 .global DbgNtSetInformationSymbolicLink
-.type DbgNtSetInformationSymbolicLink, @function
 DbgNtSetInformationSymbolicLink:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7620,7 +7219,6 @@ DbgNtSetInformationSymbolicLink:
     ret
 
 .global DbgNtSetInformationToken
-.type DbgNtSetInformationToken, @function
 DbgNtSetInformationToken:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7639,7 +7237,6 @@ DbgNtSetInformationToken:
     ret
 
 .global DbgNtSetInformationTransaction
-.type DbgNtSetInformationTransaction, @function
 DbgNtSetInformationTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7658,7 +7255,6 @@ DbgNtSetInformationTransaction:
     ret
 
 .global DbgNtSetInformationTransactionManager
-.type DbgNtSetInformationTransactionManager, @function
 DbgNtSetInformationTransactionManager:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7677,7 +7273,6 @@ DbgNtSetInformationTransactionManager:
     ret
 
 .global DbgNtSetInformationVirtualMemory
-.type DbgNtSetInformationVirtualMemory, @function
 DbgNtSetInformationVirtualMemory:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7696,7 +7291,6 @@ DbgNtSetInformationVirtualMemory:
     ret
 
 .global DbgNtSetInformationWorkerFactory
-.type DbgNtSetInformationWorkerFactory, @function
 DbgNtSetInformationWorkerFactory:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7715,7 +7309,6 @@ DbgNtSetInformationWorkerFactory:
     ret
 
 .global DbgNtSetIntervalProfile
-.type DbgNtSetIntervalProfile, @function
 DbgNtSetIntervalProfile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7734,7 +7327,6 @@ DbgNtSetIntervalProfile:
     ret
 
 .global DbgNtSetIoCompletion
-.type DbgNtSetIoCompletion, @function
 DbgNtSetIoCompletion:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7753,7 +7345,6 @@ DbgNtSetIoCompletion:
     ret
 
 .global DbgNtSetIoCompletionEx
-.type DbgNtSetIoCompletionEx, @function
 DbgNtSetIoCompletionEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7772,7 +7363,6 @@ DbgNtSetIoCompletionEx:
     ret
 
 .global DbgNtSetLdtEntries
-.type DbgNtSetLdtEntries, @function
 DbgNtSetLdtEntries:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7791,7 +7381,6 @@ DbgNtSetLdtEntries:
     ret
 
 .global DbgNtSetLowEventPair
-.type DbgNtSetLowEventPair, @function
 DbgNtSetLowEventPair:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7810,7 +7399,6 @@ DbgNtSetLowEventPair:
     ret
 
 .global DbgNtSetLowWaitHighEventPair
-.type DbgNtSetLowWaitHighEventPair, @function
 DbgNtSetLowWaitHighEventPair:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7829,7 +7417,6 @@ DbgNtSetLowWaitHighEventPair:
     ret
 
 .global DbgNtSetQuotaInformationFile
-.type DbgNtSetQuotaInformationFile, @function
 DbgNtSetQuotaInformationFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7848,7 +7435,6 @@ DbgNtSetQuotaInformationFile:
     ret
 
 .global DbgNtSetSecurityObject
-.type DbgNtSetSecurityObject, @function
 DbgNtSetSecurityObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7867,7 +7453,6 @@ DbgNtSetSecurityObject:
     ret
 
 .global DbgNtSetSystemEnvironmentValue
-.type DbgNtSetSystemEnvironmentValue, @function
 DbgNtSetSystemEnvironmentValue:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7886,7 +7471,6 @@ DbgNtSetSystemEnvironmentValue:
     ret
 
 .global DbgNtSetSystemEnvironmentValueEx
-.type DbgNtSetSystemEnvironmentValueEx, @function
 DbgNtSetSystemEnvironmentValueEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7905,7 +7489,6 @@ DbgNtSetSystemEnvironmentValueEx:
     ret
 
 .global DbgNtSetSystemInformation
-.type DbgNtSetSystemInformation, @function
 DbgNtSetSystemInformation:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7924,7 +7507,6 @@ DbgNtSetSystemInformation:
     ret
 
 .global DbgNtSetSystemPowerState
-.type DbgNtSetSystemPowerState, @function
 DbgNtSetSystemPowerState:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7943,7 +7525,6 @@ DbgNtSetSystemPowerState:
     ret
 
 .global DbgNtSetSystemTime
-.type DbgNtSetSystemTime, @function
 DbgNtSetSystemTime:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7962,7 +7543,6 @@ DbgNtSetSystemTime:
     ret
 
 .global DbgNtSetThreadExecutionState
-.type DbgNtSetThreadExecutionState, @function
 DbgNtSetThreadExecutionState:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -7981,7 +7561,6 @@ DbgNtSetThreadExecutionState:
     ret
 
 .global DbgNtSetTimer2
-.type DbgNtSetTimer2, @function
 DbgNtSetTimer2:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8000,7 +7579,6 @@ DbgNtSetTimer2:
     ret
 
 .global DbgNtSetTimerEx
-.type DbgNtSetTimerEx, @function
 DbgNtSetTimerEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8019,7 +7597,6 @@ DbgNtSetTimerEx:
     ret
 
 .global DbgNtSetTimerResolution
-.type DbgNtSetTimerResolution, @function
 DbgNtSetTimerResolution:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8038,7 +7615,6 @@ DbgNtSetTimerResolution:
     ret
 
 .global DbgNtSetUuidSeed
-.type DbgNtSetUuidSeed, @function
 DbgNtSetUuidSeed:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8057,7 +7633,6 @@ DbgNtSetUuidSeed:
     ret
 
 .global DbgNtSetVolumeInformationFile
-.type DbgNtSetVolumeInformationFile, @function
 DbgNtSetVolumeInformationFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8076,7 +7651,6 @@ DbgNtSetVolumeInformationFile:
     ret
 
 .global DbgNtSetWnfProcessNotificationEvent
-.type DbgNtSetWnfProcessNotificationEvent, @function
 DbgNtSetWnfProcessNotificationEvent:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8095,7 +7669,6 @@ DbgNtSetWnfProcessNotificationEvent:
     ret
 
 .global DbgNtShutdownSystem
-.type DbgNtShutdownSystem, @function
 DbgNtShutdownSystem:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8114,7 +7687,6 @@ DbgNtShutdownSystem:
     ret
 
 .global DbgNtShutdownWorkerFactory
-.type DbgNtShutdownWorkerFactory, @function
 DbgNtShutdownWorkerFactory:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8133,7 +7705,6 @@ DbgNtShutdownWorkerFactory:
     ret
 
 .global DbgNtSignalAndWaitForSingleObject
-.type DbgNtSignalAndWaitForSingleObject, @function
 DbgNtSignalAndWaitForSingleObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8152,7 +7723,6 @@ DbgNtSignalAndWaitForSingleObject:
     ret
 
 .global DbgNtSinglePhaseReject
-.type DbgNtSinglePhaseReject, @function
 DbgNtSinglePhaseReject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8171,7 +7741,6 @@ DbgNtSinglePhaseReject:
     ret
 
 .global DbgNtStartProfile
-.type DbgNtStartProfile, @function
 DbgNtStartProfile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8190,7 +7759,6 @@ DbgNtStartProfile:
     ret
 
 .global DbgNtStopProfile
-.type DbgNtStopProfile, @function
 DbgNtStopProfile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8209,7 +7777,6 @@ DbgNtStopProfile:
     ret
 
 .global DbgNtSubscribeWnfStateChange
-.type DbgNtSubscribeWnfStateChange, @function
 DbgNtSubscribeWnfStateChange:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8228,7 +7795,6 @@ DbgNtSubscribeWnfStateChange:
     ret
 
 .global DbgNtSuspendProcess
-.type DbgNtSuspendProcess, @function
 DbgNtSuspendProcess:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8247,7 +7813,6 @@ DbgNtSuspendProcess:
     ret
 
 .global DbgNtSuspendThread
-.type DbgNtSuspendThread, @function
 DbgNtSuspendThread:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8266,7 +7831,6 @@ DbgNtSuspendThread:
     ret
 
 .global DbgNtSystemDebugControl
-.type DbgNtSystemDebugControl, @function
 DbgNtSystemDebugControl:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8285,7 +7849,6 @@ DbgNtSystemDebugControl:
     ret
 
 .global DbgNtTerminateEnclave
-.type DbgNtTerminateEnclave, @function
 DbgNtTerminateEnclave:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8304,7 +7867,6 @@ DbgNtTerminateEnclave:
     ret
 
 .global DbgNtTerminateJobObject
-.type DbgNtTerminateJobObject, @function
 DbgNtTerminateJobObject:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8323,7 +7885,6 @@ DbgNtTerminateJobObject:
     ret
 
 .global DbgNtTestAlert
-.type DbgNtTestAlert, @function
 DbgNtTestAlert:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8342,7 +7903,6 @@ DbgNtTestAlert:
     ret
 
 .global DbgNtThawRegistry
-.type DbgNtThawRegistry, @function
 DbgNtThawRegistry:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8361,7 +7921,6 @@ DbgNtThawRegistry:
     ret
 
 .global DbgNtThawTransactions
-.type DbgNtThawTransactions, @function
 DbgNtThawTransactions:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8380,7 +7939,6 @@ DbgNtThawTransactions:
     ret
 
 .global DbgNtTraceControl
-.type DbgNtTraceControl, @function
 DbgNtTraceControl:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8399,7 +7957,6 @@ DbgNtTraceControl:
     ret
 
 .global DbgNtTranslateFilePath
-.type DbgNtTranslateFilePath, @function
 DbgNtTranslateFilePath:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8418,7 +7975,6 @@ DbgNtTranslateFilePath:
     ret
 
 .global DbgNtUmsThreadYield
-.type DbgNtUmsThreadYield, @function
 DbgNtUmsThreadYield:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8437,7 +7993,6 @@ DbgNtUmsThreadYield:
     ret
 
 .global DbgNtUnloadDriver
-.type DbgNtUnloadDriver, @function
 DbgNtUnloadDriver:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8456,7 +8011,6 @@ DbgNtUnloadDriver:
     ret
 
 .global DbgNtUnloadKey
-.type DbgNtUnloadKey, @function
 DbgNtUnloadKey:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8475,7 +8029,6 @@ DbgNtUnloadKey:
     ret
 
 .global DbgNtUnloadKey2
-.type DbgNtUnloadKey2, @function
 DbgNtUnloadKey2:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8494,7 +8047,6 @@ DbgNtUnloadKey2:
     ret
 
 .global DbgNtUnloadKeyEx
-.type DbgNtUnloadKeyEx, @function
 DbgNtUnloadKeyEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8513,7 +8065,6 @@ DbgNtUnloadKeyEx:
     ret
 
 .global DbgNtUnlockFile
-.type DbgNtUnlockFile, @function
 DbgNtUnlockFile:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8532,7 +8083,6 @@ DbgNtUnlockFile:
     ret
 
 .global DbgNtUnlockVirtualMemory
-.type DbgNtUnlockVirtualMemory, @function
 DbgNtUnlockVirtualMemory:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8551,7 +8101,6 @@ DbgNtUnlockVirtualMemory:
     ret
 
 .global DbgNtUnmapViewOfSectionEx
-.type DbgNtUnmapViewOfSectionEx, @function
 DbgNtUnmapViewOfSectionEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8570,7 +8119,6 @@ DbgNtUnmapViewOfSectionEx:
     ret
 
 .global DbgNtUnsubscribeWnfStateChange
-.type DbgNtUnsubscribeWnfStateChange, @function
 DbgNtUnsubscribeWnfStateChange:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8589,7 +8137,6 @@ DbgNtUnsubscribeWnfStateChange:
     ret
 
 .global DbgNtUpdateWnfStateData
-.type DbgNtUpdateWnfStateData, @function
 DbgNtUpdateWnfStateData:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8608,7 +8155,6 @@ DbgNtUpdateWnfStateData:
     ret
 
 .global DbgNtVdmControl
-.type DbgNtVdmControl, @function
 DbgNtVdmControl:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8627,7 +8173,6 @@ DbgNtVdmControl:
     ret
 
 .global DbgNtWaitForAlertByThreadId
-.type DbgNtWaitForAlertByThreadId, @function
 DbgNtWaitForAlertByThreadId:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8646,7 +8191,6 @@ DbgNtWaitForAlertByThreadId:
     ret
 
 .global DbgNtWaitForDebugEvent
-.type DbgNtWaitForDebugEvent, @function
 DbgNtWaitForDebugEvent:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8665,7 +8209,6 @@ DbgNtWaitForDebugEvent:
     ret
 
 .global DbgNtWaitForKeyedEvent
-.type DbgNtWaitForKeyedEvent, @function
 DbgNtWaitForKeyedEvent:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8684,7 +8227,6 @@ DbgNtWaitForKeyedEvent:
     ret
 
 .global DbgNtWaitForWorkViaWorkerFactory
-.type DbgNtWaitForWorkViaWorkerFactory, @function
 DbgNtWaitForWorkViaWorkerFactory:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8703,7 +8245,6 @@ DbgNtWaitForWorkViaWorkerFactory:
     ret
 
 .global DbgNtWaitHighEventPair
-.type DbgNtWaitHighEventPair, @function
 DbgNtWaitHighEventPair:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8722,7 +8263,6 @@ DbgNtWaitHighEventPair:
     ret
 
 .global DbgNtWaitLowEventPair
-.type DbgNtWaitLowEventPair, @function
 DbgNtWaitLowEventPair:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8741,7 +8281,6 @@ DbgNtWaitLowEventPair:
     ret
 
 .global DbgNtAcquireCMFViewOwnership
-.type DbgNtAcquireCMFViewOwnership, @function
 DbgNtAcquireCMFViewOwnership:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8760,7 +8299,6 @@ DbgNtAcquireCMFViewOwnership:
     ret
 
 .global DbgNtCancelDeviceWakeupRequest
-.type DbgNtCancelDeviceWakeupRequest, @function
 DbgNtCancelDeviceWakeupRequest:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8779,7 +8317,6 @@ DbgNtCancelDeviceWakeupRequest:
     ret
 
 .global DbgNtClearAllSavepointsTransaction
-.type DbgNtClearAllSavepointsTransaction, @function
 DbgNtClearAllSavepointsTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8798,7 +8335,6 @@ DbgNtClearAllSavepointsTransaction:
     ret
 
 .global DbgNtClearSavepointTransaction
-.type DbgNtClearSavepointTransaction, @function
 DbgNtClearSavepointTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8817,7 +8353,6 @@ DbgNtClearSavepointTransaction:
     ret
 
 .global DbgNtRollbackSavepointTransaction
-.type DbgNtRollbackSavepointTransaction, @function
 DbgNtRollbackSavepointTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8836,7 +8371,6 @@ DbgNtRollbackSavepointTransaction:
     ret
 
 .global DbgNtSavepointTransaction
-.type DbgNtSavepointTransaction, @function
 DbgNtSavepointTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8855,7 +8389,6 @@ DbgNtSavepointTransaction:
     ret
 
 .global DbgNtSavepointComplete
-.type DbgNtSavepointComplete, @function
 DbgNtSavepointComplete:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8874,7 +8407,6 @@ DbgNtSavepointComplete:
     ret
 
 .global DbgNtCreateSectionEx
-.type DbgNtCreateSectionEx, @function
 DbgNtCreateSectionEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8893,7 +8425,6 @@ DbgNtCreateSectionEx:
     ret
 
 .global DbgNtCreateCrossVmEvent
-.type DbgNtCreateCrossVmEvent, @function
 DbgNtCreateCrossVmEvent:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8912,7 +8443,6 @@ DbgNtCreateCrossVmEvent:
     ret
 
 .global DbgNtListTransactions
-.type DbgNtListTransactions, @function
 DbgNtListTransactions:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8931,7 +8461,6 @@ DbgNtListTransactions:
     ret
 
 .global DbgNtMarshallTransaction
-.type DbgNtMarshallTransaction, @function
 DbgNtMarshallTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8950,7 +8479,6 @@ DbgNtMarshallTransaction:
     ret
 
 .global DbgNtPullTransaction
-.type DbgNtPullTransaction, @function
 DbgNtPullTransaction:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8969,7 +8497,6 @@ DbgNtPullTransaction:
     ret
 
 .global DbgNtReleaseCMFViewOwnership
-.type DbgNtReleaseCMFViewOwnership, @function
 DbgNtReleaseCMFViewOwnership:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -8988,7 +8515,6 @@ DbgNtReleaseCMFViewOwnership:
     ret
 
 .global DbgNtWaitForWnfNotifications
-.type DbgNtWaitForWnfNotifications, @function
 DbgNtWaitForWnfNotifications:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -9007,7 +8533,6 @@ DbgNtWaitForWnfNotifications:
     ret
 
 .global DbgNtStartTm
-.type DbgNtStartTm, @function
 DbgNtStartTm:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -9026,7 +8551,6 @@ DbgNtStartTm:
     ret
 
 .global DbgNtSetInformationProcess
-.type DbgNtSetInformationProcess, @function
 DbgNtSetInformationProcess:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -9045,7 +8569,6 @@ DbgNtSetInformationProcess:
     ret
 
 .global DbgNtRequestDeviceWakeup
-.type DbgNtRequestDeviceWakeup, @function
 DbgNtRequestDeviceWakeup:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -9064,7 +8587,6 @@ DbgNtRequestDeviceWakeup:
     ret
 
 .global DbgNtRequestWakeupLatency
-.type DbgNtRequestWakeupLatency, @function
 DbgNtRequestWakeupLatency:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -9083,7 +8605,6 @@ DbgNtRequestWakeupLatency:
     ret
 
 .global DbgNtQuerySystemTime
-.type DbgNtQuerySystemTime, @function
 DbgNtQuerySystemTime:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -9102,7 +8623,6 @@ DbgNtQuerySystemTime:
     ret
 
 .global DbgNtManageHotPatch
-.type DbgNtManageHotPatch, @function
 DbgNtManageHotPatch:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)
@@ -9121,7 +8641,6 @@ DbgNtManageHotPatch:
     ret
 
 .global DbgNtContinueEx
-.type DbgNtContinueEx, @function
 DbgNtContinueEx:
     movq %rcx, 8(%rsp)
     movq %rdx, 16(%rsp)

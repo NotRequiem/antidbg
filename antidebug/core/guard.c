@@ -11,12 +11,12 @@ void __stdcall __clb(PVOID DllHandle, DWORD reason, PVOID Reserved);
 #ifdef _WIN64
     #pragma comment (linker, "/INCLUDE:_tls_used")
     #pragma const_seg(".CRT$XLA")
-    EXTERN_C const PIMAGE_TLS_CALLBACK p_thread_callback_list[] = { (PIMAGE_TLS_CALLBACK)__clb, NULL };
+    const PIMAGE_TLS_CALLBACK p_thread_callback_list[] = { (PIMAGE_TLS_CALLBACK)__clb, NULL };
     #pragma const_seg()
 #else
     #pragma comment (linker, "/INCLUDE:__tls_used")
     #pragma data_seg(".CRT$XLA")
-    EXTERN_C PIMAGE_TLS_CALLBACK p_thread_callback_list[] = { (PIMAGE_TLS_CALLBACK)clb, NULL };
+    PIMAGE_TLS_CALLBACK p_thread_callback_list[] = { (PIMAGE_TLS_CALLBACK)clb, NULL };
     #pragma data_seg()
 #endif
 #pragma endregion

@@ -2,6 +2,8 @@
 
 #include <windows.h>
 #include <stdbool.h>
+#include <intrin.h>
+#include <stdint.h>
 
 #define UNUSED(x) ((void)(x))
 

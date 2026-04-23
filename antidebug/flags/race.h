@@ -20,7 +20,7 @@ extern "C" {
         volatile bool Run;
     } RaceContext;
 
-    bool __adbg_race_condition(const HANDLE thread_handle);
+    bool __adbg_race_condition(const HANDLE process_handle, const HANDLE thread_handle);
 
 #ifdef __cplusplus
 }

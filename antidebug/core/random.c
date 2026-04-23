@@ -17,6 +17,7 @@ static _force_inline uint64_t _splitmix64_final(uint64_t x)
     return x;
 }
 
+/*
 static _force_inline uint64_t _splitmix64(uint64_t* state)
 {
     uint64_t z = (*state += 0x9E3779B97F4A7C15ULL);
@@ -24,6 +25,7 @@ static _force_inline uint64_t _splitmix64(uint64_t* state)
     z = (z ^ (z >> 27)) * 0x94d049bb133111ebULL;
     return z ^ (z >> 31);
 }
+*/
 
 _no_inline static uint64_t _harvest_stack_shape(uint64_t salt)
 {

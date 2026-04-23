@@ -14,12 +14,6 @@ DWORD __hash_syscall(PCSTR FunctionName)
     return Hash;
 }
 
-static PVOID _sc_address(PVOID NtApiAddress)
-{
-    (NtApiAddress);
-    return NULL;
-}
-
 bool _populate_syscall_list()
 {
     if (Dbg_SyscallList.Count) return TRUE;
@@ -66,7 +60,7 @@ bool _populate_syscall_list()
         {
             entries[i].Hash = __hash_syscall(function_name);
             entries[i].Address = functions[ordinals[number_of_names - 1]];
-            entries[i].SyscallAddress = _sc_address(__rva2va(PVOID, dll_base, entries[i].Address));
+            entries[i].SyscallAddress = NULL; // _sc_address(__rva2va(PVOID, dll_base, entries[i].Address));
 
             i++;
             if (i == Dbg_MAX_ENTRIES) break;

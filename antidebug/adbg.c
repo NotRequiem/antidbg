@@ -35,13 +35,14 @@ checks_info debugger_checks[] = {
     {false, "Window", .function_ptr = __adbg_window},
     {false, "DBGP", .function_ptr = __adbg_dbgp},
     {false, "LBR", .function_with_process_and_thread = __adbg_lbr },
-    {false, "Heap Magic", .function_ptr = __adbg_heap_magic},
+    {false, "Heap Magic", .function_with_process = __adbg_heap_magic},
     {false, "Working Set", .function_with_process = __adbg_working_set},
     {false, "Console Event", .function_ptr = __adbg_console_event},
     {false, "Thread Suspension", .function_with_process = __adbg_suspension},
     {false, "NtSetDebugFilterState", .function_with_process = __adbg_filter_state},
     {false, "Device Objects", .function_ptr = __adbg_device},
-    {false, "Race Condition", .function_ptr = __adbg_race_condition}
+    {false, "Race Condition", .function_with_process_and_thread = __adbg_race_condition},
+    {false, "Debugger Freeze", .function_with_process = __adbg_freeze_debugger}
 };
 
 #define NUM_DEBUG_CHECKS (sizeof(debugger_checks) / sizeof(debugger_checks[0]))
@@ -51,7 +52,7 @@ DWORD __stdcall __adbg(LPVOID lpParam) {
     const HANDLE thread_handle = (HANDLE)(-2LL);
 
     while (1) {
-        for (int i = 0; i < NUM_DEBUG_CHECKS; ++i) {
+        for (size_t i = 0; i < NUM_DEBUG_CHECKS; ++i) {
             if (debugger_checks[i].function_with_process != NULL) {
                 debugger_checks[i].result = debugger_checks[i].function_with_process(process_handle);
             }
@@ -130,7 +131,7 @@ bool isProgramBeingDebugged()
     const HANDLE process_handle = (HANDLE)(-1LL);
     const HANDLE thread_handle = (HANDLE)(-2LL);
 
-    for (int i = 0; i < NUM_DEBUG_CHECKS; ++i) {
+    for (size_t i = 0; i < NUM_DEBUG_CHECKS; ++i) {
         if (debugger_checks[i].function_with_process != NULL) {
             debugger_checks[i].result = debugger_checks[i].function_with_process(process_handle);
         }
@@ -156,7 +157,9 @@ bool isProgramBeingDebugged()
     return false;
 }
 
+/*
 int main() {
     StartDebugProtection();
     return 0;
 }
+*/

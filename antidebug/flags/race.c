@@ -12,7 +12,7 @@ static inline bool _read_context_strip(const HANDLE thread_handle)
 {
     const DWORD64 dummy_breakpoint = (DWORD64)(ULONG_PTR)&_dummy;
 
-    CONTEXT ctx = { 0 };
+    _Alignas(16) CONTEXT ctx = { 0 };
     ctx.Dr0 = dummy_breakpoint;
     ctx.Dr7 = 1; // local DR0 execution breakpoint
     ctx.ContextFlags = CONTEXT_DEBUG_REGISTERS;
@@ -29,7 +29,7 @@ static inline bool _read_context_strip(const HANDLE thread_handle)
         return false;
 
     // remove the dummy breakpoint so we don't accidentally trigger it later
-    CONTEXT cleanup_context = { 0 };
+    _Alignas(16) CONTEXT cleanup_context = { 0 };
     cleanup_context.Dr0 = 0;
     cleanup_context.Dr7 = 0;
     cleanup_context.ContextFlags = CONTEXT_DEBUG_REGISTERS;
@@ -43,7 +43,7 @@ static inline bool _read_context_strip(const HANDLE thread_handle)
 }
 
 // thread that continuously hammers the ContextFlags to un-strip the 0x10 bit
-DWORD __stdcall _race_function(LPVOID lpParam)
+DWORD __stdcall __race(LPVOID lpParam)
 {
     RaceContext* rc = (RaceContext*)lpParam;
 
@@ -58,16 +58,17 @@ DWORD __stdcall _race_function(LPVOID lpParam)
 }
 
 // function that forces hardware breakpoints through debuggers via race condition
-bool __adbg_race_condition(const HANDLE thread_handle)
+bool __adbg_race_condition(const HANDLE process_handle, const HANDLE thread_handle)
 {
-    _read_context_strip(thread_handle);
+    bool debugged = _read_context_strip(thread_handle);
 
-    CONTEXT ctx = { 0 };
+    // forces DRs through the hook
+    _Alignas(16) CONTEXT ctx = { 0 };
     ctx.ContextFlags = CONTEXT_DEBUG_REGISTERS;
 
     // current state first (to maintain other registers if necessary)
     if (!NT_SUCCESS(DbgNtGetContextThread(thread_handle, &ctx)))
-        return false;
+        return debugged;
 
     // ctx.Dr0 = (DWORD64)(ULONG_PTR)stuff;
     // ctx.Dr7 = 0x55; 
@@ -76,9 +77,9 @@ bool __adbg_race_condition(const HANDLE thread_handle)
     rc.ContextPtr = &ctx;
     rc.Run = true;
 
-    HANDLE race_thread = DbgCreateThread(thread_handle, 0, _race_function, &rc, 0, NULL, NULL);
+    HANDLE race_thread = DbgCreateThread(process_handle, 0, __race, &rc, 0, NULL, NULL);
     if (!race_thread)
-        return false;
+        return debugged;
 
     // yield
     LARGE_INTEGER delay = { 0 };
@@ -94,5 +95,5 @@ bool __adbg_race_condition(const HANDLE thread_handle)
     DbgNtWaitForSingleObject(race_thread, FALSE, NULL);
     DbgNtClose(race_thread);
 
-    return true;
+    return debugged;
 }

@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.15)
 project(antidebug LANGUAGES C)
 
+if(NOT WIN32)
+  message(FATAL_ERROR "This project targets Windows systems only.")
+endif()
+
 # Require x64
 if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
   message(FATAL_ERROR "This project targets x64 only. Please use a 64-bit toolchain/generator.")
@@ -108,9 +112,9 @@ target_link_libraries(antidebug PRIVATE
 # If you want a small example binary (optional)
 if(BUILD_EXAMPLE)
     # user must provide a int main function
-    add_executable(adbg_example adbg.c)
-    target_link_libraries(adbg_example PRIVATE antidebug)
-    target_include_directories(adbg_example PRIVATE ${CMAKE_SOURCE_DIR})
+    add_executable(antidebug_exe adbg.c)
+    target_link_libraries(antidebug_exe PRIVATE antidebug)
+    target_include_directories(antidebug_exe PRIVATE ${CMAKE_SOURCE_DIR})
 endif()
 
 # rules (optional)

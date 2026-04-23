@@ -71,14 +71,14 @@ cleanup:
 
 #else
 
-    thread_local volatile bool g_exception_fired = false;
+    _Thread_local volatile bool g_exception_raised = false;
 
     static LONG __stdcall _excp_handler(PEXCEPTION_POINTERS ep)
     {
         DWORD code = ep->ExceptionRecord->ExceptionCode;
         if (code == EXCEPTION_SINGLE_STEP || code == EXCEPTION_BREAKPOINT)
         {
-            g_exception_fired = true;
+            g_exception_raised = true;
 
             // clear TF and DR6 so we don't infinitely single-step
             ep->ContextRecord->EFlags &= ~0x100;
@@ -93,7 +93,7 @@ cleanup:
 
     static inline bool __trap(void (*_trap_func)())
     {
-        g_exception_fired = false;
+        g_exception_raised = false;
         PVOID veh = AddVectoredExceptionHandler(1, _excp_handler);
         if (!veh) return true;
 
@@ -101,10 +101,13 @@ cleanup:
 
         RemoveVectoredExceptionHandler(veh);
 
-        return !g_exception_fired;
+        return !g_exception_raised;
     }
 
-    static void _asm_icebp() { __asm__ __volatile__("int $1 \n\t"); }
+    static __attribute__((naked)) void _asm_icebp(void)
+    {
+        __asm__ __volatile__(".byte 0xF1\n\tret");
+    }
 
     bool __adbg_ice(const HANDLE thread_handle) { 
         if (_non_stealth(thread_handle)) return true;
