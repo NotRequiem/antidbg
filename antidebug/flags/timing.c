@@ -1,78 +1,55 @@
 #include "timing.h"
 
-static bool CheckDebuggerTiming(void)
+static inline bool _time_debugger(void)
 {
     const ULONGLONG time1 = GetTickCount64();
 
-    // volatile so these stores actually happen and aren't optimized out
     volatile DWORD ecx = 10;
     volatile DWORD edx = 6;
     UNUSED(edx);
+    UNUSED(ecx);
     ecx = 10;
 
     const ULONGLONG time2 = GetTickCount64();
 
-    // assume we're single-stepped
     return (time2 - time1 > 0x1A) ? true : false;
 }
 
-bool TimingAttacks()
+static inline bool _time_single_step(void)
 {
-	ULONGLONG x = GetTickCount64(); 
-    ULONGLONG y = GetTickCount64();
+    for (int i = 0; i < 10; i++)
+    {
+        uint64_t tsc1, tsc2;
+        int cpu_info[4];
 
-	if (x == y) return false;	
+        __cpuid(cpu_info, 0); // just for serialization, a hypervisor wouldn't affect this measure
+        tsc1 = __rdtsc();
 
-    x = GetTickCount64();
-    Sleep(50);
-    y = GetTickCount64();
+        volatile int a = 0;
+        for (int j = 0; j < 100; j++) {
+            a += j;
+        }
 
-    const ULONGLONG elapsedTime = x - y;
-    bool detection_value = elapsedTime > 100;
-    if (detection_value) return true;
+        tsc2 = __rdtsc();
+        __cpuid(cpu_info, 0);
 
-    static ULONGLONG time = 0;
-    if (time == 0) {
-        time = __rdtsc();
-        return false;
-    }
-    const ULONGLONG second_time = __rdtsc();
-    const ULONGLONG diff = (second_time - time) >> 20;
-    if (diff > 0x100) {
-        time = second_time;
-        return true;
+        // 0xFFFFF is 1 million cycles aprox
+        if ((tsc2 - tsc1) < 0xFFFFF) {
+            return false; 
+        }
     }
 
-    LARGE_INTEGER start, end, frequency;
-    QueryPerformanceCounter(&start);
-    QueryPerformanceFrequency(&frequency);
+    return true;
+}
 
-    SleepEx(50, FALSE);
+bool __adbg_timing_attack()
+{
+    bool is_debugged = false;
+    if (_time_single_step()) {
+        is_debugged = true;
+    }
 
-    QueryPerformanceCounter(&end);
-
-    detection_value = (end.QuadPart - start.QuadPart) * 1000 / frequency.QuadPart > 100;
-    if (detection_value) return true;
-
-    SYSTEMTIME sysStart, sysend;
-    FILETIME fStart, fEnd;
-    ULARGE_INTEGER uiStart = { 0 }, uiEnd = { 0 };
-
-    GetLocalTime(&sysStart);
-    Sleep(50);
-    GetLocalTime(&sysend);
-
-    if (!SystemTimeToFileTime(&sysend, &fEnd))
-        return false;
-    if (!SystemTimeToFileTime(&sysStart, &fStart))
-        return false;
-
-    uiStart.LowPart = fStart.dwLowDateTime;
-    uiStart.HighPart = fStart.dwHighDateTime;
-    uiEnd.LowPart = fEnd.dwLowDateTime;
-    uiEnd.HighPart = fEnd.dwHighDateTime;
-
-    detection_value = (((uiEnd.QuadPart - uiStart.QuadPart) * 100) / 1000000) > 100;
-    if (!detection_value) return CheckDebuggerTiming();
-    else return true;
+    if (!is_debugged) return _time_debugger();
+    
+    return is_debugged;
 }

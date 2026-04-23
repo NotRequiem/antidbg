@@ -2,12 +2,13 @@
 
 #include <windows.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	bool int2D();
+	bool __adbg_int2d();
 
 #ifdef __cplusplus
 }

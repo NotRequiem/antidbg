@@ -1,15 +1,16 @@
 #include "procdbgflag.h"
 #include "..\core\syscall.h"
 
-bool DebugFlags(const HANDLE hProcess) 
+bool __adbg_debug_flags(const HANDLE process_handle) 
 {
-    DWORD dwProcessDebugFlags = 0, dwReturned;
-    const DWORD ProcessDebugFlags = 0x1f;
+    DWORD debug_flags = 0, returned;
+
     const NTSTATUS status = DbgNtQueryInformationProcess(
-        hProcess,
+        process_handle,
         ProcessDebugFlags,
-        &dwProcessDebugFlags,
+        &debug_flags,
         sizeof(DWORD),
-        &dwReturned);
-    return ((NTSTATUS)(status) >= 0) && (0 == dwProcessDebugFlags);
+        &returned);
+
+    return ((NTSTATUS)(status) >= 0) && (0 == debug_flags);
 }

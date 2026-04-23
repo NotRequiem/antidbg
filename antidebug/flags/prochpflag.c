@@ -1,23 +1,23 @@
 #include "prochpflag.h"
 
-static inline PUINT32 GetHeapFlags_x64()
+static inline PUINT32 __readheap()
 {
-    PINT64 pProcessHeap = NULL;
-    PUINT32 pHeapFlags = NULL;
+    PINT64 process_heap = NULL;
+    PUINT32 heap_flags = NULL;
 
-    pProcessHeap = (PINT64)(__readgsqword(0x60) + 0x30);
-    pHeapFlags = (PUINT32)(*(PINT64)pProcessHeap + 0x70);
+    process_heap = (PINT64)(__readgsqword(0x60) + 0x30);
+    heap_flags = (PUINT32)(*(PINT64)process_heap + 0x70);
 
-    return pHeapFlags;
+    return heap_flags;
 }
 
-bool ProcessHeapFlag()
+bool __adbg_heap_flag()
 {
-    PUINT32 pHeapFlags = NULL;
+    PUINT32 heap_flags = NULL;
 
-    pHeapFlags = GetHeapFlags_x64();
+    heap_flags = __readheap();
 
-    if (pHeapFlags != NULL && *pHeapFlags > 2) {
+    if (heap_flags != NULL && *heap_flags > 2) {
         return true;
     }
     else {

@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-	bool CheckOutputDebugString();
+	bool __adbg_output_dbg_str();
 
 #ifdef __cplusplus
 }

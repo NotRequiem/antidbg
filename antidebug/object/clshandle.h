@@ -8,9 +8,9 @@
 extern "C" {
 #endif
 
-	typedef NTSTATUS(NTAPI* PFN_NtClose)(HANDLE);
+	typedef NTSTATUS(__stdcall* pfn_nt_close)(HANDLE);
 
-	bool CheckCloseHandle();
+	bool __adbg_close_handle();
 
 #ifdef __cplusplus
 }

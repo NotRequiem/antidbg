@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-	bool IsBeingDebugged();
+	bool __adbg_is_debugger_present();
 
 #ifdef __cplusplus
 }

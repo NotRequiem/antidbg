@@ -1,219 +1,181 @@
 #include "vrtalloc.h"
+#include "../core/syscall.h"
 
-/*
- * This check uses the MEM_WRITE_WATCH feature of VirtualAlloc to test for additional memory writes by debuggers, sandboxing, etc.
- * There are a few ways that we can exploit this:
- *  (1) Allocate a buffer, write it once, get the count, see if it's >1
- *  (2) Allocate a buffer, pass it to an API where we know the buffer isn't touched (e.g. call with invalid parameter) and see if the count is >0
- *  (3) Allocate a buffer, use it to store a result of a call we care about (e.g. IsDebuggerPresent) and see if the memory was hit exactly once
- *  (4) Allocate an executable buffer, copy a debug check routine to it, run the check, see if any writes were performed after ours.
- *
- * Reference: https://msdn.microsoft.com/en-us/library/windows/desktop/aa366887.aspx
- * GetWriteWatch: https://msdn.microsoft.com/en-us/library/windows/desktop/aa366573.aspx
- *
- */
-
-static inline bool VirtualAlloc_WriteWatch_BufferOnly()
+static inline bool _virtual_alloc_write_watch_buffer_only(const HANDLE process_handle)
 {
-    ULONG_PTR hitCount;
-    DWORD granularity;
-    bool result = FALSE;
+    ULONG hit_count;
+    ULONG granularity;
+    bool result = false;
 
-    PVOID* addresses = (PVOID*)(VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
-    if (addresses == NULL) {
-        printf("VirtualAlloc failed. Last error: %u\n", GetLastError());
+    PVOID addresses = NULL;
+    SIZE_T addresses_size = 4096 * sizeof(ULONG);
+    if (DbgNtAllocateVirtualMemory(process_handle, &addresses, 0, &addresses_size, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE) < 0) {
         return result;
     }
 
-    const SIZE_T bufferSize = (SIZE_T)4096 * (SIZE_T)4096;
-    int* buffer = (int*)(VirtualAlloc(NULL, bufferSize, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_READWRITE));
-    if (buffer == NULL)
+    SIZE_T buffer_size = (SIZE_T)4096 * (SIZE_T)4096;
+    int* buffer = NULL;
+    if (DbgNtAllocateVirtualMemory(process_handle, (PVOID*)&buffer, 0, &buffer_size, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_READWRITE) < 0)
     {
-        printf("VirtualAlloc failed with error %lu\n", GetLastError());
-        VirtualFree(addresses, 0, MEM_RELEASE);
+        SIZE_T free_size = 0;
+        DbgNtFreeVirtualMemory(process_handle, &addresses, &free_size, MEM_RELEASE);
         return result;
     }
 
     buffer[0] = 1234;
 
-    hitCount = 4096;
-    if (GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
+    hit_count = 4096;
+    if (DbgNtGetWriteWatch(process_handle, 0UL, (PVOID)buffer, (ULONG)buffer_size, (PULONG)addresses, &hit_count, &granularity) != 0)
     {
-        printf("GetWriteWatch failed. Last error: %u\n", GetLastError());
-        result = FALSE;
+        result = false;
     }
     else
     {
-        result = hitCount != 1;
+        result = hit_count != 1;
     }
 
-    VirtualFree(addresses, 0, MEM_RELEASE);
-    VirtualFree(buffer, 0, MEM_RELEASE);
+    SIZE_T free_size = 0;
+    DbgNtFreeVirtualMemory(process_handle, &addresses, &free_size, MEM_RELEASE);
+    free_size = 0;
+    DbgNtFreeVirtualMemory(process_handle, (PVOID*)&buffer, &free_size, MEM_RELEASE);
 
     return result;
 }
 
-static inline bool VirtualAlloc_WriteWatch_APICalls()
+static inline bool _virtual_alloc_write_watch_api_calls(const HANDLE process_handle)
 {
-    ULONG_PTR hitCount;
-    DWORD granularity;
-    bool result = FALSE, error = FALSE;
+    ULONG hit_count;
+    ULONG granularity;
+    bool result = false, error = false;
 
-    PVOID* addresses = (PVOID*)(VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
-    if (addresses == NULL) {
-        printf("VirtualAlloc failed. Last error: %u\n", GetLastError());
+    PVOID addresses = NULL;
+    SIZE_T addresses_size = 4096 * sizeof(ULONG);
+    if (DbgNtAllocateVirtualMemory(process_handle, &addresses, 0, &addresses_size, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE) < 0) {
         return result;
     }
 
-    const SIZE_T bufferSize = (SIZE_T)4096 * (SIZE_T)4096;
-    int* buffer = (int*)(VirtualAlloc(NULL, bufferSize, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_READWRITE));
-    if (buffer == NULL)
+    SIZE_T buffer_size = (SIZE_T)4096 * (SIZE_T)4096;
+    int* buffer = NULL;
+    if (DbgNtAllocateVirtualMemory(process_handle, (PVOID*)&buffer, 0, &buffer_size, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_READWRITE) < 0)
     {
-        printf("VirtualAlloc failed with error %lu\n", GetLastError());
-        VirtualFree(addresses, 0, MEM_RELEASE);
+        SIZE_T free_size = 0;
+        DbgNtFreeVirtualMemory(process_handle, &addresses, &free_size, MEM_RELEASE);
         return result;
     }
 
     // make a bunch of calls where buffer *can* be written to, but isn't actually touched due to invalid parameters.
     // this can catch out API hooks whose return-by-parameter behaviour is different to that of regular APIs
 
-    if (GlobalGetAtomNameA(INVALID_ATOM, (LPTSTR)buffer, 1) != FALSE)
-    {
-        printf("GlobalGetAtomName succeeded when it should've failed... not sure what happened!\n");
-        result = FALSE;
-        error = TRUE;
-    }
-#pragma warning (disable : 6386)
-    if (GetEnvironmentVariableW(L"%ThisIsAnInvalidEnvironmentVariableName?[]<>@\\;*!-{}#:/~%", (LPWSTR)buffer, 4096 * 4096) != FALSE)
-    {
-        printf("GetEnvironmentVariable succeeded when it should've failed... not sure what happened!\n");
-        result = FALSE;
-        error = TRUE;
-    }
-#pragma warning (default : 6386)
+    HANDLE invalid_handle = (HANDLE)(LONG_PTR)-2;
 
-    if (GetBinaryTypeW(L"%ThisIsAnInvalidFileName?[]<>@\\;*!-{}#:/~%", (LPDWORD)buffer) != FALSE)
+    if (DbgNtQueryInformationProcess(invalid_handle, 0, buffer, 4096, NULL) >= 0)
     {
-        printf("GetBinaryType succeeded when it should've failed... not sure what happened!\n");
-        result = FALSE;
-        error = TRUE;
+        result = false;
+        error = true;
     }
-    if (HeapQueryInformation(0, (HEAP_INFORMATION_CLASS)69, buffer, 4096, NULL) != FALSE)
+    if (DbgNtReadVirtualMemory(invalid_handle, (PVOID)(ULONG_PTR)0x69696969, buffer, 4096, NULL) >= 0)
     {
-        printf("HeapQueryInformation succeeded when it should've failed... not sure what happened!\n");
-        result = FALSE;
-        error = TRUE;
+        result = false;
+        error = true;
     }
-    if (ReadProcessMemory(INVALID_HANDLE_VALUE, (LPCVOID)0x69696969, buffer, 4096, NULL) != FALSE)
+    if (DbgNtGetContextThread(invalid_handle, (PCONTEXT)buffer) >= 0)
     {
-        printf("ReadProcessMemory succeeded when it should've failed... not sure what happened!\n");
-        result = FALSE;
-        error = TRUE;
+        result = false;
+        error = true;
     }
-    if (GetThreadContext(INVALID_HANDLE_VALUE, (LPCONTEXT)buffer) != FALSE)
+    if (DbgNtQueryInformationThread(invalid_handle, 0, buffer, 4096, NULL) >= 0)
     {
-        printf("GetThreadContext succeeded when it should've failed... not sure what happened!\n");
-        result = FALSE;
-        error = TRUE;
+        result = false;
+        error = true;
     }
-#pragma warning (disable: 4152)
-    if (GetWriteWatch(0, &VirtualAlloc_WriteWatch_APICalls, 0, NULL, NULL, (PULONG)buffer) == 0)
+    if (DbgNtGetWriteWatch(process_handle, 0UL, (PVOID)&_virtual_alloc_write_watch_api_calls, 0UL, NULL, &hit_count, &granularity) == 0)
     {
-        printf("GetWriteWatch succeeded when it should've failed... not sure what happened!\n");
-        result = FALSE;
-        error = TRUE;
+        result = false;
+        error = true;
     }
-#pragma warning (default: 4152)
 
-    if (error == FALSE)
+    if (error == false)
     {
-        // APIs failed as they should have! :)
-
-        hitCount = 4096;
-        if (GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
+        hit_count = 4096;
+        if (DbgNtGetWriteWatch(process_handle, 0UL, (PVOID)buffer, (ULONG)buffer_size, (PULONG)addresses, &hit_count, &granularity) != 0)
         {
-            printf("GetWriteWatch failed. Last error: %u\n", GetLastError());
-            result = FALSE;
+            result = false;
         }
         else
         {
-            // should have zero reads here because GlobalGetAtomName doesn't probe the buffer until other checks have succeeded
-            // if there's an API hook or debugger in here it'll probably try to probe the buffer, which will be caught here
-            result = hitCount != 0;
+            result = hit_count != 0;
         }
     }
-    else
-    {
-        printf("Write watch API check skipped, ignore the result as it is inconclusive.\n");
-    }
 
-    VirtualFree(addresses, 0, MEM_RELEASE);
-    VirtualFree(buffer, 0, MEM_RELEASE);
+    SIZE_T free_size = 0;
+    DbgNtFreeVirtualMemory(process_handle, &addresses, &free_size, MEM_RELEASE);
+    free_size = 0;
+    DbgNtFreeVirtualMemory(process_handle, (PVOID*)&buffer, &free_size, MEM_RELEASE);
 
     return result;
 }
 
-static inline bool VirtualAlloc_WriteWatch_IsDebuggerPresent()
+static inline bool _virtual_alloc_write_watch_is_debugger_present(const HANDLE process_handle)
 {
-    ULONG_PTR hitCount;
-    DWORD granularity;
-    bool result = FALSE;
+    ULONG hit_count;
+    ULONG granularity;
+    bool result = false;
 
-    PVOID* addresses = (PVOID*)(VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
-    if (addresses == NULL) {
-        printf("VirtualAlloc failed. Last error: %u\n", GetLastError());
+    PVOID addresses = NULL;
+    SIZE_T addresses_size = 4096 * sizeof(ULONG);
+    if (DbgNtAllocateVirtualMemory(process_handle, &addresses, 0, &addresses_size, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE) < 0) {
         return result;
     }
 
-    const SIZE_T bufferSize = (SIZE_T)4096 * (SIZE_T)4096;
-    int* buffer = (int*)(VirtualAlloc(NULL, bufferSize, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_READWRITE));
-    if (buffer == NULL) {
-        VirtualFree(addresses, 0, MEM_RELEASE);
-        printf("VirtualAlloc failed. Last error: %u\n", GetLastError());
+    SIZE_T buffer_size = (SIZE_T)4096 * (SIZE_T)4096;
+    int* buffer = NULL;
+    if (DbgNtAllocateVirtualMemory(process_handle, (PVOID*)&buffer, 0, &buffer_size, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_READWRITE) < 0) {
+        SIZE_T free_size = 0;
+        DbgNtFreeVirtualMemory(process_handle, &addresses, &free_size, MEM_RELEASE);
         return result;
     }
 
     buffer[0] = IsDebuggerPresent();
 
-    hitCount = 4096;
-    if (GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
+    hit_count = 4096;
+    if (DbgNtGetWriteWatch(process_handle, 0UL, (PVOID)buffer, (ULONG)buffer_size, (PULONG)addresses, &hit_count, &granularity) != 0)
     {
-        printf("GetWriteWatch failed. Last error: %u\n", GetLastError());
-        result = FALSE;
+        result = false;
     }
     else
     {
-        result = (hitCount != 1) | (buffer[0] == TRUE);
+        result = (hit_count != 1) | (buffer[0] == TRUE);
     }
 
-    VirtualFree(addresses, 0, MEM_RELEASE);
-    VirtualFree(buffer, 0, MEM_RELEASE);
+    SIZE_T free_size = 0;
+    DbgNtFreeVirtualMemory(process_handle, &addresses, &free_size, MEM_RELEASE);
+    free_size = 0;
+    DbgNtFreeVirtualMemory(process_handle, (PVOID*)&buffer, &free_size, MEM_RELEASE);
 
     return result;
 }
 
-static inline bool VirtualAlloc_WriteWatch_CodeWrite()
+static inline bool _virtual_alloc_write_watch_code_write(const HANDLE process_handle)
 {
-    ULONG_PTR hitCount;
-    DWORD granularity;
-    bool result = FALSE;
+    ULONG hit_count;
+    ULONG granularity;
+    bool result = false;
 
-    PVOID* addresses = (PVOID*)(VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
-    if (addresses == NULL) {
-        printf("VirtualAlloc failed. Last error: %u\n", GetLastError());
+    PVOID addresses = NULL;
+    SIZE_T addresses_size = 4096 * sizeof(ULONG);
+    if (DbgNtAllocateVirtualMemory(process_handle, &addresses, 0, &addresses_size, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE) < 0) {
         return result;
     }
 
-    const SIZE_T bufferSize = (SIZE_T)4096 * (SIZE_T)4096;
-    byte* buffer = (byte*)(VirtualAlloc(NULL, bufferSize, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_EXECUTE_READWRITE));
-    if (buffer == NULL) {
-        VirtualFree(addresses, 0, MEM_RELEASE);
-        printf("VirtualAlloc failed. Last error: %u\n", GetLastError());
+    SIZE_T buffer_size = (SIZE_T)4096 * (SIZE_T)4096;
+    unsigned char* buffer = NULL;
+    if (DbgNtAllocateVirtualMemory(process_handle, (PVOID*)&buffer, 0, &buffer_size, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_EXECUTE_READWRITE) < 0) {
+        SIZE_T free_size = 0;
+        DbgNtFreeVirtualMemory(process_handle, &addresses, &free_size, MEM_RELEASE);
         return result;
     }
 
-    // construct a call to isDebuggerPresent in assembly
-    ULONG_PTR isDebuggerPresentAddr = (ULONG_PTR)&IsDebuggerPresent;
+    ULONG_PTR is_debugger_present_addr = (ULONG_PTR)&IsDebuggerPresent;
 
     /*
      * 64-bit
@@ -225,58 +187,58 @@ static inline bool VirtualAlloc_WriteWatch_CodeWrite()
         e:  c3                              ret
      */
     int pos = 0;
-    buffer[pos++] = 0x51; // push rcx
-    buffer[pos++] = 0x48; // movabs rcx, ...
-    buffer[pos++] = 0xB9; // ^ ...
+    buffer[pos++] = 0x51;
+    buffer[pos++] = 0x48;
+    buffer[pos++] = 0xB9;
     int offset = 0;
     for (int n = 0; n < 8; n++)
     {
-        buffer[pos++] = (isDebuggerPresentAddr >> offset) & 0xFF;
+        buffer[pos++] = (unsigned char)((is_debugger_present_addr >> offset) & 0xFF);
         offset += 8;
     }
-    buffer[pos++] = 0xFF; // call rcx
-    buffer[pos++] = 0xD1; // ^
-    buffer[pos++] = 0x59; // pop rcx
-    buffer[pos] = 0xC3; // ret
+    buffer[pos++] = 0xFF;
+    buffer[pos++] = 0xD1;
+    buffer[pos++] = 0x59;
+    buffer[pos] = 0xC3;
 
-
-    ResetWriteWatch(buffer, (SIZE_T)(4096) * 4096);
+    DbgNtResetWriteWatch(process_handle, (PVOID)buffer, (ULONG)buffer_size);
 
     BOOL(*foo)(VOID) = (BOOL(*)(VOID))buffer;
     if (foo() == TRUE)
     {
-        result = TRUE;
+        result = true;
     }
 
-    if (result == FALSE)
+    if (result == false)
     {
-        hitCount = 4096;
-        if (GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
+        hit_count = 4096;
+        if (DbgNtGetWriteWatch(process_handle, 0UL, (PVOID)buffer, (ULONG)buffer_size, (PULONG)addresses, &hit_count, &granularity) != 0)
         {
-            printf("GetWriteWatch failed. Last error: %u\n", GetLastError());
-            result = FALSE;
+            result = false;
         }
         else
         {
-            result = hitCount != 0;
+            result = hit_count != 0;
         }
     }
 
-    VirtualFree(addresses, 0, MEM_RELEASE);
-    VirtualFree(buffer, 0, MEM_RELEASE);
+    SIZE_T free_size = 0;
+    DbgNtFreeVirtualMemory(process_handle, &addresses, &free_size, MEM_RELEASE);
+    free_size = 0;
+    DbgNtFreeVirtualMemory(process_handle, (PVOID*)&buffer, &free_size, MEM_RELEASE);
 
     return result;
 }
 
-bool WriteWatch() 
+bool __adbg_write_watch(const HANDLE process_handle)
 {
-    if (VirtualAlloc_WriteWatch_BufferOnly())
+    if (_virtual_alloc_write_watch_buffer_only(process_handle))
         return true;
-    if (VirtualAlloc_WriteWatch_APICalls())
+    if (_virtual_alloc_write_watch_api_calls(process_handle))
         return true;
-    if (VirtualAlloc_WriteWatch_IsDebuggerPresent())
+    if (_virtual_alloc_write_watch_is_debugger_present(process_handle))
         return true;
-    if (VirtualAlloc_WriteWatch_CodeWrite())
+    if (_virtual_alloc_write_watch_code_write(process_handle))
         return true;
 
     return false;

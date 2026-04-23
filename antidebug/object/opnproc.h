@@ -6,14 +6,14 @@
 #include <tchar.h>
 
 #ifndef NT_SUCCESS
-#define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
+	#define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
 #endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	bool CheckOpenProcess();
+	bool __adbg_open_process();
 
 #ifdef __cplusplus
 }

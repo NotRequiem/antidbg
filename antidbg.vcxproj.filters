@@ -66,9 +66,6 @@
     <ClCompile Include="antidebug\api\rdbgpresent.c">
       <Filter>Source Files\api</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\exceptions\hwbreakp2.c">
-      <Filter>Source Files\exceptions</Filter>
-    </ClCompile>
     <ClCompile Include="antidebug\exceptions\pgexcbp.c">
       <Filter>Source Files\exceptions</Filter>
     </ClCompile>
@@ -78,7 +75,7 @@
     <ClCompile Include="antidebug\core\thrmng.c">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\asm\sckreg.c">
+    <ClCompile Include="antidebug\asm\ice.c">
       <Filter>Source Files\asm</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\asm\prehop.c">
@@ -94,9 +91,6 @@
       <Filter>Source Files\asm</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\asm\int2d.c">
-      <Filter>Source Files\asm</Filter>
-    </ClCompile>
-    <ClCompile Include="antidebug\asm\dbgbreak.c">
       <Filter>Source Files\asm</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\flags\duphnd.c">
@@ -117,7 +111,7 @@
     <ClCompile Include="antidebug\memory\hwbreakp.c">
       <Filter>Source Files\memory</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\memory\membreakp.c">
+    <ClCompile Include="antidebug\memory\membreak.c">
       <Filter>Source Files\memory</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\memory\peb.c">
@@ -141,25 +135,19 @@
     <ClCompile Include="antidebug\object\prothnd.c">
       <Filter>Source Files\object</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\object\sysdbgctl.c">
-      <Filter>Source Files\object</Filter>
-    </ClCompile>
     <ClCompile Include="antidebug\adbg.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\core\syscall.c">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\core\atcptr.c">
+    <ClCompile Include="antidebug\core\guard.c">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\core\hasher.c">
+    <ClCompile Include="antidebug\core\monitor.c">
       <Filter>Source Files\core</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\flags\prntproc.c">
-      <Filter>Source Files\flags</Filter>
-    </ClCompile>
-    <ClCompile Include="antidebug\flags\ntldt.c">
       <Filter>Source Files\flags</Filter>
     </ClCompile>
     <ClCompile Include="antidebug\flags\loadlib.c">
@@ -195,6 +183,48 @@
     <ClCompile Include="antidebug\core\debug.c">
       <Filter>Source Files\core</Filter>
     </ClCompile>
+    <ClCompile Include="antidebug\memory\heap.c">
+      <Filter>Source Files\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\asm\stckseg.c">
+      <Filter>Source Files\asm</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\asm\instcnt.c">
+      <Filter>Source Files\asm</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\memory\workset.c">
+      <Filter>Source Files\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\memory\mapview.c">
+      <Filter>Source Files\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\crtlevent.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\suspend.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\race.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\api\sysdbgcontrol.c">
+      <Filter>Source Files\api</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\api\setdbgfltstate.c">
+      <Filter>Source Files\api</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\object\device.c">
+      <Filter>Source Files\object</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\core\random.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\core\callback.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\core\module.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="antidebug\api\dbgpresent.h">
@@ -205,9 +235,6 @@
     </ClInclude>
     <ClInclude Include="antidebug\api\rdbgpresent.h">
       <Filter>Header Files\api</Filter>
-    </ClInclude>
-    <ClInclude Include="antidebug\asm\dbgbreak.h">
-      <Filter>Header Files\asm</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\asm\int2d.h">
       <Filter>Header Files\asm</Filter>
@@ -224,16 +251,13 @@
     <ClInclude Include="antidebug\asm\prehop.h">
       <Filter>Header Files\asm</Filter>
     </ClInclude>
-    <ClInclude Include="antidebug\asm\sckreg.h">
+    <ClInclude Include="antidebug\asm\ice.h">
       <Filter>Header Files\asm</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\core\thrmng.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\exceptions\raiseexc.h">
-      <Filter>Header Files\exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="antidebug\exceptions\hwbreakp2.h">
       <Filter>Header Files\exceptions</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\exceptions\pgexcbp.h">
@@ -257,7 +281,7 @@
     <ClInclude Include="antidebug\memory\hwbreakp.h">
       <Filter>Header Files\memory</Filter>
     </ClInclude>
-    <ClInclude Include="antidebug\memory\membreakp.h">
+    <ClInclude Include="antidebug\memory\membreak.h">
       <Filter>Header Files\memory</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\memory\peb.h">
@@ -278,9 +302,6 @@
     <ClInclude Include="antidebug\object\prothnd.h">
       <Filter>Header Files\object</Filter>
     </ClInclude>
-    <ClInclude Include="antidebug\object\sysdbgctl.h">
-      <Filter>Header Files\object</Filter>
-    </ClInclude>
     <ClInclude Include="antidebug\object\clshandle.h">
       <Filter>Header Files\object</Filter>
     </ClInclude>
@@ -290,16 +311,13 @@
     <ClInclude Include="antidebug\core\syscall.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="antidebug\core\atcptr.h">
+    <ClInclude Include="antidebug\core\guard.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="antidebug\core\hasher.h">
+    <ClInclude Include="antidebug\core\monitor.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\flags\prntproc.h">
-      <Filter>Header Files\flags</Filter>
-    </ClInclude>
-    <ClInclude Include="antidebug\flags\ntldt.h">
       <Filter>Header Files\flags</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\flags\loadlib.h">
@@ -338,13 +356,60 @@
     <ClInclude Include="antidebug\asm\lbr_btf.h">
       <Filter>Header Files\asm</Filter>
     </ClInclude>
+    <ClInclude Include="antidebug\memory\heap.h">
+      <Filter>Header Files\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\asm\stckseg.h">
+      <Filter>Header Files\asm</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\asm\instcnt.h">
+      <Filter>Header Files\asm</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\memory\workset.h">
+      <Filter>Header Files\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\memory\mapview.h">
+      <Filter>Header Files\memory</Filter>
+    </ClInclude>
     <ClInclude Include="antidebug\core\debug.h">
-      <Filter>Source Files\core</Filter>
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\crtlevent.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\suspend.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\flags\race.h">
+      <Filter>Header Files\flags</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\api\sysdbgcontrol.h">
+      <Filter>Header Files\api</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\api\setdbgfltstate.h">
+      <Filter>Header Files\api</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\object\device.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\core\random.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\core\callback.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\core\module.h">
+      <Filter>Header Files\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="antidebug\core\syscall-core.asm">
       <Filter>Source Files\core</Filter>
     </MASM>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="antidebug\core\syscall-core.S">
+      <Filter>Source Files\core</Filter>
+    </None>
   </ItemGroup>
 </Project>

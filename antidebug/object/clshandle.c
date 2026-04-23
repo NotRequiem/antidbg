@@ -1,38 +1,38 @@
 #include "clshandle.h"
 #include "../core/syscall.h"
 
-static inline PFN_NtClose GetNtClosePointer() 
+static inline pfn_nt_close _get_ntclose() 
 {
-    HMODULE hNtdll = GetModuleHandle(_T("ntdll.dll"));
-    if (hNtdll == NULL) {
+    HMODULE ntdll = GetModuleHandle(_T("ntdll.dll"));
+    if (ntdll == NULL) {
         return NULL;
     }
 
-    PFN_NtClose pfnNtClose = (PFN_NtClose)GetProcAddress(hNtdll, "NtClose");
+    pfn_nt_close pfn_ntclose = (pfn_nt_close)GetProcAddress(ntdll, "NtClose"); // not using our __get_module function on purpose
 
-    if (pfnNtClose == NULL) {
+    if (pfn_ntclose == NULL) {
         return NULL;
     }
 
-    return pfnNtClose;
+    return pfn_ntclose;
 }
 
-static inline BOOL NtClose_InvalideHandle()
+static inline BOOL _close_handle()
 {
-    PFN_NtClose NtClose_ = GetNtClosePointer();
-    if (NtClose_ == NULL) {
+    pfn_nt_close ntclose = _get_ntclose();
+    if (ntclose == NULL) {
         return FALSE;
     }
 
     __try {
-        NtClose_((HANDLE)0x99999999ULL);
+        ntclose((HANDLE)0x99999999ULL);
     }
     __except (EXCEPTION_EXECUTE_HANDLER) {
         return TRUE;
     }
 
     __try {
-        DbgNtClose((HANDLE)0x99999999ULL); // now try syscall
+        DbgNtClose((HANDLE)0x99999999ULL); // now try manual syscall
     }
     __except (EXCEPTION_EXECUTE_HANDLER) {
         return TRUE;
@@ -41,7 +41,7 @@ static inline BOOL NtClose_InvalideHandle()
     return FALSE;
 }
 
-bool CheckCloseHandle()
+bool __adbg_close_handle()
 {
     __try {
         CloseHandle((HANDLE)0x99999999ULL);
@@ -56,7 +56,7 @@ bool CheckCloseHandle()
         return true;
     }
 
-    if (NtClose_InvalideHandle())
+    if (_close_handle())
         return true;
 
     __try

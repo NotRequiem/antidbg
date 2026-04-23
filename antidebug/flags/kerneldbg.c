@@ -1,14 +1,14 @@
 #include "kerneldbg.h"
 #include "..\core\syscall.h"
 
-static inline bool SharedUserData()
+static inline bool __read_kuser_shared_data()
 {
-    const ULONG_PTR UserSharedData = 0x7FFE0000;
+    const ULONG_PTR user_shared_data = 0x7FFE0000;
 
-    const UCHAR KdDebuggerEnabledByte = *(UCHAR*)(UserSharedData + 0x2D4);
+    const UCHAR kd_debugger_enabled_byte = *(UCHAR*)(user_shared_data + 0x2D4);
 
-    const BOOLEAN KdDebuggerEnabled = (KdDebuggerEnabledByte & 0x1) == 0x1;
-    const BOOLEAN KdDebuggerNotPresent = (KdDebuggerEnabledByte & 0x2) == 0;
+    const BOOLEAN kd_debugger_enabled = (kd_debugger_enabled_byte & 0x1) == 0x1;
+    const BOOLEAN kd_debugger_not_present = (kd_debugger_enabled_byte & 0x2) == 0;
 
     /*
     * const unsigned char b = *(unsigned char*)0x7ffe02d4; 
@@ -16,29 +16,29 @@ static inline bool SharedUserData()
     *    return true;
     */
 
-    if (KdDebuggerEnabled || !KdDebuggerNotPresent)
+    if (kd_debugger_enabled || !kd_debugger_not_present)
         return true;
 
     return false;
 }
 
-bool KernelDebugger() 
+bool __adbg_kernel_debugger() 
 {
-    const bool sharedUserDataResult = SharedUserData();
+    const bool result = __read_kuser_shared_data();
 
-    if (sharedUserDataResult) {
+    if (result) {
         return true;
     }
 
-    SYSTEM_KERNEL_DEBUGGER_INFORMATION SystemInfo = { 0 };
+    SYSTEM_KERNEL_DEBUGGER_INFORMATION system_info = { 0 };
 
     const NTSTATUS status = DbgNtQuerySystemInformation(
         (SYSTEM_INFORMATION_CLASS)SystemKernelDebuggerInformation,
-        &SystemInfo,
-        sizeof(SystemInfo),
+        &system_info,
+        sizeof(system_info),
         NULL);
 
     return (((NTSTATUS)(status)) >= 0)
-        ? (SystemInfo.DebuggerEnabled && !SystemInfo.DebuggerNotPresent)
+        ? (system_info.DebuggerEnabled && !system_info.DebuggerNotPresent)
         : false;
 }

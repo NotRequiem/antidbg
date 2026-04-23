@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-	bool RaiseDbgControl();
+	bool __adbg_dbg_control();
 
 #ifdef __cplusplus
 }

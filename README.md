@@ -1,76 +1,92 @@
-# AntiDebugging Library for C/C++
+# AntiDBG
 
-antidbg is a PoC of a x64 user-mode anti-debugging library for Windows, designed to protect any software from debugging.
+**antidbg** is a x64 user-mode anti-debugging library for Windows, designed to protect software from debugging.
 
 The library is:
-- Very easy to use (only one function call required)
-- Directly syscalled, which means that most antidebugging checks can't be hooked from user-space
-- Optimized for officially supported Windows versions and AMD64 only.
-- Designed for speed and minimal memory usage
-- Compatible with any C and C++ standard
+- Very easy to use (only one function call required).
+- Designed for high performance and minimal resource usage (5% CPU usage; 1MB of memory).
+- Compatible with most x86_64 assemblers and compilers (`GNU AT&T`, `MASM`; `Clang`, `MinGW-w64`, `GCC`, `clang-cl`, `MSVC`) and any C or C++ standard.
+- Free of any external dependencies.
+- Fully MIT-licensed, allowing unrestricted use and distribution.
 
-## Features
-**__1.__** Able to bypass thread creation hooking and hide user-land threads from debuggers.
+## Structure
+The treat model assumes a debugger may intercept software guarded by this protection system from any kind of privilege level, being detections less effective the higher the privilege level is.
 
-**__2.__** Able to detect debuggers with more than 30 different tricks:
-  - 1: IsBeingDebugged
-  - 2: IsRemoteDebuggerPresent
-  - 3: DebuggerBreak
-  - 4: int2D
-  - 5: int3
-  - 6: StackSegmentRegister
-  - 7: PrefixHop
-  - 8: RaiseDbgControl
-  - 9: DebugObjectHandle
-  - 10: KernelDebugger
-  - 11: NtGlobalFlag
-  - 12: DebugFlags
-  - 13: ProcessHeapFlags
-  - 14: ProcessHeapForceFlag
-  - 15: DuplicatedHandles
-  - 16: PEB (direct memory access without using OS api calls)
-  - 17: ProcessDebugPort
-  - 18: HardwareBreakpoint
-  - 19: HardwareBreakpoint2
-  - 20: MEM_WRITE_WATCH
-  - 21: DebugActiveProcess
-  - 22: InvalidHandle
-  - 23: NtQueryObject
-  - 24: NtOpenProcess
-  - 25: SetHandleInformation
-  - 26: NtSystemDebugControl_Command
-  - 27: ReadOwnMemoryStack
-  - 28: ProcessJob
-  - 29: POPFTrapFlag
-  - 30: MemoryBreakpoint (PAGE_GUARD)
-  - 31: PageExceptionBreakpoint
-  - 32: Timing attacks
-  - 33: Window analysis
-  - 34: Thread start address
-  - 35: Parent process 
-  - 36: Firmware (ACPI) checks
-  - 37: Kernel debugger checks with LBR/BTF
+This software is hardened to bypass trivial CPL > 0 interception, by:
+- Avoiding any kind of API hook via syscalling with inline assembly.
+- Enforcing virtual memory protection and injection mitigation policies for the current process.
+- Preventing syscall spoofing in `RAX` by detecting and/or overwritting non-legitimate instrumentation callbacks.
+- Detecting any kind of inline patch on monitored `.text` sections by doing a **on-disk vs in-memory** comparison.
+- Analyzing exception handling delivery (`VEH`, `SEH`, `LPTOP_LEVEL_EXCEPTION_FILTER`) and software breakpoints.
+- Testing `PAGE_GUARD` redirection behavior.
+- Protecting important stubs as non-writable memory, monitoring them later with hardware-accelerated hashing on a separate thread.
+- Guarding the process entrypoint with `TLS callbacks` from debugger attachment, performing thread start address inspection.
+- Creating traps in debugger entrypoints, such as `DbgBreakPoint` and `DbgUiRemoteBreakin`, to crash the process or return. 
+- Hiding all threads from debugger events and process freeze. Ensures thread priority state is not affected
+- Setting a global vectored handler as soon as protections starts.
 
-**__3.__** Able to detect unusual memory writes by other analysis tools like sandboxes.
+If the only way to do a check is to use a non-syscallable exported function, the function in question is manually reverse-engineered and reconstructed to run in the module address space of the protection thread. All user-mode memory structures are walked with direct memory instrospection instead of using APIs.
 
-**__4.__** Monitorization of antidebugging thread priority and self-integrity.
+The protection routines explictly leaves some execution paths without protection against user-mode hooks, acting as memory honeypots. They're used for state comparison and to confuse attackers.
 
-**__5.__** Ability to randomize the time when protection routines will run.
+Protection routines runs pseudo-randomly. The entropy is decided with pure **hardware-based ASLR**, stack behavior and a little bit of math; without calling the kernel, using user-mode APIs, or issuing conditionally or unconditionally exiting instructions by hypervisors. 
 
-**__6.__** Prevention, not only detection, of debuggers from being attached.
+When a security violation is detected, the protection system crashes the current process by invoking `INT 29h` with `STATUS_SXS_EARLY_DEACTIVATION`, bypassing all exception handlers. In some cases, it also queues an **APC** to the kernel in order to terminate the current process.
 
-**__7.__** Protects the software from memory injections done by debuggers.
+## Detections
+Found in the main entrypoint (abdg.c) of this library, explained in order.
 
-**__8.__** Continuous tracking of virtual memory with hardware-accelerated hashing to detect software breakpoints and inline hooks.
+Summarized explanations; a specific detection may perform more extra/sub-checks than what it is explained here.
 
-**__9.__** Runs a special routine before your program's entrypoint even starts to detect if a debugger is attached.
+You can find more source code of other detection concepts in the `antidebug\archived` folder.
 
-**__10.__** Automatic handling of any exception in your software without interfering with other program's handlers.
+- `1.` Reads the PEB’s `BeingDebugged` field using kernel32's export function.
+- `2.` Calls export `IsRemoteDebuggerPresent` to see whether the target process is being debugged from outside its own context.
+- `3.` Executes the `INT 2D` software interrupt, checking if the byte following such instruction is skipped and not routed throught the `EXCEPTION_BREAKPOINT` handler.
+- `4.` Executes breakpoint interrupt `INT 3D`, then watches whether the exception is intercepted or passed through normally.
+- `5.` Invokes ICE/`0xF1`, raising `EXCEPTION_SINGLE_STEP` and checking whether the debugger will consider this exception as the normal exception generated by executing the instruction with the single step bit set in the `RFlags` registers
+- `6.` Probes stack-segment registers by setting the `TF` flag and checking if the debugger clears it from `RFLAGS`, as normally debuggers clear the trap flag after each debugger event is delivered.
+- `7.` Uses a prefix-based instruction-flow edge case and checks whether `0xF3 0x64`, which disassembles as `PREFIX REP`, forces a `0xF1` skip.
+- `8.` checks wether after setting a trap flag and invoking `pushfd mov dword ptr [esp], 0x100 popfd nop`, `nop` is reached instead of getting into the `EXCEPTION_SINGLE_STEP` handler.
+- `9.` Raises a `DBG_CONTROL_C` and a `DBG_RIPEXCEPTION` event to see whether the exception is intercepted and not routed through a `SEH`.
+- `10.` Checks for an attached debug object handle, querying for `ProcessDebugObjectHandle` with `NtQueryInformationProcess`.
+- `11.` Queries for the presence of a kernel debugger using `SystemKernelDebuggerInformation` with `NtQuerySystemInformation`, and directly reading the `KUSER_SHARED_DATA` memory page for the `KdDebuggerEnabled` field.
+- `12.` Reads the NT global flag for a mask of `FLG_HEAP_ENABLE_TAIL_CHECK` (0x10), `FLG_HEAP_ENABLE_FREE_CHECK` (0x20) and `FLG_HEAP_VALIDATE_PARAMETERS` (0x40)
+- `13.` Inspects `ProcessDebugFlags`, to infer whether debugging is enabled or suppressed.
+- `14.` Checks heap flags to infer if `HEAP_GROWABLE` (0x2) is not the only flag enabled for the current process context by directly reading the process heap base (**_PEB + 0x30** in x86_64) + 0x70
+- `15.` Same as above, but looks for the heap force flags value at memory offset 0x74.
+- `16.` Duplicates process handles and checks whether a debugger touch handles, inherit handles, or re-open / duplicate them; Can I create a protected duplicate handle, then duplicate it again cleanly?
+- `17.` Examines the parent-process chain to spot debugger launchers or suspicious ancestry like `vsjitdebugger`, `x64dbg`, or similar.
+- `18.` Checks the debug PEB fields without using exports, reading directly from base (**__readgsqword(0x60)**) at offset `*(BYTE*)((uintptr_t)peb + 2`.
+- `19.` Queries the `ProcessDebugPort` for the current process.
+- `20.` Checks for hardware breakpoints by inspecting thread debug registers (`Dr0`–`Dr7`).
+- `21.` Checks whether virtual memory was hit by debuggers by placing honeypots and monitoring for changes.
+- `22.` Performs two invalid-handle close tests with process and window handles, watches whether `ERROR_INVALID_WINDOW_HANDLE` and `EXCEPTION_INVALID_HANDLE` are not intercepted.
+- `23.` Checks whether debug objects are intercepted by the debugger and if handle stripping occurs.
+- `24.` Tries opening a process in a way that reveals whether access is being filtered or redirected by debuggers.
+- `25.` Checks whether a mutex handle marked as `HANDLE_FLAG_PROTECT_FROM_CLOSE` can be closed directly.
+- `26.` Calls `NtSystemDebugControl` with `SysDbgGetTriageDump` and checks whether a kernel debugger blocks the call or spoofs the call but doesn't touch our memory buffer. 
+- `27.` Checks whether memory reads of our own stack are being instrumented or intercepted.
+- `28.` Checks whether the process is inside a non whitelisted job object created by a debugger.
+- `29.` Uses a memory-breakpoint style access test, usually expecting page-guard or fault behavior if watchpoints are active.
+- `30.` Triggers a page-exception breakpoint scenario and inspects whether the exception chain correctly delives `STATUS_GUARD_PAGE_VIOLATION`.
+- `31.` Measures execution timing to detect the overhead introduced by single-stepping, breakpoints, or dynamic binary instrumentation/JIT recompilation.
+- `32.` Searches for debugger windows or UI artifacts by enumerating windows/classes/titles associated with debugger tools.
+- `33.` Analyzes the `DBGP` ACPI debug port firmware table.
+- `34.` Checks whether a debugger clears previously set `LBR`/`BTF` bits in `DR7` to perform its own single-stepping, resulting in an empty `ExceptionInformation` array, or whether kernel-mode branch addresses are detected if the debugger decides to leave LBR enabled but still intercept `EXCEPTION_SINGLE_STEP` invoked by `icebp`.
+- `35.` Walks heap directly and checks for `0xABABABAB` and `0xFEEEFEEE` magic values. Effectively the same as 12 but using hookable Heap APIs.
+- `36.` Checks whether a `Copy-On-Write` has occurred in virtual memory by checking whether the previously shared page was touched by a debugger.
+- `37.` Sends a console event (`CTRL_C_EVENT`) and checks whether a debugger intecepts it and changes delively of it to our control handler, or raises `DBG_CONTROL_C`.
+- `38.` Checks whether the process is suspended externally for injection attempts; detects any external call to `NtResumeProcess` pointing to our process. 
+- `39.` Calls `NtSetDebugFilterState` with different `SE_DEBUG_PRIVILEGE` privilege levels and checks whether a kernel debugger incorrectly handles access.
+- `40.` Analyzes device objects, also checks whether a kernel debugger intercepts the file read.
+- `41.` Puts threads racing against both a kernel debugger and the kernel itself reading the `ContextFlags` structure; checks whether `DEBUG_REGISTERS` is stripped/if `Dr0` was not set.
+- `42.` Freezes some debuggers by creating and mapping an extremely large view of a virtual section; detects if calls to `NtMapViewOfSection` are tampered with.
 
-## Detection Modes
-> 1. Guard mode:A thread will start running in your program and continuously monitor for attached debuggers. If a debugger is detected at any time, the program will forcefully exit while preventing other programs from stopping the crash.
+## Usage
+1. **Guard mode**: A thread will start running in your program and continuously monitor for attached debuggers. If a debugger is detected at any time, the program will log the attempt (if compiled in debug mode) and forcefully exit while preventing any other program from stopping the crash.
 
-`Example Usage:`
+`Example:`
 ```c
 #include "adbg.h"
 
@@ -81,9 +97,9 @@ int main() {
 }
 ```
 
-> 2. Single-run mode: A function that you can call at any time to detect if debuggers are attached to your process.
+2. **Single-run mode**: A function that you can call at any time to detect if debuggers are attached to your process.
 
-`Example Usage:`
+`Example:`
 ```c
 #include "adbg.h"
 
@@ -99,11 +115,46 @@ int main() {
 }
 ```
 
-# Notes
-The library is fully supported on MSVC, the syscall core for other compilers like MinGW-w64, GCC and Clang is in experimental phase.
-CMake generation is experimental.
+## Build
+### Binary mode
+Copy-paste your desired main function from the section "Usage" at the end of the `adbg.c` file. Then:
 
-# Legal
+**In MSVC:** Click on the .sln file at the root of this repository, select your desired mode (Debug or Release) and click on "Build".
+
+**In the rest:** Append -DBUILD_EXAMPLE=ON when building with CMake. Example: `cmake -S .. -B build -G Ninja -DCMAKE_C_COMPILER=clang -DBUILD_EXAMPLE=ON`, then `cmake --build build`.
+
+*Compiling in Debug mode will enable logging to console and debuggers and won't make detections behave differently from Release mode.*
+
+### Shared/Static Library mode
+> **MSVC**
+
+cd to the project root and run:
+```
+mkdir build && cd build
+cmake .. -A x64
+cmake --build . --config Release
+```
+
+> **GCC/MinGW-w64**
+
+Ensure you launch the 64-bit MinGW environment, this assumes gcc is in your PATH:
+
+```
+mkdir build && cd build
+cmake .. -G "MinGW Makefiles"
+cmake --build .
+```
+
+> **Clang**
+
+Using Ninja as generator:
+```
+mkdir build && cd build
+cmake .. -G Ninja -DCMAKE_C_COMPILER=clang
+cmake --build .
+```
+
+## Legal
 I am not responsible nor liable for any damage you cause through any malicious usage of this project.
 
-License: GNU GENERAL PUBLIC LICENSE, Version 2
+License: MIT

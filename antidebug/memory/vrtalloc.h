@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-	bool WriteWatch();
+	bool __adbg_write_watch(const HANDLE process_handle);
 
 #ifdef __cplusplus
 }

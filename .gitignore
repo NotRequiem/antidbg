@@ -1,8 +1,8 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/.vs/antidbg/v17/Preview
+﻿/.vs/antidbg/v17/Preview
 /.vs/antidbg/FileContentIndex
 /.vs/antidbg/v17
 /.vs
+/x64
+/antidbg
+/antidebug/out
+/out

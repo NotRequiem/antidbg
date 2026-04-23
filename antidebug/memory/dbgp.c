@@ -1,6 +1,6 @@
 #include "dbgp.h"
 
-static inline void sig_to_str(DWORD sig, char out[5]) {
+static inline void _sig_to_str(DWORD sig, char out[5]) {
     out[0] = (char)(sig & 0xFF);
     out[1] = (char)((sig >> 8) & 0xFF);
     out[2] = (char)((sig >> 16) & 0xFF);
@@ -9,7 +9,7 @@ static inline void sig_to_str(DWORD sig, char out[5]) {
 }
 
 // simple byte search (like memmem), returns pointer to first match or NULL
-static inline const unsigned char* find_bytes(const unsigned char* hay, size_t haylen,
+static inline const unsigned char* __read_bytes(const unsigned char* hay, size_t haylen,
     const unsigned char* needle, size_t needlelen)
 {
     if (!hay || !needle) return NULL;
@@ -30,66 +30,66 @@ static inline const unsigned char* find_bytes(const unsigned char* hay, size_t h
 }
 
 // too lazy to syscall this
-bool dbgp() 
+bool __adbg_dbgp() 
 {
     const DWORD provider = 'ACPI';
-    const DWORD enumSize = EnumSystemFirmwareTables(provider, NULL, 0);
-    if (enumSize == 0) {
+    const DWORD enumeration_size = EnumSystemFirmwareTables(provider, NULL, 0);
+    if (enumeration_size == 0) {
         return false;
     }
 
-    unsigned char* enumBuf = (unsigned char*)malloc(enumSize);
-    if (!enumBuf) {
+    unsigned char* enumeration_buffer = (unsigned char*)malloc(enumeration_size);
+    if (!enumeration_buffer) {
         return false;
     }
 
-    const DWORD returned = EnumSystemFirmwareTables(provider, enumBuf, enumSize);
-    if (returned == 0 || returned > enumSize) {
-        free(enumBuf);
+    const DWORD returned = EnumSystemFirmwareTables(provider, enumeration_buffer, enumeration_size);
+    if (returned == 0 || returned > enumeration_size) {
+        free(enumeration_buffer);
         return false;
     }
 
     const unsigned char needle[] = "DBGP";
     const size_t needlelen = sizeof(needle) - 1;
 
-    const size_t nTables = returned / 4;
-    for (size_t i = 0; i < nTables; ++i) {
-        const DWORD tableId = ((DWORD)enumBuf[i * 4]) |
-            ((DWORD)enumBuf[i * 4 + 1] << 8) |
-            ((DWORD)enumBuf[i * 4 + 2] << 16) |
-            ((DWORD)enumBuf[i * 4 + 3] << 24);
+    const size_t table_number = returned / 4;
+    for (size_t i = 0; i < table_number; ++i) {
+        const DWORD table_id = ((DWORD)enumeration_buffer[i * 4]) |
+            ((DWORD)enumeration_buffer[i * 4 + 1] << 8) |
+            ((DWORD)enumeration_buffer[i * 4 + 2] << 16) |
+            ((DWORD)enumeration_buffer[i * 4 + 3] << 24);
 
         char sig[5];
-        sig_to_str(tableId, sig);
+        _sig_to_str(table_id, sig);
 
         if (sig[0] == 'D' && sig[3] == 'P') {
             continue;
         }
 
-        const UINT sizeNeeded = GetSystemFirmwareTable(provider, tableId, NULL, 0);
-        if (sizeNeeded == 0) {
+        const UINT size_needed = GetSystemFirmwareTable(provider, table_id, NULL, 0);
+        if (size_needed == 0) {
             continue;
         }
 
-        unsigned char* tblBuf = (unsigned char*)malloc(sizeNeeded);
-        if (!tblBuf) {
+        unsigned char* table_buffer = (unsigned char*)malloc(size_needed);
+        if (!table_buffer) {
             continue;
         }
 
-        const UINT got = GetSystemFirmwareTable(provider, tableId, tblBuf, sizeNeeded);
-        if (got == 0 || got > sizeNeeded) {
-            free(tblBuf);
+        const UINT got = GetSystemFirmwareTable(provider, table_id, table_buffer, size_needed);
+        if (got == 0 || got > size_needed) {
+            free(table_buffer);
             continue;
         }
 
-        const unsigned char* match = find_bytes(tblBuf, got, needle, needlelen);
+        const unsigned char* match = __read_bytes(table_buffer, got, needle, needlelen);
         if (match) {
             return true;
         }
 
-        free(tblBuf);
+        free(table_buffer);
     }
 
-    free(enumBuf);
+    free(enumeration_buffer);
     return false;
 }

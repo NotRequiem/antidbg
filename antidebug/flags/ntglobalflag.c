@@ -1,13 +1,13 @@
 #include "ntglobalflag.h"
 
-bool NtGlobalFlag()
+bool __adbg_nt_global_flag()
 {
-    PDWORD pNtGlobalFlag = NULL, pNtGlobalFlagWoW64 = NULL;
+    PDWORD nt_global_flag = NULL, nt_global_flag_wow64 = NULL;
 
-    pNtGlobalFlag = (PDWORD)(__readgsqword(0x60) + 0xBC);
+    nt_global_flag = (PDWORD)(__readgsqword(0x60) + 0xBC);
 
-    const bool normalDetected = pNtGlobalFlag && *pNtGlobalFlag & NT_GLOBAL_FLAG_DEBUGGED;
-    const bool wow64Detected = pNtGlobalFlagWoW64 && *pNtGlobalFlagWoW64 & NT_GLOBAL_FLAG_DEBUGGED;
+    const bool normaldetected = nt_global_flag && *nt_global_flag & NT_GLOBAL_FLAG_DEBUGGED;
+    const bool wow64_detected = nt_global_flag_wow64 && *nt_global_flag_wow64 & NT_GLOBAL_FLAG_DEBUGGED;
 
-    return normalDetected || wow64Detected;
+    return normaldetected || wow64_detected;
 }

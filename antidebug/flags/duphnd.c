@@ -1,6 +1,7 @@
 ﻿#include "duphnd.h"
+#include "..\core\module.h"
 
-typedef enum _MYOBJECT_INFORMATION_CLASS
+typedef enum _CUSTOM_INFORMATION_CLASS
 {
     ObjectBasicInformation,
     ObjectNameInformation,
@@ -10,54 +11,50 @@ typedef enum _MYOBJECT_INFORMATION_CLASS
     ObjectSessionInformation,
     ObjectSessionObjectInformation,
     MaxObjectInfoClass
-} MYOBJECT_INFORMATION_CLASS;
+} CUSTOM_OBJECT_INFORMATION_CLASS;
 
-typedef struct _MYOBJECT_HANDLE_FLAG_INFORMATION
+typedef struct _CUSTOM_HANDLE_FLAG_INFORMATION
 {
     BOOLEAN Inherit;
     BOOLEAN ProtectFromClose;
-} MYOBJECT_HANDLE_FLAG_INFORMATION, * PMYOBJECT_HANDLE_FLAG_INFORMATION;
+} CUSTOM_HANDLE_FLAG_INFORMATION, * PCUSTOM_HANDLE_FLAG_INFORMATION;
 
-typedef NTSTATUS(__stdcall* fnNtSetInformationObject)(
+typedef NTSTATUS(__stdcall* nt_set_information_object)(
     _In_ HANDLE Handle,
-    _In_ MYOBJECT_INFORMATION_CLASS ObjectInformationClass,
+    _In_ CUSTOM_OBJECT_INFORMATION_CLASS ObjectInformationClass,
     _In_ PVOID ObjectInformation,
     _In_ ULONG ObjectInformationLength
     );
 
-bool DuplicatedHandles(const HANDLE hProcess) 
+// not syscalled on purpose
+bool __adbg_duplicate_handles(const HANDLE process_handle) 
 {
-    HMODULE hNtdll = GetModuleHandle(_T("ntdll.dll"));
-    if (!hNtdll) {
+    nt_set_information_object pfn_nt_set_information_object =
+        (nt_set_information_object)__get_module("ntdll.dll", "ZwSetInformationObject");
+    if (!pfn_nt_set_information_object) {
         return false;
     }
 
-    fnNtSetInformationObject pfnNtSetInformationObject =
-        (fnNtSetInformationObject)GetProcAddress(hNtdll, "ZwSetInformationObject");
-    if (!pfnNtSetInformationObject) {
-        return false;
-    }
+    CUSTOM_HANDLE_FLAG_INFORMATION flags_on = { FALSE, TRUE };
+    CUSTOM_HANDLE_FLAG_INFORMATION flags_off = { FALSE, FALSE };
 
-    MYOBJECT_HANDLE_FLAG_INFORMATION flagsOn = { FALSE, TRUE };
-    MYOBJECT_HANDLE_FLAG_INFORMATION flagsOff = { FALSE, FALSE };
-
-    HANDLE hDup1 = NULL, hDup2 = NULL;
-    bool   failed = false;
+    HANDLE dup1 = NULL, dup2 = NULL;
+    bool failed = false;
 
     __try {
-        if (!DuplicateHandle(hProcess, hProcess, hProcess, &hDup1, 0, FALSE, 0)) {
+        if (!DuplicateHandle(process_handle, process_handle, process_handle, &dup1, 0, FALSE, 0)) {
             failed = true;
             __leave;
         }
 
-        pfnNtSetInformationObject(
-            hDup1,
+        pfn_nt_set_information_object(
+            dup1,
             ObjectHandleFlagInformation,
-            &flagsOn,
-            sizeof(flagsOn)
+            &flags_on,
+            sizeof(flags_on)
         );
 
-        if (!DuplicateHandle(hProcess, hDup1, hProcess, &hDup2, 0, FALSE, 0)) {
+        if (!DuplicateHandle(process_handle, dup1, process_handle, &dup2, 0, FALSE, 0)) {
             failed = true;
             __leave;
         }
@@ -66,24 +63,24 @@ bool DuplicatedHandles(const HANDLE hProcess)
         failed = true;
     }
 
-    if (hDup2) {
-        pfnNtSetInformationObject(
-            hDup2,
+    if (dup2) {
+        pfn_nt_set_information_object(
+            dup2,
             ObjectHandleFlagInformation,
-            &flagsOff,
-            sizeof(flagsOff)
+            &flags_off,
+            sizeof(flags_off)
         );
-        CloseHandle(hDup2);
+        CloseHandle(dup2);
     }
 
-    if (hDup1) {
-        pfnNtSetInformationObject(
-            hDup1,
+    if (dup1) {
+        pfn_nt_set_information_object(
+            dup1,
             ObjectHandleFlagInformation,
-            &flagsOff,
-            sizeof(flagsOff)
+            &flags_off,
+            sizeof(flags_off)
         );
-        CloseHandle(hDup1);
+        CloseHandle(dup1);
     }
 
     return failed;

@@ -2,6 +2,8 @@
 
 #include <windows.h>
 #include <stdbool.h>
+#include <intrin.h>
+#include <stdint.h>
 
 #define UNUSED(x) ((void)(x))
 
@@ -9,7 +11,7 @@
 extern "C" {
 #endif
 
-	bool TimingAttacks();
+	bool __adbg_timing_attack();
 
 #ifdef __cplusplus
 }

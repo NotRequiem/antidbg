@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-	bool KernelDebugger();
+	bool __adbg_kernel_debugger();
 
 #ifdef __cplusplus
 }

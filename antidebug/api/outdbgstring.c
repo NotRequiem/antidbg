@@ -1,7 +1,7 @@
 #include "outdbgstring.h"
 
 inline static BOOL
-IsWindowsVersionOrLesser(WORD wMajorVersion, WORD wMinorVersion, WORD wServicePackMajor)
+_check_win_ver(WORD wMajorVersion, WORD wMinorVersion, WORD wServicePackMajor)
 {
 	OSVERSIONINFOEXW osvi = { sizeof(osvi), 0, 0, 0, 0, { 0 }, 0, 0 };
 	DWORDLONG        const dwlConditionMask = VerSetConditionMask(
@@ -17,42 +17,42 @@ IsWindowsVersionOrLesser(WORD wMajorVersion, WORD wMinorVersion, WORD wServicePa
 }
 
 inline static BOOL
-IsWindowsXPOr2k()
+_is_windows_xp() // or 2K
 {
-	return IsWindowsVersionOrLesser(HIBYTE(_WIN32_WINNT_WINXP), LOBYTE(_WIN32_WINNT_WINXP), 0);
+	return _check_win_ver(HIBYTE(_WIN32_WINNT_WINXP), LOBYTE(_WIN32_WINNT_WINXP), 0);
 }
 
-bool CheckOutputDebugString()
+bool __adbg_output_dbg_str()
 {
 	__try {
 		OutputDebugString(TEXT("%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s"));
 	}
 	__except (EXCEPTION_EXECUTE_HANDLER) { ; }
 
-	BOOL IsDbgPresent = FALSE;
-	DWORD Val = 0x29A;
+	BOOL debugged = FALSE;
+	DWORD val = 0x29A;
 
-	if (IsWindowsXPOr2k())
+	if (_is_windows_xp())
 	{
-		SetLastError(Val);
+		SetLastError(val);
 		OutputDebugString(_T("x"));
 
-		if (GetLastError() == Val)
-			IsDbgPresent = TRUE;
+		if (GetLastError() == val)
+			debugged = TRUE;
 	}
 
-	const WCHAR outputString[] = L"xd";
+	const WCHAR output_string[] = L"xd";
 	ULONG_PTR args[4] = { 0 };
 
-	args[0] = (ULONG_PTR)(sizeof(outputString) / sizeof(outputString[0]));
-	args[1] = (ULONG_PTR)outputString;
+	args[0] = (ULONG_PTR)(sizeof(output_string) / sizeof(output_string[0]));
+	args[1] = (ULONG_PTR)output_string;
 	__try
 	{
 		RaiseException(DBG_PRINTEXCEPTION_WIDE_C, 0, 4, args);
 		RaiseException(DBG_PRINTEXCEPTION_C, 0, 4, args);
-		IsDbgPresent = TRUE;
+		debugged = TRUE;
 	}
 	__except (EXCEPTION_EXECUTE_HANDLER) {}
 
-	return IsDbgPresent;
+	return debugged;
 }
