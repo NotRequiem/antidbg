@@ -63,50 +63,24 @@ static inline DWORD _read_parent_processid(HANDLE process_handle)
 bool __adbg_parent_processes(const HANDLE process_handle)
 {
     const WCHAR* whitelist[] = {
-        L"explorer.exe",
-        L"cmd.exe",
-        L"powershell.exe",
-        L"pwsh.exe",
-        L"svchost.exe",
-        L"services.exe",
-        L"wininit.exe",
-        L"winlogon.exe",
-        L"userinit.exe",
-        L"lsass.exe",
-        L"devenv.exe",
-        L"wsl.exe",
-        L"WindowsTerminal.exe",
-        L"taskhostw.exe",
-        L"taskmgr.exe",
-        L"msiexec.exe",
-        L"mmc.exe",
-        L"rundll32.exe",
-        L"regsvr32.exe",
-        L"wscript.exe",
-        L"cscript.exe",
-        L"mshta.exe",
-        L"control.exe",
-        L"RuntimeBroker.exe",
-        L"StartMenuExperienceHost.exe"
+        L"explorer.exe", L"cmd.exe", L"powershell.exe", L"pwsh.exe", L"svchost.exe",
+        L"services.exe", L"wininit.exe", L"winlogon.exe", L"userinit.exe", L"lsass.exe",
+        L"devenv.exe", L"wsl.exe", L"WindowsTerminal.exe", L"taskhostw.exe", L"taskmgr.exe",
+        L"msiexec.exe", L"mmc.exe", L"rundll32.exe", L"regsvr32.exe", L"wscript.exe",
+        L"cscript.exe", L"mshta.exe", L"control.exe", L"RuntimeBroker.exe", L"StartMenuExperienceHost.exe"
     };
 
-    bool is_suspicious = true;
+    bool is_suspicious = false;
 
     const DWORD ppid = _read_parent_processid(process_handle);
-    if (ppid == 0) {
-        return false;
-    }
+    if (ppid == 0) return false;
 
     ULONG return_length = 0;
     HANDLE current_process = (HANDLE)-1;
 
-    // 5 = SystemProcessInformation, first call determines buffer size required
     DbgNtQuerySystemInformation(5, NULL, 0, &return_length);
-    if (return_length == 0) {
-        return false;
-    }
+    if (return_length == 0) return false;
 
-    // Add padding in case new processes spawn before the second call
     return_length += (1024 * 10);
 
     PVOID snapshot_buffer = NULL;
@@ -123,6 +97,7 @@ bool __adbg_parent_processes(const HANDLE process_handle)
             const DWORD current_pid = (DWORD)(ULONG_PTR)spi->UniqueProcessId;
 
             if (current_pid == ppid) {
+                is_suspicious = true;
                 for (size_t i = 0; i < (sizeof(whitelist) / sizeof(whitelist[0])); i++) {
                     if (_compare_str(&spi->ImageName, whitelist[i])) {
                         is_suspicious = false;
@@ -132,22 +107,15 @@ bool __adbg_parent_processes(const HANDLE process_handle)
                 break;
             }
 
-            if (!spi->NextEntryOffset) {
-                break;
-            }
+            if (!spi->NextEntryOffset) break;
             spi = (PSYSTEM_PROCESS_INFORMATION)((PUCHAR)spi + spi->NextEntryOffset);
         }
-    }
-    else {
-        is_suspicious = false;
     }
 
     if (snapshot_buffer) {
         SIZE_T free_size = 0;
         DbgNtFreeVirtualMemory(current_process, &snapshot_buffer, &free_size, MEM_RELEASE);
     }
-
-    // if the parent process was not found in the snapshot isSuspicious will remain TRUE
 
     return is_suspicious;
 }

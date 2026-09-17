@@ -1,13 +1,18 @@
 #include "prothnd.h"
 #include "..\core\syscall.h"
 
+typedef struct _OBJECT_HANDLE_FLAG_INFORMATION {
+    BOOLEAN Inherit;
+    BOOLEAN ProtectFromClose;
+} OBJECT_HANDLE_FLAG_INFORMATION;
+
 bool __adbg_protected_handle()
 {
     HANDLE mutex_handle = CreateMutexA(NULL, FALSE, "a");
 
     if (mutex_handle) {
-        ULONG flag = HANDLE_FLAG_PROTECT_FROM_CLOSE;
-        DbgNtSetInformationObject(mutex_handle, ObjectHandleFlagInformation, &flag, sizeof(ULONG));
+        OBJECT_HANDLE_FLAG_INFORMATION flag = { FALSE, TRUE };
+        DbgNtSetInformationObject(mutex_handle, ObjectHandleFlagInformation, &flag, sizeof(flag));
 
         __try {
             CloseHandle(mutex_handle);
@@ -20,6 +25,7 @@ bool __adbg_protected_handle()
         }
 
     #pragma warning (disable: 6001)
+        flag.ProtectFromClose = FALSE;
         ULONG flags = 0;
         DbgNtSetInformationObject(mutex_handle, ObjectHandleFlagInformation, &flags, sizeof(ULONG));
         DbgNtClose(mutex_handle);

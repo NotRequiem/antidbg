@@ -34,12 +34,12 @@ static inline bool _time_single_step(void)
         __cpuid(cpu_info, 0);
 
         // 0xFFFFF is 1 million cycles aprox
-        if ((tsc2 - tsc1) < 0xFFFFF) {
-            return false; 
+        if ((tsc2 - tsc1) > 0xFFFFF) {
+            return true;
         }
     }
 
-    return true;
+    return false;
 }
 
 bool __adbg_timing_attack()
@@ -48,8 +48,6 @@ bool __adbg_timing_attack()
     if (_time_single_step()) {
         is_debugged = true;
     }
-
     if (!is_debugged) return _time_debugger();
-    
     return is_debugged;
 }

@@ -3,8 +3,21 @@
 
 CALLBACK_PAGE g_callback_page = { 0 };
 
+// to hold the page from the previous cycle
+static PVOID g_pending_free_base = NULL;
+static SIZE_T g_pending_free_size = 0;
+
 bool __set_callback(CALLBACK_PAGE* out_page, HANDLE process_handle)
 {
+    // threads have had 20+ seconds to finish executing the old jmp r10 stub
+    if (g_pending_free_base != NULL) {
+        SIZE_T free_size = 0;
+        PVOID base_to_free = g_pending_free_base;
+        DbgNtFreeVirtualMemory(process_handle, &base_to_free, &free_size, MEM_RELEASE);
+        g_pending_free_base = NULL;
+        g_pending_free_size = 0;
+    }
+
     const uint8_t shellcode[] = { 0x41, 0xFF, 0xE2 }; // jmp r10
 
     PVOID new_base_address = NULL;
@@ -12,30 +25,13 @@ bool __set_callback(CALLBACK_PAGE* out_page, HANDLE process_handle)
     ULONG old_protection = 0;
     SIZE_T bytes_written = 0;
 
-    // new page as we will be running this infinitely, we must not overwrite the currently active callback page, as a thread might be actively executing the jmp r10 shellcode
-    if (!NT_SUCCESS(DbgNtAllocateVirtualMemory(
-        process_handle,
-        &new_base_address,
-        0,
-        &region_size,
-        MEM_COMMIT | MEM_RESERVE,
-        PAGE_READWRITE)))
+    if (!NT_SUCCESS(DbgNtAllocateVirtualMemory(process_handle, &new_base_address, 0, &region_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE)))
         return false;
 
-    if (!NT_SUCCESS(DbgNtWriteVirtualMemory(
-        process_handle,
-        new_base_address,
-        (PVOID)shellcode,
-        sizeof(shellcode),
-        &bytes_written)))
+    if (!NT_SUCCESS(DbgNtWriteVirtualMemory(process_handle, new_base_address, (PVOID)shellcode, sizeof(shellcode), &bytes_written)))
         return false;
 
-    if (!NT_SUCCESS(DbgNtProtectVirtualMemory(
-        process_handle,
-        &new_base_address,
-        &region_size,
-        PAGE_EXECUTE_READ,
-        &old_protection)))
+    if (!NT_SUCCESS(DbgNtProtectVirtualMemory(process_handle, &new_base_address, &region_size, PAGE_EXECUTE_READ, &old_protection)))
         return false;
 
     DbgNtFlushInstructionCache(process_handle, new_base_address, (ULONG)region_size);
@@ -45,17 +41,13 @@ bool __set_callback(CALLBACK_PAGE* out_page, HANDLE process_handle)
     callback_info.Reserved = 0;
     callback_info.Callback = new_base_address;
 
-    if (!NT_SUCCESS(DbgNtSetInformationProcess(
-        process_handle,
-        ProcessInstrumentationCallback,
-        &callback_info,
-        sizeof(callback_info))))
+    if (!NT_SUCCESS(DbgNtSetInformationProcess(process_handle, ProcessInstrumentationCallback, &callback_info, sizeof(callback_info))))
         return false;
 
+    // currently active page to be freed next cycle
     if (out_page && out_page->base != NULL) {
-        PVOID old_base = out_page->base;
-        SIZE_T free_size = 0; 
-        DbgNtFreeVirtualMemory(process_handle, &old_base, &free_size, MEM_RELEASE);
+        g_pending_free_base = out_page->base;
+        g_pending_free_size = out_page->size;
     }
 
     if (out_page) {

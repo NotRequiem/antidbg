@@ -17,6 +17,8 @@
 #include "api\procdbgport.h"
 #include "api\sysdbgcontrol.h"
 #include "api\setdbgfltstate.h"
+#include "api\sysimpl.h"
+#include "api\outdbgstring.h"
 
 #include "asm\int2d.h"
 #include "asm\int3.h"
@@ -25,14 +27,14 @@
 #include "asm\popf.h"
 #include "asm\lbr_btf.h"
 #include "asm\stckseg.h"
+#include "asm\instcnt.h"
+#include "asm\movss.h"
 
 #include "exceptions\raiseexc.h"
 #include "exceptions\pgexcbp.h"
 
 #include "flags\kerneldbg.h"
 #include "flags\ntglobalflag.h"
-#include "flags\prochpflag.h"
-#include "flags\prochpforceflag.h"
 #include "flags\duphnd.h"
 #include "flags\prntproc.h"
 #include "flags\job.h"
@@ -41,13 +43,13 @@
 #include "flags\crtlevent.h"
 #include "flags\suspend.h"
 #include "flags\race.h"
+#include "flags\loadlib.h"
 
 #include "memory\hwbreakp.h"
 #include "memory\readstck.h"
 #include "memory\peb.h"
 #include "memory\vrtalloc.h"
 #include "memory\membreak.h"
-#include "memory\dbgp.h"
 #include "memory\heap.h"
 #include "memory\workset.h"
 #include "memory\mapview.h"
@@ -62,8 +64,15 @@
 extern "C" {
 #endif
 
+    typedef enum {
+        CHECK_VOID,
+        CHECK_PROCESS,
+        CHECK_THREAD,
+        CHECK_PROCESS_THREAD
+    } ADBG_CHECK_TYPE;
+
     typedef struct {
-        bool result;
+        ADBG_CHECK_TYPE type;
         const char* function_name;
         union {
             bool (*function_ptr)();
@@ -71,6 +80,7 @@ extern "C" {
             bool (*function_with_thread)(HANDLE);
             bool (*function_with_process_and_thread)(HANDLE, HANDLE);
         };
+        bool result;
     } checks_info;
 
     extern checks_info debugger_checks[];

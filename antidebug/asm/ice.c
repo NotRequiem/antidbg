@@ -1,117 +1,56 @@
 #include "ice.h"
+#include "..\core\syscall.h"
 
-static inline bool _non_stealth(const HANDLE thread_handle) 
+static inline bool _non_stealth()
 {
-    CONTEXT ctx = { 0 };
-    ctx.ContextFlags = CONTEXT_CONTROL;
-    RtlCaptureContext(&ctx);
-
-    DWORD original_eflags = ctx.EFlags;
-
-    ctx.EFlags |= 0x100;
-    if (!SetThreadContext(thread_handle, &ctx))
-        return false;
-
-    bool traced = false;
-    bool result = false;
+    bool is_debugged = true;
 
     __try {
         RaiseException(EXCEPTION_SINGLE_STEP, 0, 0, NULL);
 
-        __try {
-            RaiseException(0xF1, 0, 0, NULL);
-        }
-        __except (1) {
-            result = false;
-            goto cleanup;
-        }
-
-        result = true;
-        goto cleanup;
+        is_debugged = true;
     }
     __except (GetExceptionCode() == EXCEPTION_SINGLE_STEP
         ? EXCEPTION_EXECUTE_HANDLER
         : EXCEPTION_CONTINUE_SEARCH)
     {
-        traced = true;
+        is_debugged = false;
     }
 
-    result = traced;
-
-cleanup:
-    ctx.ContextFlags = CONTEXT_CONTROL;
-    ctx.EFlags = original_eflags;
-    SetThreadContext(thread_handle, &ctx);
-
-    return result;
+    return is_debugged;
 }
 
-#if defined(_MSC_VER) && !defined(__clang__)
+const uint8_t _icebp_stub[] = { 0xF1, 0xC3 }; // icebp; ret
 
-#define __trap(shellcode) \
-    bool debugged = true; \
-    __try { \
-        ((void(*)())shellcode)(); \
-    } __except(EXCEPTION_EXECUTE_HANDLER) { \
-        debugged = false; \
-    } \
-    return debugged;
+bool __adbg_ice(const HANDLE thread_handle)
+{
+    if (_non_stealth()) return true;
 
-    #pragma section(".__stub", execute, read)
+    bool debugged = true;
+    HANDLE process_handle = (HANDLE)-1;
+    PVOID exec_mem = NULL;
+    SIZE_T region_size = sizeof(_icebp_stub);
 
-    __declspec(allocate(".__stub")) const uint8_t _icebp_stub[] = {
-        0xF1, 0xC3
-    }; // int 1; ret
+    if (DbgNtAllocateVirtualMemory(process_handle, &exec_mem, 0, &region_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE) >= 0) {
+        memcpy(exec_mem, _icebp_stub, sizeof(_icebp_stub));
 
-    bool __adbg_ice(const HANDLE thread_handle) 
-    {
-        if (_non_stealth(thread_handle)) return true;
-        __trap(_icebp_stub);
-    }
+        ULONG old_protect = 0;
+        PVOID protect_base = exec_mem;
+        SIZE_T protect_size = sizeof(_icebp_stub);
 
-#else
+        if (DbgNtProtectVirtualMemory(process_handle, &protect_base, &protect_size, PAGE_EXECUTE_READ, &old_protect) >= 0) {
+            DbgNtFlushInstructionCache(process_handle, exec_mem, sizeof(_icebp_stub));
 
-    _Thread_local volatile bool g_exception_raised = false;
-
-    static LONG __stdcall _excp_handler(PEXCEPTION_POINTERS ep)
-    {
-        DWORD code = ep->ExceptionRecord->ExceptionCode;
-        if (code == EXCEPTION_SINGLE_STEP || code == EXCEPTION_BREAKPOINT)
-        {
-            g_exception_raised = true;
-
-            // clear TF and DR6 so we don't infinitely single-step
-            ep->ContextRecord->EFlags &= ~0x100;
-            ep->ContextRecord->Dr6 &= ~(0xF);
-
-            // for INT 1, RIP automatically points to the next instruction
-            // so this should be safe
-            return EXCEPTION_CONTINUE_EXECUTION;
+            __try {
+                ((void(*)())exec_mem)();
+            }
+            __except (EXCEPTION_EXECUTE_HANDLER) {
+                debugged = false;
+            }
         }
-        return EXCEPTION_CONTINUE_SEARCH;
+
+        SIZE_T free_size = 0;
+        DbgNtFreeVirtualMemory(process_handle, &exec_mem, &free_size, MEM_RELEASE);
     }
-
-    static inline bool __trap(void (*_trap_func)())
-    {
-        g_exception_raised = false;
-        PVOID veh = AddVectoredExceptionHandler(1, _excp_handler);
-        if (!veh) return true;
-
-        _trap_func();
-
-        RemoveVectoredExceptionHandler(veh);
-
-        return !g_exception_raised;
-    }
-
-    static __attribute__((naked)) void _asm_icebp(void)
-    {
-        __asm__ __volatile__(".byte 0xF1\n\tret");
-    }
-
-    bool __adbg_ice(const HANDLE thread_handle) { 
-        if (_non_stealth(thread_handle)) return true;
-        return __trap(_asm_icebp);
-    }
-
-#endif
+    return debugged;
+}

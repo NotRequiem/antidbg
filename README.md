@@ -4,10 +4,11 @@
 
 The library is:
 - Very easy to use (only one function call required).
-- Designed for high performance and minimal resource usage (5% CPU usage; 1MB of memory).
+- Designed for high performance and minimal resource usage (1% CPU usage; 1.5MB of memory).
 - Compatible with most x86_64 assemblers and compilers (`GNU AT&T`, `MASM`; `Clang`, `MinGW-w64`, `GCC`, `clang-cl`, `MSVC`) and any C or C++ standard.
 - Free of any external dependencies.
 - Fully MIT-licensed, allowing unrestricted use and distribution.
+- CFG-compliant.
 
 ## Structure
 The treat model assumes a debugger may intercept software guarded by this protection system from any kind of privilege level, being detections less effective the higher the privilege level is.
@@ -50,38 +51,36 @@ You can find more source code of other detection concepts in the `antidebug\arch
 - `8.` checks wether after setting a trap flag and invoking `pushfd mov dword ptr [esp], 0x100 popfd nop`, `nop` is reached instead of getting into the `EXCEPTION_SINGLE_STEP` handler.
 - `9.` Raises a `DBG_CONTROL_C` and a `DBG_RIPEXCEPTION` event to see whether the exception is intercepted and not routed through a `SEH`.
 - `10.` Checks for an attached debug object handle, querying for `ProcessDebugObjectHandle` with `NtQueryInformationProcess`.
-- `11.` Queries for the presence of a kernel debugger using `SystemKernelDebuggerInformation` with `NtQuerySystemInformation`, and directly reading the `KUSER_SHARED_DATA` memory page for the `KdDebuggerEnabled` field.
+- `11.` Queries for the presence of a kernel debugger using `SystemKernelDebuggerInformation` with `NtQuerySystemInformation`, and directly reading the `KUSER_SHARED_DATA` memory page for the `KdDebuggerEnabled` field. Additionally, check if kernel timer ISRs are ticking asynchronously.
 - `12.` Reads the NT global flag for a mask of `FLG_HEAP_ENABLE_TAIL_CHECK` (0x10), `FLG_HEAP_ENABLE_FREE_CHECK` (0x20) and `FLG_HEAP_VALIDATE_PARAMETERS` (0x40)
 - `13.` Inspects `ProcessDebugFlags`, to infer whether debugging is enabled or suppressed.
-- `14.` Checks heap flags to infer if `HEAP_GROWABLE` (0x2) is not the only flag enabled for the current process context by directly reading the process heap base (**_PEB + 0x30** in x86_64) + 0x70
-- `15.` Same as above, but looks for the heap force flags value at memory offset 0x74.
-- `16.` Duplicates process handles and checks whether a debugger touch handles, inherit handles, or re-open / duplicate them; Can I create a protected duplicate handle, then duplicate it again cleanly?
-- `17.` Examines the parent-process chain to spot debugger launchers or suspicious ancestry like `vsjitdebugger`, `x64dbg`, or similar.
-- `18.` Checks the debug PEB fields without using exports, reading directly from base (**__readgsqword(0x60)**) at offset `*(BYTE*)((uintptr_t)peb + 2`.
-- `19.` Queries the `ProcessDebugPort` for the current process.
-- `20.` Checks for hardware breakpoints by inspecting thread debug registers (`Dr0`–`Dr7`).
-- `21.` Checks whether virtual memory was hit by debuggers by placing honeypots and monitoring for changes.
-- `22.` Performs two invalid-handle close tests with process and window handles, watches whether `ERROR_INVALID_WINDOW_HANDLE` and `EXCEPTION_INVALID_HANDLE` are not intercepted.
-- `23.` Checks whether debug objects are intercepted by the debugger and if handle stripping occurs.
-- `24.` Tries opening a process in a way that reveals whether access is being filtered or redirected by debuggers.
-- `25.` Checks whether a mutex handle marked as `HANDLE_FLAG_PROTECT_FROM_CLOSE` can be closed directly.
-- `26.` Calls `NtSystemDebugControl` with `SysDbgGetTriageDump` and checks whether a kernel debugger blocks the call or spoofs the call but doesn't touch our memory buffer. 
-- `27.` Checks whether memory reads of our own stack are being instrumented or intercepted.
-- `28.` Checks whether the process is inside a non whitelisted job object created by a debugger.
-- `29.` Uses a memory-breakpoint style access test, usually expecting page-guard or fault behavior if watchpoints are active.
-- `30.` Triggers a page-exception breakpoint scenario and inspects whether the exception chain correctly delives `STATUS_GUARD_PAGE_VIOLATION`.
-- `31.` Measures execution timing to detect the overhead introduced by single-stepping, breakpoints, or dynamic binary instrumentation/JIT recompilation.
-- `32.` Searches for debugger windows or UI artifacts by enumerating windows/classes/titles associated with debugger tools.
-- `33.` Analyzes the `DBGP` ACPI debug port firmware table.
-- `34.` Checks whether a debugger clears previously set `LBR`/`BTF` bits in `DR7` to perform its own single-stepping, resulting in an empty `ExceptionInformation` array, or whether kernel-mode branch addresses are detected if the debugger decides to leave LBR enabled but still intercept `EXCEPTION_SINGLE_STEP` invoked by `icebp`.
-- `35.` Walks heap directly and checks for `0xABABABAB` and `0xFEEEFEEE` magic values. Effectively the same as 12 but using hookable Heap APIs.
-- `36.` Checks whether a `Copy-On-Write` has occurred in virtual memory by checking whether the previously shared page was touched by a debugger.
-- `37.` Sends a console event (`CTRL_C_EVENT`) and checks whether a debugger intecepts it and changes delively of it to our control handler, or raises `DBG_CONTROL_C`.
-- `38.` Checks whether the process is suspended externally for injection attempts; detects any external call to `NtResumeProcess` pointing to our process. 
-- `39.` Calls `NtSetDebugFilterState` with different `SE_DEBUG_PRIVILEGE` privilege levels and checks whether a kernel debugger incorrectly handles access.
-- `40.` Analyzes device objects, also checks whether a kernel debugger intercepts the file read.
-- `41.` Puts threads racing against both a kernel debugger and the kernel itself reading the `ContextFlags` structure; checks whether `DEBUG_REGISTERS` is stripped/if `Dr0` was not set.
-- `42.` Freezes some debuggers by creating and mapping an extremely large view of a virtual section; detects if calls to `NtMapViewOfSection` are tampered with.
+- `14.` Duplicates process handles and checks whether a debugger touch handles, inherit handles, or re-open / duplicate them; Can I create a protected duplicate handle, then duplicate it again cleanly?
+- `15.` Examines the parent-process chain to spot debugger launchers or suspicious ancestry like `vsjitdebugger`, `x64dbg`, or similar.
+- `16.` Checks the debug PEB fields without using exports, reading directly from base (**__readgsqword(0x60)**) at offset `*(BYTE*)((uintptr_t)peb + 2`.
+- `17.` Queries the `ProcessDebugPort` for the current process.
+- `18.` Checks for hardware breakpoints by inspecting thread debug registers (`Dr0`–`Dr7`).
+- `19.` Checks whether virtual memory was hit by debuggers by placing honeypots and monitoring for changes.
+- `20.` Performs two invalid-handle close tests with process and window handles, watches whether `ERROR_INVALID_WINDOW_HANDLE` and `EXCEPTION_INVALID_HANDLE` are not intercepted.
+- `21.` Checks whether debug objects are intercepted by the debugger and if handle stripping occurs.
+- `22.` Tries opening a process in a way that reveals whether access is being filtered or redirected by debuggers.
+- `23.` Checks whether a mutex handle marked as `HANDLE_FLAG_PROTECT_FROM_CLOSE` can be closed directly.
+- `24.` Calls `NtSystemDebugControl` with `SysDbgGetTriageDump` and checks whether a kernel debugger blocks the call or spoofs the call but doesn't touch our memory buffer. 
+- `25.` Checks whether memory reads of our own stack are being instrumented or intercepted.
+- `26.` Checks whether the process is inside a non whitelisted job object created by a debugger.
+- `27.` Uses a memory-breakpoint style access test, usually expecting page-guard or fault behavior if watchpoints are active.
+- `28.` Triggers a page-exception breakpoint scenario and inspects whether the exception chain correctly delives `STATUS_GUARD_PAGE_VIOLATION`.
+- `29.` Measures execution timing to detect the overhead introduced by single-stepping, breakpoints, or dynamic binary instrumentation/JIT recompilation.
+- `30.` Searches for debugger windows or UI artifacts by enumerating windows/classes/titles associated with debugger tools.
+- `31.` Checks whether a debugger clears previously set `LBR`/`BTF` bits in `DR7` to perform its own single-stepping, resulting in an empty `ExceptionInformation` array, or whether kernel-mode branch addresses are detected if the debugger decides to leave LBR enabled but still intercept `EXCEPTION_SINGLE_STEP` invoked by `icebp`.
+- `32.` Walks heap directly and checks for `0xABABABAB` and `0xFEEEFEEE` magic values. Effectively the same as 12 but using hookable Heap APIs.
+- `33.` Checks whether a `Copy-On-Write` has occurred in virtual memory by checking whether the previously shared page was touched by a debugger.
+- `34.` Sends a console event (`CTRL_C_EVENT`) and checks whether a debugger intecepts it and changes delively of it to our control handler, or raises `DBG_CONTROL_C`.
+- `35.` Checks whether the process is suspended externally for injection attempts; detects any external call to `NtResumeProcess` pointing to our process. 
+- `36.` Calls `NtSetDebugFilterState` with different `SE_DEBUG_PRIVILEGE` privilege levels and checks whether a kernel debugger incorrectly handles access.
+- `37.` Analyzes device objects, also checks whether a kernel debugger intercepts the file read.
+- `38.` Puts threads racing against both a kernel debugger and the kernel itself reading the `ContextFlags` structure; checks whether `DEBUG_REGISTERS` is stripped/if `Dr0` was not set.
+- `39.` Freezes some debuggers by creating and mapping an extremely large view of a virtual section; detects if calls to `NtMapViewOfSection` are tampered with.
+- `40.` Check for unimplemented syscalls (common in emulators).
 
 ## Usage
 1. **Guard mode**: A thread will start running in your program and continuously monitor for attached debuggers. If a debugger is detected at any time, the program will log the attempt (if compiled in debug mode) and forcefully exit while preventing any other program from stopping the crash.

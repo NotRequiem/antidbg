@@ -1,4 +1,5 @@
 ﻿#include "int2d.h"
+#include "..\core\syscall.h"
 
 static inline bool _non_stealth() {
     __try
@@ -20,68 +21,41 @@ static inline bool _non_stealth() {
     }
 }
 
-#if defined(_MSC_VER) && !defined(__clang__)
+const uint8_t _int2d_stub[] = {
+    0xCD, 0x2D, // int 2d
+    0x90, 0x90, 0x90, 0x90, 0x90, // NOP sled
+    0xC3 // ret 
+};
 
-    #pragma section(".__stub", execute, read)
+bool __adbg_int2d()
+{
+    if (_non_stealth()) return true;
 
-    __declspec(allocate(".__stub")) const uint8_t _int2d_stub[] = {
-        0xCD, 0x2D, 0x90, 0xC3
-    }; // int 0x2d; nop; ret
+    bool debugged = true;
+    HANDLE process_handle = (HANDLE)-1;
+    PVOID exec_mem = NULL;
+    SIZE_T region_size = sizeof(_int2d_stub);
 
-#define __trap(shellcode) \
-    bool debugged = true; \
-    __try { \
-        ((void(*)())shellcode)(); \
-    } __except(EXCEPTION_EXECUTE_HANDLER) { \
-        debugged = false; \
-    } \
-    return debugged;
+    if (DbgNtAllocateVirtualMemory(process_handle, &exec_mem, 0, &region_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE) >= 0) {
+        memcpy(exec_mem, _int2d_stub, sizeof(_int2d_stub));
 
-    bool __adbg_int2d() {
-        if (_non_stealth()) return true;
-        __trap(_int2d_stub);
-    }
+        ULONG old_protect = 0;
+        PVOID protect_base = exec_mem;
+        SIZE_T protect_size = sizeof(_int2d_stub);
 
-#else
+        if (DbgNtProtectVirtualMemory(process_handle, &protect_base, &protect_size, PAGE_EXECUTE_READ, &old_protect) >= 0) {
+            DbgNtFlushInstructionCache(process_handle, exec_mem, sizeof(_int2d_stub));
 
-    _Thread_local volatile bool g_exception_triggered = false;
-
-    static LONG __stdcall _excp_handler(PEXCEPTION_POINTERS ep)
-    {
-        DWORD code = ep->ExceptionRecord->ExceptionCode;
-        if (code == EXCEPTION_SINGLE_STEP || code == EXCEPTION_BREAKPOINT)
-        {
-            g_exception_triggered = true;
-
-            // clear TF and DR6 so we don't infinitely single-step
-            ep->ContextRecord->EFlags &= ~0x100;
-            ep->ContextRecord->Dr6 &= ~(0xF);
-
-            // windows advances RIP automatically for INT 2D so this should be safe
-            return EXCEPTION_CONTINUE_EXECUTION;
+            __try {
+                ((void(*)())exec_mem)();
+            }
+            __except (EXCEPTION_EXECUTE_HANDLER) {
+                debugged = false;
+            }
         }
-        return EXCEPTION_CONTINUE_SEARCH;
+
+        SIZE_T free_size = 0;
+        DbgNtFreeVirtualMemory(process_handle, &exec_mem, &free_size, MEM_RELEASE);
     }
-
-    static inline bool __trap(void (*_trap_func)())
-    {
-        g_exception_triggered = false;
-        PVOID veh = AddVectoredExceptionHandler(1, _excp_handler);
-        if (!veh) return true;
-
-        _trap_func();
-
-        RemoveVectoredExceptionHandler(veh);
-
-        return !g_exception_triggered;
-    }
-
-    static void _asm_int2d() { __asm__ __volatile__("int $0x2D \n\tnop \n\t"); }
-
-    bool __adbg_int2d()
-    {
-        if (_non_stealth()) return true;
-        return __trap(_asm_int2d);
-    }
-
-#endif
+    return debugged;
+}

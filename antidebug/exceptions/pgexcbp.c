@@ -205,6 +205,6 @@ bool __adbg_page_exception_breakpoint(const HANDLE process_handle)
         }
     }
 
-    _free_pages();
+    // here I want to persist our map of executing permissions across polling intervals
     return found;
 }

@@ -57,8 +57,7 @@ bool __adbg_working_set(const HANDLE process_handle)
             if (dw_addr == current_code_page)
             {
                 // If Shared == 0 or ShareCount == 0, a Copy-On-Write has occurred (likely a INT 3)
-                if (working_set->WorkingSetList[i].Shared == 0 || working_set->WorkingSetList[i].ShareCount == 0)
-                {
+                if (working_set->WorkingSetList[i].ShareCount == 0) {
                     debugged = true;
                 }
                 break;

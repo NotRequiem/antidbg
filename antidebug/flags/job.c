@@ -18,7 +18,7 @@ bool __adbg_process_job()
 
         job_process_id_list->NumberOfProcessIdsInList = 1024;
 
-        if (DbgNtQueryInformationJobObject(NULL, JobObjectBasicProcessIdList, job_process_id_list, job_process_struct_size, NULL)) {
+        if (NT_SUCCESS(DbgNtQueryInformationJobObject(NULL, JobObjectBasicProcessIdList, job_process_id_list, job_process_struct_size, NULL))) {
             DWORD ok_processes = 0;
             for (DWORD i = 0; i < job_process_id_list->NumberOfAssignedProcesses; i++) {
                 ULONG_PTR process_id = job_process_id_list->ProcessIdList[i];
@@ -63,8 +63,8 @@ bool __adbg_process_job()
                                     const size_t max_chars = process_name->Length / sizeof(wchar_t);
                                     const size_t target_chars = target_len / sizeof(wchar_t);
 
-                                    for (i = 0; i <= max_chars - target_chars; i++) {
-                                        if (memcmp(&buffer[i], target, target_len) == 0) {
+                                    for (size_t j = 0; j <= max_chars - target_chars; j++) {
+                                        if (memcmp(&buffer[j], target, target_len) == 0) {
                                             ok_processes++;
                                             break;
                                         }

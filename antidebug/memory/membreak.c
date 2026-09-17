@@ -20,6 +20,7 @@ bool __adbg_memory_breakpoint(const HANDLE process_handle)
     status = DbgNtProtectVirtualMemory(process_handle, &allocation, &region_size, PAGE_EXECUTE_READWRITE | PAGE_GUARD, &old_protection);
     if (!((NTSTATUS)(status) >= 0))
     {
+        region_size = 0;
         DbgNtFreeVirtualMemory(process_handle, &allocation, &region_size, MEM_RELEASE);
         return false;
     }
@@ -30,10 +31,12 @@ bool __adbg_memory_breakpoint(const HANDLE process_handle)
     }
     __except (GetExceptionCode() == STATUS_GUARD_PAGE_VIOLATION ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH)
     {
+        region_size = 0;
         DbgNtFreeVirtualMemory(process_handle, &allocation, &region_size, MEM_RELEASE);
         return false;
     }
 
+    region_size = 0;
     DbgNtFreeVirtualMemory(process_handle, &allocation, &region_size, MEM_RELEASE);
     return true;
 }

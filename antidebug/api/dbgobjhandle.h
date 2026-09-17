@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <stdbool.h>
 
+#define STATUS_SUCCESS       ((NTSTATUS)0x00000000L)
+
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -19,28 +19,47 @@ bool _populate_syscall_list()
     if (Dbg_SyscallList.Count) return TRUE;
 
     pdbg_peb peb = __readpeb();
-
     PDbg_PEB_LDR_DATA ldr = peb->Ldr;
     PIMAGE_EXPORT_DIRECTORY export_directory = NULL;
     PVOID dll_base = NULL;
 
-    PDbg_LDR_DATA_TABLE_ENTRY ldr_entry;
-    for (ldr_entry = (PDbg_LDR_DATA_TABLE_ENTRY)ldr->Reserved2[1]; ldr_entry->DllBase != NULL; ldr_entry = (PDbg_LDR_DATA_TABLE_ENTRY)ldr_entry->Reserved1[0])
+    PLIST_ENTRY list_head = &ldr->InMemoryOrderModuleList;
+    PLIST_ENTRY curr = list_head->Flink;
+
+    while (curr != list_head)
     {
+        // InMemoryOrderLinks is offset by 2 * sizeof(PVOID) due to Reserved1[2]
+        PDbg_LDR_DATA_TABLE_ENTRY ldr_entry = (PDbg_LDR_DATA_TABLE_ENTRY)(
+            (PUCHAR)curr - (sizeof(PVOID) * 2)
+        );
+
         dll_base = ldr_entry->DllBase;
-        PIMAGE_DOS_HEADER dos_header = (PIMAGE_DOS_HEADER)dll_base;
-        if (dos_header->e_magic != IMAGE_DOS_SIGNATURE) continue;
 
-        PIMAGE_NT_HEADERS nt_headers = __rva2va(PIMAGE_NT_HEADERS, dll_base, dos_header->e_lfanew);
-        PIMAGE_DATA_DIRECTORY data_directory = (PIMAGE_DATA_DIRECTORY)nt_headers->OptionalHeader.DataDirectory;
-        DWORD virtual_address = data_directory[IMAGE_DIRECTORY_ENTRY_EXPORT].VirtualAddress;
-        if (virtual_address == 0) continue;
+        if (dll_base != NULL)
+        {
+            PIMAGE_DOS_HEADER dos_header = (PIMAGE_DOS_HEADER)dll_base;
+            if (dos_header->e_magic == IMAGE_DOS_SIGNATURE)
+            {
+                PIMAGE_NT_HEADERS nt_headers = __rva2va(PIMAGE_NT_HEADERS, dll_base, dos_header->e_lfanew);
+                PIMAGE_DATA_DIRECTORY data_directory = (PIMAGE_DATA_DIRECTORY)nt_headers->OptionalHeader.DataDirectory;
+                DWORD virtual_address = data_directory[IMAGE_DIRECTORY_ENTRY_EXPORT].VirtualAddress;
 
-        export_directory = (PIMAGE_EXPORT_DIRECTORY)__rva2va(ULONG_PTR, dll_base, virtual_address);
-        PCHAR dll_name = __rva2va(PCHAR, dll_base, export_directory->Name);
+                if (virtual_address != 0)
+                {
+                    export_directory = (PIMAGE_EXPORT_DIRECTORY)__rva2va(ULONG_PTR, dll_base, virtual_address);
+                    PCHAR dll_name = __rva2va(PCHAR, dll_base, export_directory->Name);
 
-        if ((*(ULONG*)dll_name | 0x20202020) != 0x6c64746e) continue;
-        if ((*(ULONG*)(dll_name + 4) | 0x20202020) == 0x6c642e6c) break;
+                    // check if it is "ntdll.dll"
+                    if ((*(ULONG*)dll_name | 0x20202020) == 0x6c64746e &&
+                        (*(ULONG*)(dll_name + 4) | 0x20202020) == 0x6c642e6c)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        curr = curr->Flink;
+        export_directory = NULL; // if we didn't break
     }
 
     if (!export_directory) return false;

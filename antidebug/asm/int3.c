@@ -18,28 +18,26 @@ static LONG __stdcall _vectored_handler(
 
 bool __adbg_int3()
 {
-    const PVOID veh = AddVectoredExceptionHandler(1, _vectored_handler);
-
-    __debugbreak();
-
-    if (swallowed_exception) {
-        RemoveVectoredExceptionHandler(veh);
-        return swallowed_exception;
-    }
-
-    swallowed_exception = true;
-
+    /* Since our program patches DbgBreakPoint, we can't use this
     DebugBreak();
 
     if (swallowed_exception) {
         RemoveVectoredExceptionHandler(veh);
         return swallowed_exception;
     }
-
+    */
     // swallowed_exception = true;
     // DebugBreakProcess(process_handle);
 
-    RemoveVectoredExceptionHandler(veh);
+    const PVOID veh = AddVectoredExceptionHandler(1, _vectored_handler);
 
-    return swallowed_exception;
+    __debugbreak();
+
+    if (swallowed_exception) {
+        RemoveVectoredExceptionHandler(veh);
+        return true;
+    }
+
+    RemoveVectoredExceptionHandler(veh);
+    return false;
 }

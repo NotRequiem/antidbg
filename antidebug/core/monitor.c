@@ -99,10 +99,10 @@ __attribute__((__target__("crc32")))
 #endif
 void __start_monitor(const HANDLE process_handle)
 {
-    HMODULE       modules[1024] = { 0 };
-    DWORD         module_count = 0;
+    HMODULE modules[1024] = { 0 };
+    DWORD module_count = 0;
     module_crc* module_hashes;
-    DWORD         i;
+    DWORD i;
 
     PVOID base_address = NULL;
     MEMORY_BASIC_INFORMATION mbi = { 0 };
@@ -112,23 +112,15 @@ void __start_monitor(const HANDLE process_handle)
             if (module_count < _countof(modules)) {
                 modules[module_count++] = (HMODULE)mbi.AllocationBase;
             }
-            else {
-                break;
-            }
+            else { break; }
         }
         base_address = (PVOID)((ULONG_PTR)mbi.BaseAddress + mbi.RegionSize);
     }
 
-    if (module_count == 0) {
-        __log_error("DbgNtQueryVirtualMemory mapping failed");
-        return;
-    }
+    if (module_count == 0) return;
 
     module_hashes = (module_crc*)calloc(module_count, sizeof(module_crc));
-    if (!module_hashes) {
-        __log("calloc failed for module_hashes");
-        return;
-    }
+    if (!module_hashes) return;
 
     for (i = 0; i < module_count; i++) {
         DWORD rva, size;
@@ -136,82 +128,58 @@ void __start_monitor(const HANDLE process_handle)
             module_hashes[i].module_handle = modules[i];
             module_hashes[i].text_rva = rva;
             module_hashes[i].text_size = size;
-
             module_hashes[i].original_crc = __hash_section(modules[i], rva, size);
-            __log("[*] Registered module %u at virtual address %p for protection; hash=0x%08X", i, modules[i], module_hashes[i].original_crc);
         }
     }
 
     _enable_privilege(L"SeSystemtimePrivilege", process_handle);
 
-    // same as doing const HANDLE hTimeSlipEvent = CreateEventA(NULL, FALSE, FALSE, NULL);
     HANDLE time_slip_event = NULL;
+    bool time_slip_active = false;
     OBJECT_ATTRIBUTES object_attributes = { 0 };
-
     object_attributes.Length = sizeof(OBJECT_ATTRIBUTES);
 
-    NTSTATUS status = DbgNtCreateEvent(
-        &time_slip_event,
-        EVENT_ALL_ACCESS,
-        &object_attributes,
-        SynchronizationEvent,
-        FALSE
-    );
+    NTSTATUS status = DbgNtCreateEvent(&time_slip_event, EVENT_ALL_ACCESS, &object_attributes, SynchronizationEvent, FALSE);
 
-    status = DbgNtSetSystemInformation((SYSTEM_INFORMATION_CLASS)SystemTimeSlipInformation, &time_slip_event, sizeof(time_slip_event));
-    if (status != 0) { // we dont care if EnablePrivilege or CreateEvent previously fails, we check everything here
-        DbgNtClose(time_slip_event);
+    if (NT_SUCCESS(status)) {
+        if (NT_SUCCESS(DbgNtSetSystemInformation((SYSTEM_INFORMATION_CLASS)SystemTimeSlipInformation, &time_slip_event, sizeof(time_slip_event)))) {
+            time_slip_active = true;
+        }
+        else {
+            DbgNtClose(time_slip_event);
+            time_slip_event = NULL;
+        }
     }
 
     for (;;) {
-        for (i = 0; i < module_count; i++) {
-            // aggresively re-set our legit callback because any memory inspection check to confirm our callback is intact (using NtReadVirtualMemory or similar)
-            // can be bypassed by the malicious callback itself by returning spoofed results in RAX
-            // __set_callback also issues a direct syscall, but the malicious instrumentation callback can't intercept the work done by the kernel before us issuing this callback
-            // they could re-set their callback immediately after detecting this, which is why the re-set it's inside a tight infinite loop in this .text module hasher
-            if (!__set_callback(&g_callback_page, process_handle)) {
-                __log("Instrumentation Callback integrity cannot be verified. Triggering fastfail.");
-                __fastfail(STATUS_SXS_EARLY_DEACTIVATION);
-            }
+        if (!__set_callback(&g_callback_page, process_handle)) {
+            __log("Instrumentation Callback integrity cannot be verified. Triggering fastfail.");
+            __fastfail(STATUS_SXS_EARLY_DEACTIVATION);
+        }
 
-            if (module_hashes[i].module_handle == NULL)
-                continue;
+        for (i = 0; i < module_count; i++) {
+            if (module_hashes[i].module_handle == NULL) continue;
 
             const uint32_t crc = __hash_section(module_hashes[i].module_handle, module_hashes[i].text_rva, module_hashes[i].text_size);
 
             if (crc != 0 && crc != module_hashes[i].original_crc) {
-            #ifdef _DEBUG
-                BYTE buffer[sizeof(MEMORY_SECTION_NAME) + MAX_PATH * sizeof(WCHAR)] = { 0 };
-                PMEMORY_SECTION_NAME section_name = (PMEMORY_SECTION_NAME)buffer;
-
-                if (NT_SUCCESS(DbgNtQueryVirtualMemory(process_handle, module_hashes[i].module_handle, 2, section_name, sizeof(buffer), NULL))) {
-                    section_name->SectionFileName.Buffer[section_name->SectionFileName.Length / sizeof(WCHAR)] = L'\0';
-                    __log("[!] Module tampered: %ls", section_name->SectionFileName.Buffer);
-                }
-                else {
-                    __log("[!] Module at %p tampered", module_hashes[i].module_handle);
-                }
-
-                __log("    original CRC=0x%08X  new CRC=0x%08X", module_hashes[i].original_crc, crc);
-            #endif
                 free(module_hashes);
                 __fastfail(STATUS_SXS_EARLY_DEACTIVATION);
             }
         }
 
-        LARGE_INTEGER timeout = { 0 };
-        timeout.QuadPart = -20 * 10000;
-        status = DbgNtWaitForSingleObject(
-            time_slip_event,
-            FALSE,
-            &timeout
-        );
+        LARGE_INTEGER delay = { 0 };
+        delay.QuadPart = -20 * 10000; // 2 seconds
 
-        // same as STATUS_SUCCESS, WAIT_OBJECT_0 on WaitForSingleObject
-        if (status == 0x00000000L) { // ((((DWORD)0x00000000L)) + 0)
-            __log("[!] Wait satisfied illegally. Time slip event triggered? Fastfailing.");
-            DbgNtClose(time_slip_event);
-            __fastfail(STATUS_SXS_EARLY_DEACTIVATION);
+        if (time_slip_active && time_slip_event) {
+            status = DbgNtWaitForSingleObject(time_slip_event, FALSE, &delay);
+            if (status == 0x00000000L) {
+                __log("[!] Wait satisfied illegally. Time slip event triggered? Fastfailing.");
+                // __fastfail(STATUS_SXS_EARLY_DEACTIVATION);
+            }
+        }
+        else {
+            DbgNtDelayExecution(FALSE, &delay);
         }
 
         if (!__detect_callback(g_callback_page.base, g_callback_page.size, process_handle)) {

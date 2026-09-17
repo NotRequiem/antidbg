@@ -16,7 +16,7 @@ bool __adbg_window()
 	BOOL ret = FALSE;
 	EnumWindows(EnumWndProc, (LPARAM)&ret);
 
-	if (FindWindowA("OLLYDBG", NULL) != NULL || FindWindowA("WinDbgFrameClass", NULL) != NULL || FindWindowA("QWidget", NULL) != NULL)
+	if (FindWindowA("OLLYDBG", NULL) != NULL || FindWindowA("WinDbgFrameClass", NULL) != NULL)
 	{
 		return true;
 	}

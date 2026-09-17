@@ -99,15 +99,6 @@
     <ClCompile Include="antidebug\flags\kerneldbg.c">
       <Filter>Source Files\flags</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\flags\ntglobalflag.c">
-      <Filter>Source Files\flags</Filter>
-    </ClCompile>
-    <ClCompile Include="antidebug\flags\prochpflag.c">
-      <Filter>Source Files\flags</Filter>
-    </ClCompile>
-    <ClCompile Include="antidebug\flags\prochpforceflag.c">
-      <Filter>Source Files\flags</Filter>
-    </ClCompile>
     <ClCompile Include="antidebug\memory\hwbreakp.c">
       <Filter>Source Files\memory</Filter>
     </ClCompile>
@@ -174,12 +165,6 @@
     <ClCompile Include="antidebug\flags\job.c">
       <Filter>Source Files\flags</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\memory\dbgp.c">
-      <Filter>Source Files\memory</Filter>
-    </ClCompile>
-    <ClCompile Include="antidebug\asm\lbr_btf.c">
-      <Filter>Source Files\api</Filter>
-    </ClCompile>
     <ClCompile Include="antidebug\core\debug.c">
       <Filter>Source Files\core</Filter>
     </ClCompile>
@@ -225,6 +210,15 @@
     <ClCompile Include="antidebug\core\module.c">
       <Filter>Source Files\core</Filter>
     </ClCompile>
+    <ClCompile Include="antidebug\api\sysimpl.c">
+      <Filter>Source Files\api</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\flags\ntglobalflag.c">
+      <Filter>Source Files\flags</Filter>
+    </ClCompile>
+    <ClCompile Include="antidebug\asm\lbr_btf.c">
+      <Filter>Source Files\asm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="antidebug\api\dbgpresent.h">
@@ -263,9 +257,6 @@
     <ClInclude Include="antidebug\exceptions\pgexcbp.h">
       <Filter>Header Files\exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="antidebug\flags\prochpforceflag.h">
-      <Filter>Header Files\flags</Filter>
-    </ClInclude>
     <ClInclude Include="antidebug\flags\duphnd.h">
       <Filter>Header Files\flags</Filter>
     </ClInclude>
@@ -273,9 +264,6 @@
       <Filter>Header Files\flags</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\flags\ntglobalflag.h">
-      <Filter>Header Files\flags</Filter>
-    </ClInclude>
-    <ClInclude Include="antidebug\flags\prochpflag.h">
       <Filter>Header Files\flags</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\memory\hwbreakp.h">
@@ -350,9 +338,6 @@
     <ClInclude Include="antidebug\core\nttypes.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="antidebug\memory\dbgp.h">
-      <Filter>Header Files\memory</Filter>
-    </ClInclude>
     <ClInclude Include="antidebug\asm\lbr_btf.h">
       <Filter>Header Files\asm</Filter>
     </ClInclude>
@@ -400,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="antidebug\core\module.h">
       <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="antidebug\api\sysimpl.h">
+      <Filter>Header Files\api</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -30,6 +30,7 @@ static BOOL __stdcall _ctrl_handler(DWORD fdw_ctrl_type)
 
 bool __adbg_console_event()
 {
+    if (GetConsoleWindow() == NULL) return false;
     PVOID veh = NULL;
     BOOL ctrl_handler_set = FALSE;
 

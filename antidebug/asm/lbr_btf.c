@@ -2,37 +2,27 @@
 #include "../core/syscall.h"
 
 volatile BOOL g_debugger = FALSE;
+PVOID g_lbr_buffer = NULL;
+SIZE_T g_lbr_size = 0;
 
 LONG __stdcall _vectored_handler(PEXCEPTION_POINTERS exception_info) {
     if (exception_info->ExceptionRecord->ExceptionCode == EXCEPTION_SINGLE_STEP) {
-        // The kernel's int 01 (#DB) handler populates ExceptionInformation with the LBR From address
-        // if LBR was enabled in DR7. The int 03 (#BP) handler does NOT do this. This is why using
-        // icebp is essential for this technique
 
-        // A debugger tracing this code will likely clear the LBR/BTF bits
-        // in DR7 to perform its own single-stepping. This causes the CPU to not record the LBR data,
-        // resulting in an empty ExceptionInformation array
-        if (exception_info->ExceptionRecord->NumberParameters == 0) {
-            g_debugger = TRUE;
-        }
-        else {
-            // An advanced debugger might leave LBR enabled but still intercept
-            // the exception. The act of trapping into the kernel and back out will pollute the LBR with
-            // kernel-mode branch addresses. We can detect this by checking if the address is in user-space
-            ULONG_PTR fromAddr = (ULONG_PTR)exception_info->ExceptionRecord->ExceptionInformation[0];
-            if (fromAddr > (ULONG_PTR)0x7FFFFFFFFFFFFFFF) {
-                g_debugger = TRUE;
+        const ULONG_PTR rip = exception_info->ContextRecord->Rip;
+        if (g_lbr_buffer && rip >= (ULONG_PTR)g_lbr_buffer && rip < ((ULONG_PTR)g_lbr_buffer + g_lbr_size)) {
+
+            if (exception_info->ExceptionRecord->NumberParameters != 0) {
+                ULONG_PTR fromAddr = (ULONG_PTR)exception_info->ExceptionRecord->ExceptionInformation[0];
+                if (fromAddr > (ULONG_PTR)0x7FFFFFFFFFFFFFFF) {
+                    g_debugger = TRUE;
+                }
             }
+            exception_info->ContextRecord->Rip++;
+            return EXCEPTION_CONTINUE_EXECUTION;
         }
-
-        // past icebp
-        exception_info->ContextRecord->Rip++;
-        return EXCEPTION_CONTINUE_EXECUTION;
     }
-
-    return EXCEPTION_CONTINUE_SEARCH;
+    return EXCEPTION_CONTINUE_SEARCH; // Pass to other handlers if it's not ours!
 }
-
 inline static void _lbr_btf(const HANDLE process_handle, const HANDLE thread_handle) {
     CONTEXT ctx = { 0 };
     ctx.ContextFlags = CONTEXT_DEBUG_REGISTERS;
@@ -81,6 +71,9 @@ inline static void _lbr_btf(const HANDLE process_handle, const HANDLE thread_han
         return;
     }
 
+    g_lbr_buffer = exec_mem;
+    g_lbr_size = region_size;
+
     memcpy(exec_mem, trigger_sequence, sizeof(trigger_sequence));
     void (*pfn_trigger)(void) = (void (*)(void))exec_mem;
 
@@ -88,6 +81,9 @@ inline static void _lbr_btf(const HANDLE process_handle, const HANDLE thread_han
         pfn_trigger();
     }
     __except (EXCEPTION_EXECUTE_HANDLER) {}
+
+    g_lbr_buffer = NULL;
+    g_lbr_size = 0;
 
     region_size = 0;
     status = DbgNtFreeVirtualMemory(

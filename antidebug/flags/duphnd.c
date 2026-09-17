@@ -27,61 +27,30 @@ typedef NTSTATUS(__stdcall* nt_set_information_object)(
     );
 
 // not syscalled on purpose
-bool __adbg_duplicate_handles(const HANDLE process_handle) 
+bool __adbg_duplicate_handles(const HANDLE process_handle)
 {
-    nt_set_information_object pfn_nt_set_information_object =
-        (nt_set_information_object)__get_module("ntdll.dll", "ZwSetInformationObject");
-    if (!pfn_nt_set_information_object) {
-        return false;
-    }
+    nt_set_information_object pfn_nt_set_information_object = (nt_set_information_object)__get_module("ntdll.dll", "ZwSetInformationObject");
+    if (!pfn_nt_set_information_object) return false;
 
     CUSTOM_HANDLE_FLAG_INFORMATION flags_on = { FALSE, TRUE };
     CUSTOM_HANDLE_FLAG_INFORMATION flags_off = { FALSE, FALSE };
 
-    HANDLE dup1 = NULL, dup2 = NULL;
-    bool failed = false;
+    HANDLE dup1 = NULL;
+    bool debugged = false;
 
-    __try {
-        if (!DuplicateHandle(process_handle, process_handle, process_handle, &dup1, 0, FALSE, 0)) {
-            failed = true;
-            __leave;
+    if (DuplicateHandle(process_handle, process_handle, process_handle, &dup1, 0, FALSE, DUPLICATE_SAME_ACCESS)) {
+        pfn_nt_set_information_object(dup1, ObjectHandleFlagInformation, &flags_on, sizeof(flags_on));
+
+        __try {
+            CloseHandle(dup1);
+        }
+        __except (GetExceptionCode() == STATUS_INVALID_HANDLE ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH) {
+            debugged = true; 
         }
 
-        pfn_nt_set_information_object(
-            dup1,
-            ObjectHandleFlagInformation,
-            &flags_on,
-            sizeof(flags_on)
-        );
-
-        if (!DuplicateHandle(process_handle, dup1, process_handle, &dup2, 0, FALSE, 0)) {
-            failed = true;
-            __leave;
-        }
-    }
-    __except (EXCEPTION_EXECUTE_HANDLER) {
-        failed = true;
-    }
-
-    if (dup2) {
-        pfn_nt_set_information_object(
-            dup2,
-            ObjectHandleFlagInformation,
-            &flags_off,
-            sizeof(flags_off)
-        );
-        CloseHandle(dup2);
-    }
-
-    if (dup1) {
-        pfn_nt_set_information_object(
-            dup1,
-            ObjectHandleFlagInformation,
-            &flags_off,
-            sizeof(flags_off)
-        );
+        pfn_nt_set_information_object(dup1, ObjectHandleFlagInformation, &flags_off, sizeof(flags_off));
         CloseHandle(dup1);
     }
 
-    return failed;
+    return debugged;
 }

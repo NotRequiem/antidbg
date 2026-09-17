@@ -22,7 +22,7 @@ static bool _enable_privilege(const HANDLE process_handle)
 
     DbgNtClose(token_handle);
 
-    return NT_SUCCESS(status);
+    return status == STATUS_SUCCESS;
 }
 
 static inline bool _disable_privilege(const HANDLE process_handle)
@@ -45,7 +45,7 @@ static inline bool _disable_privilege(const HANDLE process_handle)
 
     DbgNtClose(token_handle);
 
-    return NT_SUCCESS(status);
+    return status == STATUS_SUCCESS;
 }
 
 bool __adbg_filter_state(const HANDLE process_handle)

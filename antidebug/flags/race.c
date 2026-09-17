@@ -95,5 +95,6 @@ bool __adbg_race_condition(const HANDLE process_handle, const HANDLE thread_hand
     DbgNtWaitForSingleObject(race_thread, FALSE, NULL);
     DbgNtClose(race_thread);
 
+    debugged = _read_context_strip(thread_handle); 
     return debugged;
 }

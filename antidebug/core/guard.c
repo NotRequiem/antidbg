@@ -7,20 +7,10 @@ static void __stdcall __anti_attach(void);
 void __stdcall __clb(PVOID DllHandle, DWORD reason, PVOID Reserved);
 
 // some virtualizers can't obfuscate TLS callbacks. If this is a problem for you, just remove this code block 
-#pragma region TLS_CALLBACK_SETUP
-#ifdef _WIN64
-    #pragma comment (linker, "/INCLUDE:_tls_used")
-    #pragma const_seg(".CRT$XLA")
+#pragma comment (linker, "/INCLUDE:_tls_used")
+#pragma const_seg(".CRT$XLA")
     const PIMAGE_TLS_CALLBACK p_thread_callback_list[] = { (PIMAGE_TLS_CALLBACK)__clb, NULL };
-    #pragma const_seg()
-#else
-    #pragma comment (linker, "/INCLUDE:__tls_used")
-    #pragma data_seg(".CRT$XLA")
-    PIMAGE_TLS_CALLBACK p_thread_callback_list[] = { (PIMAGE_TLS_CALLBACK)clb, NULL };
-    #pragma data_seg()
-#endif
-#pragma endregion
-
+#pragma const_seg()
 
 static _force_inline DWORD __readprocid()
 {
@@ -192,11 +182,6 @@ static inline bool __harden_process(void)
     img.PreferSystem32Images = 1;
     if (!SetProcessMitigationPolicy(ProcessImageLoadPolicy, &img, sizeof(img))) return false;
 
-    // only Microsoft-signed binaries
-    PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY sig = { 0 };
-    sig.MicrosoftSignedOnly = 1;
-    if (!SetProcessMitigationPolicy(ProcessSignaturePolicy, &sig, sizeof(sig))) return false;
-
     // disable non-system fonts
     PROCESS_MITIGATION_FONT_DISABLE_POLICY font = { 0 };
     font.DisableNonSystemFonts = 1;
@@ -204,16 +189,23 @@ static inline bool __harden_process(void)
 
     // optional
     /*
-    PROCESS_MITIGATION_SYSTEM_CALL_DISABLE_POLICY sys = { 0 };
-    sys.DisallowWin32kSystemCalls = 1;
-    if (!SetProcessMitigationPolicy(ProcessSystemCallDisablePolicy, &sys, sizeof(sys))) return FALSE;
+        PROCESS_MITIGATION_SYSTEM_CALL_DISABLE_POLICY sys = { 0 };
+        sys.DisallowWin32kSystemCalls = 1;
+        if (!SetProcessMitigationPolicy(ProcessSystemCallDisablePolicy, &sys, sizeof(sys))) return FALSE;
     */
 
     // only if your app is CFG-compatible
     /*
-    PROCESS_MITIGATION_CONTROL_FLOW_GUARD_POLICY cfg = { 0 };
-    cfg.StrictMode = 1;
-    if (!SetMitigation(ProcessControlFlowGuardPolicy, &cfg, sizeof(cfg))) return FALSE;
+        PROCESS_MITIGATION_CONTROL_FLOW_GUARD_POLICY cfg = { 0 };
+        cfg.StrictMode = 1;
+        if (!SetMitigation(ProcessControlFlowGuardPolicy, &cfg, sizeof(cfg))) return FALSE;
+    */
+
+    // only Microsoft-signed binaries
+    /*
+        PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY sig = { 0 };
+        sig.MicrosoftSignedOnly = 1;
+        if (!SetProcessMitigationPolicy(ProcessSignaturePolicy, &sig, sizeof(sig))) return false;
     */
 
     return true;
@@ -304,7 +296,6 @@ bool __setup_protection(const HANDLE process_handle)
     __clear_breakpoints();
     __clear_ifeo(process_handle); // not called in TLS callback because we don't care too much
     __hide_threads(process_handle); // redundancy is always good
-
     if (!__set_callback(&g_callback_page, process_handle))
         __fastfail(STATUS_SXS_EARLY_DEACTIVATION);
 
@@ -328,7 +319,6 @@ bool __setup_protection(const HANDLE process_handle)
 
             SIZE_T bytes_written = 0;
             DbgNtWriteVirtualMemory(process_handle, db_ui_remote_breakin, patch, sizeof(patch), &bytes_written);
-
             PVOID restore_address = db_ui_remote_breakin;
             SIZE_T restore_size = 12;
             ULONG dummy = 0;
@@ -350,12 +340,10 @@ bool __setup_protection(const HANDLE process_handle)
             const unsigned char patch[] = { 0xC3 }; // ret
             SIZE_T bytes_written = 0;
             DbgNtWriteVirtualMemory(process_handle, dbg_break_point, (PVOID)patch, sizeof(patch), &bytes_written);
-
             PVOID restore_address = dbg_break_point;
             SIZE_T restore_size = 1;
             ULONG dummy = 0;
             DbgNtProtectVirtualMemory(process_handle, &restore_address, &restore_size, dw_old_protection, &dummy);
-
             DbgNtFlushInstructionCache(process_handle, dbg_break_point, sizeof(patch));
         }
     }

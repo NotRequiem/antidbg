@@ -1,6 +1,6 @@
 #include "loadlib.h"
 
-static inline bool _check_end_update_resource() 
+static inline bool _check_end_update_resource()
 {
     bool detected = FALSE;
     CHAR temp_file[MAX_PATH];
@@ -24,7 +24,13 @@ static inline bool _check_end_update_resource()
     }
     CloseHandle(hFile);
 
+    DWORD old_error_mode = 0;
+    SetThreadErrorMode(SEM_FAILCRITICALERRORS, &old_error_mode);
+
     const HMODULE library_handle = LoadLibraryA(temp_file);
+
+    SetThreadErrorMode(old_error_mode, NULL);
+
     const HANDLE update_handle = BeginUpdateResourceA(temp_file, FALSE);
 
     if (update_handle != NULL) {
@@ -43,53 +49,24 @@ static inline bool _check_end_update_resource()
 }
 
 static inline bool _check_read_file_breakpoint() {
-    bool detected = TRUE;
+    bool detected = false;
     char self_path[MAX_PATH];
-    if (!GetModuleFileNameA(NULL, self_path, MAX_PATH)) {
-        return false;
-    }
+    if (!GetModuleFileNameA(NULL, self_path, MAX_PATH)) return false;
 
-    const HANDLE self_handle = CreateFileA(self_path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
-    if (self_handle == INVALID_HANDLE_VALUE) {
-        return false;
-    }
+    HANDLE self_handle = CreateFileA(self_path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+    if (self_handle == INVALID_HANDLE_VALUE) return false;
 
-    unsigned char breakpoint_check[] = { 0xCC }; // int 3
-
-    const LPVOID code = VirtualAlloc(NULL, sizeof(breakpoint_check), MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-    if (!code) {
-        CloseHandle(self_handle);
-        return false;
-    }
-
-    if (memcpy_s(code, sizeof(breakpoint_check), breakpoint_check, sizeof(breakpoint_check)) != 0) {
-        VirtualFree(code, 0, MEM_RELEASE);
-        CloseHandle(self_handle);
-        return false;
-    }
-
+    unsigned char first_byte = 0;
     DWORD read = 0;
-    if (!ReadFile(self_handle, code, 1, &read, NULL) || read != 1) {
-        VirtualFree(code, 0, MEM_RELEASE);
-        CloseHandle(self_handle);
-        return false;
+    if (ReadFile(self_handle, &first_byte, 1, &read, NULL) && read == 1) {
+        if (first_byte == 0xCC) detected = true;
     }
 
     CloseHandle(self_handle);
-
-    __try {
-        ((void(*)())code)();
-        detected = false;
-    }
-    __except (GetExceptionCode() == EXCEPTION_BREAKPOINT ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH) {
-        detected = true;
-    }
-
-    VirtualFree(code, 0, MEM_RELEASE);
     return detected;
 }
 
-bool __adbg_load_library() 
+bool __adbg_load_library()
 {
     if (_check_read_file_breakpoint() || _check_end_update_resource())
         return true;
@@ -105,11 +82,16 @@ bool __adbg_load_library()
     if (file_handle == INVALID_HANDLE_VALUE) return false;
     CloseHandle(file_handle);
 
-    // we expect this to fail, but that's okay
+    // to suppress the "Bad Image" hard error
+    DWORD old_error_mode = 0;
+    SetThreadErrorMode(SEM_FAILCRITICALERRORS, &old_error_mode);
+
+    // we expect this to fail, but it's okay
     const HMODULE library_handle = LoadLibraryA(temp_file);
 
-    // now, try to open the file with exclusive access
-    // a debugger holding a handle will cause this to fail with ERROR_SHARING_VIOLATION
+    // Restore previous error mode
+    SetThreadErrorMode(old_error_mode, NULL);
+
     const HANDLE file_exclusive = CreateFileA(temp_file, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
     if (file_exclusive == INVALID_HANDLE_VALUE) {
         if (GetLastError() == ERROR_SHARING_VIOLATION) {
