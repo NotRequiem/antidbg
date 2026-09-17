@@ -81,6 +81,9 @@ You can find more source code of other detection concepts in the `antidebug\arch
 - `38.` Puts threads racing against both a kernel debugger and the kernel itself reading the `ContextFlags` structure; checks whether `DEBUG_REGISTERS` is stripped/if `Dr0` was not set.
 - `39.` Freezes some debuggers by creating and mapping an extremely large view of a virtual section; detects if calls to `NtMapViewOfSection` are tampered with.
 - `40.` Check for unimplemented syscalls (common in emulators).
+- `41.` Sets four hardware execution breakpoints from `DR0` to `DR3` on four consecutive `NOPs` and counts the resulting `EXCEPTION_SINGLE_STEP` deliveries via a `VEH`.
+- `42.` Tests debugger involvement via `OutputDebugString` side effects on legacy Windows XP/2000 and via `DBG_PRINTEXCEPTION_{C,WIDE_C}` exceptions that a debugger can intercept.
+- `43.` Checks whether the first byte of our own on-disk image is `0xCC`and exploits the Windows loader file-handle behavior where `LoadLibrary` can leave the file non-exclusively accessible under a debugger.
 
 ## Usage
 1. **Guard mode**: A thread will start running in your program and continuously monitor for attached debuggers. If a debugger is detected at any time, the program will log the attempt (if compiled in debug mode) and forcefully exit while preventing any other program from stopping the crash.

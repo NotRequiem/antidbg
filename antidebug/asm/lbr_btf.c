@@ -21,8 +21,9 @@ LONG __stdcall _vectored_handler(PEXCEPTION_POINTERS exception_info) {
             return EXCEPTION_CONTINUE_EXECUTION;
         }
     }
-    return EXCEPTION_CONTINUE_SEARCH; // Pass to other handlers if it's not ours!
+    return EXCEPTION_CONTINUE_SEARCH;
 }
+
 inline static void _lbr_btf(const HANDLE process_handle, const HANDLE thread_handle) {
     CONTEXT ctx = { 0 };
     ctx.ContextFlags = CONTEXT_DEBUG_REGISTERS;

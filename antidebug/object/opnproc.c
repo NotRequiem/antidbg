@@ -32,7 +32,7 @@ bool __adbg_open_process()
         FreeLibrary(ntdll);
     }
 
-    // syscall part
+    // syscalled part
     csr_handle = NULL;
     OBJECT_ATTRIBUTES object_attributes = { 0 };
     InitializeObjectAttributes(&object_attributes, NULL, 0, NULL, NULL);

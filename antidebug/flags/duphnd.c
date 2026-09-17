@@ -24,7 +24,7 @@ typedef NTSTATUS(__stdcall* nt_set_information_object)(
     _In_ CUSTOM_OBJECT_INFORMATION_CLASS ObjectInformationClass,
     _In_ PVOID ObjectInformation,
     _In_ ULONG ObjectInformationLength
-    );
+);
 
 // not syscalled on purpose
 bool __adbg_duplicate_handles(const HANDLE process_handle)

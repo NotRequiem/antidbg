@@ -63,7 +63,7 @@ bool __adbg_suspension(const HANDLE process_handle)
         return false;
     }
 
-    // monitor thread requires the handle to hThread2 to remain valid indefinitely to keep suspending it
+    // monitor thread requires the handle to thread2 to remain valid indefinitely to keep suspending it
     // DbgNtClose(hThread1);
     // DbgNtClose(hThread2);
 

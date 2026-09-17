@@ -84,9 +84,6 @@
     <ClCompile Include="antidebug\asm\popf.c">
       <Filter>Source Files\asm</Filter>
     </ClCompile>
-    <ClCompile Include="antidebug\asm\movss.c">
-      <Filter>Source Files\asm</Filter>
-    </ClCompile>
     <ClCompile Include="antidebug\asm\int3.c">
       <Filter>Source Files\asm</Filter>
     </ClCompile>
@@ -234,9 +231,6 @@
       <Filter>Header Files\asm</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\asm\int3.h">
-      <Filter>Header Files\asm</Filter>
-    </ClInclude>
-    <ClInclude Include="antidebug\asm\movss.h">
       <Filter>Header Files\asm</Filter>
     </ClInclude>
     <ClInclude Include="antidebug\asm\popf.h">

@@ -28,7 +28,6 @@
 #include "asm\lbr_btf.h"
 #include "asm\stckseg.h"
 #include "asm\instcnt.h"
-#include "asm\movss.h"
 
 #include "exceptions\raiseexc.h"
 #include "exceptions\pgexcbp.h"

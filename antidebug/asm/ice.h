@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-    bool __adbg_ice(const HANDLE thread_handle);
+    bool __adbg_ice();
 
 #ifdef __cplusplus
 }

@@ -33,7 +33,6 @@
     <ClCompile Include="antidebug\asm\int2d.c" />
     <ClCompile Include="antidebug\asm\int3.c" />
     <ClCompile Include="antidebug\asm\lbr_btf.c" />
-    <ClCompile Include="antidebug\asm\movss.c" />
     <ClCompile Include="antidebug\asm\popf.c" />
     <ClCompile Include="antidebug\asm\prehop.c" />
     <ClCompile Include="antidebug\asm\ice.c" />
@@ -92,7 +91,6 @@
     <ClInclude Include="antidebug\asm\int2d.h" />
     <ClInclude Include="antidebug\asm\int3.h" />
     <ClInclude Include="antidebug\asm\lbr_btf.h" />
-    <ClInclude Include="antidebug\asm\movss.h" />
     <ClInclude Include="antidebug\asm\popf.h" />
     <ClInclude Include="antidebug\asm\prehop.h" />
     <ClInclude Include="antidebug\asm\ice.h" />

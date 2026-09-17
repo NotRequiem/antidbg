@@ -1,7 +1,7 @@
 #include "device.h"
 #include "..\core\syscall.h"
 
-static bool IsDeviceObjectPresent(const wchar_t* pwszDeviceName)
+static bool _check_device(const wchar_t* pwszDeviceName)
 {
     UNICODE_STRING device_name = { 0 };
     device_name.Length = (USHORT)(wcslen(pwszDeviceName) * sizeof(wchar_t));
@@ -53,12 +53,12 @@ bool __adbg_device()
 {
     bool debugged = false;
 
-    if (IsDeviceObjectPresent(L"\\Device\\TitanHide"))
+    if (_check_device(L"\\Device\\TitanHide"))
     {
         debugged = true;
     }
 
-    if (IsDeviceObjectPresent(L"\\??\\TitanHide"))
+    if (_check_device(L"\\??\\TitanHide"))
     {
         debugged = true;
     }

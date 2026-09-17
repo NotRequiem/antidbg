@@ -22,7 +22,7 @@ static inline bool _non_stealth()
 
 const uint8_t _icebp_stub[] = { 0xF1, 0xC3 }; // icebp; ret
 
-bool __adbg_ice(const HANDLE thread_handle)
+bool __adbg_ice()
 {
     if (_non_stealth()) return true;
 

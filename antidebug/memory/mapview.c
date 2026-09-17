@@ -4,37 +4,48 @@
 bool __adbg_freeze_debugger(const HANDLE process_handle)
 {
     HANDLE section_handle = NULL;
-    PVOID  view_base_address = NULL;
-    SIZE_T region_size = (12ull << 40);
-    NTSTATUS nt_status_code;
+    PVOID view_base_address = NULL;
+    LARGE_INTEGER maximum_size = { 0 };
+    SIZE_T view_size;
+    NTSTATUS status;
 
-    nt_status_code = DbgNtCreateSection(
+    maximum_size.QuadPart = (LONGLONG)VIEW_SIZE_12_TIB;
+    view_size = (SIZE_T)VIEW_SIZE_12_TIB;
+
+    status = DbgNtCreateSection(
         &section_handle,
-        SECTION_ALL_ACCESS,
+        SECTION_MAP_READ |
+        SECTION_MAP_WRITE |
+        SECTION_QUERY,
         NULL,
-        NULL,
-        PAGE_EXECUTE_READWRITE,
-        SEC_COMMIT,
-        INVALID_HANDLE_VALUE
+        &maximum_size,
+        PAGE_READWRITE,
+        SEC_RESERVE,
+        NULL
     );
 
-    if (nt_status_code < 0) {
-        return false;
+    if (!NT_SUCCESS(status)) {
+        return FALSE;
     }
 
-    nt_status_code = DbgNtMapViewOfSection(
+    status = DbgNtMapViewOfSection(
         section_handle,
         process_handle,
         &view_base_address,
         0,
-        0,
+        0x1000,
         NULL,
-        &region_size,
+        &view_size,
         ViewUnmap,
-        0x2000,
-        PAGE_READWRITE
+        MEM_RESERVE,
+        PAGE_READWRITE       
     );
 
-    if (section_handle) DbgNtClose(section_handle);
-    return (nt_status_code >= 0) ? true : false;
+    DbgNtClose(section_handle);
+
+    if (!NT_SUCCESS(status)) {
+        return FALSE;
+    }
+
+    return TRUE;
 }

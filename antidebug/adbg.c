@@ -7,7 +7,7 @@ checks_info debugger_checks[] = {
     {CHECK_PROCESS, "IsRemoteDebuggerPresent", .function_with_process = __adbg_remote_debugger},
     {CHECK_VOID, "int 2d", .function_ptr = __adbg_int2d},
     {CHECK_VOID, "int 3", .function_ptr = __adbg_int3},
-    {CHECK_THREAD, "ice", .function_with_thread = __adbg_ice},
+    {CHECK_THREAD, "ice", .function_ptr = __adbg_ice},
     {CHECK_PROCESS, "Stack Segment Register", .function_with_process = __adbg_ssr},
     {CHECK_VOID, "prefix hop", .function_ptr = __adbg_prefix_hop},
     {CHECK_VOID, "popf", .function_ptr = __adbg_popf},
@@ -44,7 +44,6 @@ checks_info debugger_checks[] = {
     {CHECK_PROCESS, "Debugger Freeze", .function_with_process = __adbg_freeze_debugger},
     {CHECK_VOID, "Syscalls", .function_ptr = __adbg_check_syscalls},
     {CHECK_PROCESS, "Instruction Count", .function_with_process = __adbg_instruction_count},
-    {CHECK_VOID, "MOV SS", .function_ptr = __adbg_mov_ss},
     {CHECK_VOID, "OutputDebugString", .function_ptr = __adbg_output_dbg_str},
     {CHECK_VOID, "LoadLibrary", .function_ptr = __adbg_load_library}
 };
@@ -153,10 +152,9 @@ bool isProgramBeingDebugged()
 
     return false;
 }
-/*
+
 int main() {
     StartDebugProtection();
     SleepEx(0xFFFFFFFF, 0);
     return 0; 
 }
-*/

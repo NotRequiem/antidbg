@@ -47,7 +47,6 @@ bool __adbg_working_set(const HANDLE process_handle)
     if (NT_SUCCESS(status))
     {
         const PMEMORY_WORKING_SET_LIST_64 working_set = (PMEMORY_WORKING_SET_LIST_64)memory_pointer;
-
         const ULONG64 current_code_page = ((ULONG64)&__adbg_working_set) & ~0xFFFULL;
 
         for (ULONG64 i = 0; i < working_set->NumberOfPages; i++)
