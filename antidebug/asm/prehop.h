@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-	bool __adbg_prefix_hop();
+	bool __adbg_prefix_hop(const HANDLE process_handle);
 
 #ifdef __cplusplus
 }

@@ -41,12 +41,11 @@ static inline bool _check_async(void)
 
 static inline bool __read_kuser_shared_data()
 {
-    const ULONG_PTR user_shared_data = 0x7FFE0000;
+    const volatile UCHAR* p_kd_enabled = (const volatile UCHAR*)0x7FFE02D4;
+    const volatile UCHAR* p_kd_not_present = (const volatile UCHAR*)0x7FFE02D5;
 
-    const UCHAR kd_debugger_enabled_byte = *(UCHAR*)(user_shared_data + 0x2D4);
-
-    const BOOLEAN kd_debugger_enabled = (kd_debugger_enabled_byte & 0x1) == 0x1;
-    const BOOLEAN kd_debugger_not_present = (kd_debugger_enabled_byte & 0x2) == 0;
+    const BOOLEAN kd_debugger_enabled = (*p_kd_enabled != 0);
+    const BOOLEAN kd_debugger_not_present = (*p_kd_not_present != 0);
 
     /*
     * const unsigned char b = *(unsigned char*)0x7ffe02d4; 
@@ -79,7 +78,8 @@ bool __adbg_kernel_debugger()
         (SYSTEM_INFORMATION_CLASS)SystemKernelDebuggerInformation,
         &system_info,
         sizeof(system_info),
-        NULL);
+        NULL
+    );
 
     return (((NTSTATUS)(status)) >= 0)
         ? (system_info.DebuggerEnabled && !system_info.DebuggerNotPresent)

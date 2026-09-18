@@ -6,13 +6,10 @@ size_t executablePagesCount = 0;
 
 static inline void _page_exception_initial_enum(const HANDLE process_handle)
 {
-    size_t                   page_size = PAGE_SIZE;
+    size_t page_size = PAGE_SIZE;
     MEMORY_BASIC_INFORMATION mem_info = { 0 };
 
-    if (!(executable_pages = malloc(sizeof(void*))))
-        return;
-
-    if (NT_SUCCESS(DbgNtQueryVirtualMemory(
+    if (!NT_SUCCESS(DbgNtQueryVirtualMemory(
         process_handle,
         (PVOID)__adbg_page_exception_breakpoint,
         MemoryBasicInformation,
@@ -20,48 +17,50 @@ static inline void _page_exception_initial_enum(const HANDLE process_handle)
         sizeof(mem_info),
         NULL)))
     {
-        PVOID main_module = mem_info.AllocationBase;
-        if (!main_module) return;
-        PIMAGE_DOS_HEADER dos = (PIMAGE_DOS_HEADER)main_module;
+        return;
+    }
 
-        if (dos->e_magic == IMAGE_DOS_SIGNATURE)
+    PVOID main_module = mem_info.AllocationBase;
+    if (!main_module) return;
+
+    PIMAGE_DOS_HEADER dos = (PIMAGE_DOS_HEADER)main_module;
+    if (dos->e_magic != IMAGE_DOS_SIGNATURE) return;
+
+    PIMAGE_NT_HEADERS nt = (PIMAGE_NT_HEADERS)((BYTE*)main_module + dos->e_lfanew);
+    if (nt->Signature != IMAGE_NT_SIGNATURE) return;
+
+    if (!(executable_pages = malloc(sizeof(void*))))
+        return;
+
+    SIZE_T size_of_image = nt->OptionalHeader.SizeOfImage;
+    unsigned char* module = (unsigned char*)main_module;
+
+    for (size_t ofs = 0; ofs < size_of_image; ofs += page_size)
+    {
+        SIZE_T return_length = 0;
+        const NTSTATUS status = DbgNtQueryVirtualMemory(
+            process_handle,
+            module + ofs,
+            MemoryBasicInformation,
+            &mem_info,
+            sizeof(mem_info),
+            &return_length);
+
+        if (status >= 0 && return_length >= sizeof(mem_info))
         {
-            PIMAGE_NT_HEADERS nt = (PIMAGE_NT_HEADERS)((BYTE*)main_module + dos->e_lfanew);
-            if (nt->Signature == IMAGE_NT_SIGNATURE)
+            const DWORD exec_mask = PAGE_EXECUTE | PAGE_EXECUTE_READ | PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_WRITECOPY;
+
+            if (mem_info.Protect & exec_mask)
             {
-                SIZE_T size_of_image = nt->OptionalHeader.SizeOfImage;
-                unsigned char* module = (unsigned char*)main_module;
-
-                for (size_t ofs = 0; ofs < size_of_image; ofs += page_size)
-                {
-                    SIZE_T return_length = 0;
-                    const NTSTATUS status = DbgNtQueryVirtualMemory(
-                        process_handle,
-                        module + ofs,
-                        MemoryBasicInformation,
-                        &mem_info,
-                        sizeof(mem_info),
-                        &return_length);
-
-                    if (status >= 0 && return_length >= sizeof(mem_info))
-                    {
-                        const DWORD exec_mask =
-                            PAGE_EXECUTE |
-                            PAGE_EXECUTE_READ |
-                            PAGE_EXECUTE_READWRITE |
-                            PAGE_EXECUTE_WRITECOPY;
-
-                        if (mem_info.Protect & exec_mask)
-                        {
-                            void** tmp = realloc(
-                                executable_pages,
-                                (executablePagesCount + 1) * sizeof(void*));
-                            if (!tmp) { free(executable_pages); executable_pages = NULL; return; }
-                            executable_pages = tmp;
-                            executable_pages[executablePagesCount++] = module + ofs;
-                        }
-                    }
+                void** tmp = realloc(executable_pages, (executablePagesCount + 1) * sizeof(void*));
+                if (!tmp) {
+                    free(executable_pages);
+                    executable_pages = NULL;
+                    executablePagesCount = 0; 
+                    return;
                 }
+                executable_pages = tmp;
+                executable_pages[executablePagesCount++] = module + ofs;
             }
         }
     }

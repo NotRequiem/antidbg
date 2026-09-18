@@ -1,16 +1,16 @@
 #include "prehop.h"
 #include "..\core\syscall.h"
 
-bool __adbg_prefix_hop()
+bool __adbg_prefix_hop(const HANDLE process_handle)
 {
     bool found = true;
     const unsigned char code[] = {
             0xF3, // REP prefix
             0x64, // FS prefix
-            0xF1  // software bp
+            0xF1, // software bp
+            0xC3  // ret
     };
 
-    HANDLE process_handle = (HANDLE)-1;
     PVOID exec_mem = NULL;
     SIZE_T region_size = sizeof(code);
 

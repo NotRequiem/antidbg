@@ -36,13 +36,18 @@
     #define _force_inline inline
 #endif
 
+#define NUM_WATCHDOGS 8
+#define MAX_PROTECTED_THREADS 32
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
     void __stdcall __clb(PVOID DllHandle, DWORD reason, PVOID Reserved);
-
     bool __setup_protection(const HANDLE process_handle);
+
+    void __add_protected_thread(HANDLE thread_handle);
+    void __start_watchdogs(const HANDLE process_handle);
 
 #ifdef __cplusplus
 }

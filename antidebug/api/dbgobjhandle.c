@@ -21,7 +21,11 @@ bool __adbg_object_handle(const HANDLE process_handle)
 
     if (status == STATUS_SUCCESS)
     {
-        return debug_object != NULL;
+        bool detected = (debug_object != NULL);
+        if (debug_object != NULL) {
+            DbgNtClose(debug_object);
+        }
+        return detected;
     }
 
     return false;

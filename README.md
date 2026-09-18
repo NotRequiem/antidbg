@@ -2,12 +2,13 @@
 
 **antidbg** is a x64 user-mode anti-debugging library for Windows, designed to protect software from debugging.
 
+Consider the library as a base for your anti-debugging protection, not as your only defense.
+
 The library is:
 - Very easy to use (only one function call required).
-- Designed for high performance and minimal resource usage (1% CPU usage; 1.5MB of memory).
-- Compatible with most x86_64 assemblers and compilers (`GNU AT&T`, `MASM`; `Clang`, `MinGW-w64`, `GCC`, `clang-cl`, `MSVC`) and any C or C++ standard.
+- Designed for high performance and minimal resource usage (1% CPU usage; <2MB of memory).
 - Free of any external dependencies.
-- Fully MIT-licensed, allowing unrestricted use and distribution.
+- Fully MIT-licensed.
 - CFG-compliant.
 
 ## Structure
@@ -117,43 +118,94 @@ int main() {
 }
 ```
 
+Here is the updated, production-ready build documentation. 
+
+It removes the anti-pattern of copy-pasting `main()` into `adbg.c`, provides accurate commands for both static and shared library configurations, documents the lack of GCC support due to C SEH constraints, and distinguishes between **MSVC (`cl.exe`)**, **`clang-cl`**, and **MinGW Clang**.
+
+---
+
 ## Build
-### Binary mode
-Copy-paste your desired main function from the section "Usage" at the end of the `adbg.c` file. Then:
 
-**In MSVC:** Click on the .sln file at the root of this repository, select your desired mode (Debug or Release) and click on "Build".
+### 1. Binary mode
+To build the test runner executable, enable `-DBUILD_EXAMPLE=ON`. This compiles `example/main.c` and links it against `antidebug` without polluting the core library with an entry point.
 
-**In the rest:** Append -DBUILD_EXAMPLE=ON when building with CMake. Example: `cmake -S .. -B build -G Ninja -DCMAKE_C_COMPILER=clang -DBUILD_EXAMPLE=ON`, then `cmake --build build`.
+#### Visual Studio (GUI)
+1. Open the repository folder in Visual Studio (or open the generated `.sln` file).
+2. Select your desired configuration (**x64-Release** or **x64-Debug**).
+3. Set `antidebug_runner` as the startup project and click **Build** (or press `F5` to run).
 
-*Compiling in Debug mode will enable logging to console and debuggers and won't make detections behave differently from Release mode.*
-
-### Shared/Static Library mode
-> **MSVC**
-
-cd to the project root and run:
+#### CLI (MSVC / Ninja / Clang)
+From the project root:
+```cmd
+cmake -B build -S . -DBUILD_EXAMPLE=ON
+cmake --build build --config Release
 ```
-mkdir build && cd build
-cmake .. -A x64
-cmake --build . --config Release
+The executable will be located at:
+* MSVC multi-config: `build/Release/antidebug_runner.exe`
+* Ninja single-config: `build/antidebug_runner.exe`
+
+> **Note on Debug Builds:** Compiling in Debug mode (`--config Debug`) enables console/debugger diagnostic logs via `core/debug.c`. Release mode strips logging completely.
+
+---
+
+### 2. Library mode (Static or Shared)
+
+By default, CMake produces a **static library** (`antidebug.lib` or `libantidebug.a`). To build a **dynamic link library (DLL)**, pass `-DBUILD_SHARED_LIBS=ON`.
+
+#### Option A: MSVC (`cl.exe`)
+Using the Visual Studio generator:
+```cmd
+# Static Library (.lib)
+cmake -B build -S . -A x64 -DBUILD_SHARED_LIBS=OFF
+cmake --build build --config Release
+
+# Dynamic Library (.dll + import .lib)
+cmake -B build -S . -A x64 -DBUILD_SHARED_LIBS=ON
+cmake --build build --config Release
 ```
 
-> **GCC/MinGW-w64**
+---
 
-Ensure you launch the 64-bit MinGW environment, this assumes gcc is in your PATH:
-
+#### Option B: Clang-CL (LLVM with MSVC Integration)
+Using Ninja with `clang-cl`:
+```cmd
+# Ensure clang-cl is in your PATH or run from the VS x64 Native Tools Command Prompt
+cmake -B build -S . -G Ninja -DCMAKE_C_COMPILER=clang-cl -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF
+cmake --build build
 ```
-mkdir build && cd build
-cmake .. -G "MinGW Makefiles"
-cmake --build .
+
+---
+
+#### Option C: Clang (MinGW / LLVM-MinGW)
+Launch your 64-bit LLVM-MinGW shell (`x86_64-w64-mingw32-clang` in your `PATH`) and use Ninja:
+```bash
+# Static Library (.a)
+cmake -B build -S . -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF
+cmake --build build
+
+# Shared Library (.dll)
+cmake -B build -S . -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
+cmake --build build
 ```
 
-> **Clang**
+---
 
-Using Ninja as generator:
+### 3. Installation via CMake
+To install the compiled library and headers into a local prefix:
+```cmd
+cmake --install build --prefix "C:/local/antidebug"
 ```
-mkdir build && cd build
-cmake .. -G Ninja -DCMAKE_C_COMPILER=clang
-cmake --build .
+This produces:
+```text
+C:/local/antidebug/
+├── bin/
+│   └── antidebug.dll           (if BUILD_SHARED_LIBS=ON)
+├── lib/
+│   └── antidebug.lib           (or libantidebug.a)
+└── include/
+    └── antidebug/
+        ├── adbg.h
+        └── ...
 ```
 
 ## Legal

@@ -47,5 +47,6 @@ bool __adbg_freeze_debugger(const HANDLE process_handle)
         return FALSE;
     }
 
+    DbgNtUnmapViewOfSection(process_handle, view_base_address);
     return TRUE;
 }

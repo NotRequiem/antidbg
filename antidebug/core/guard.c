@@ -2,15 +2,20 @@
 #include "syscall.h"
 #include "callback.h"
 #include "module.h"
+#include "thrmng.h"
 
 static void __stdcall __anti_attach(void);
 void __stdcall __clb(PVOID DllHandle, DWORD reason, PVOID Reserved);
 
 // some virtualizers can't obfuscate TLS callbacks. If this is a problem for you, just remove this code block 
+#if defined(_MSC_VER)
 #pragma comment (linker, "/INCLUDE:_tls_used")
-#pragma const_seg(".CRT$XLA")
-    const PIMAGE_TLS_CALLBACK p_thread_callback_list[] = { (PIMAGE_TLS_CALLBACK)__clb, NULL };
+#pragma const_seg(".CRT$XLB")
+const PIMAGE_TLS_CALLBACK p_thread_callback_list[] = { (PIMAGE_TLS_CALLBACK)__clb, NULL };
 #pragma const_seg()
+#else
+__attribute__((section(".CRT$XLB"), used)) const PIMAGE_TLS_CALLBACK p_thread_callback_list[] = { (PIMAGE_TLS_CALLBACK)__clb, NULL };
+#endif
 
 static _force_inline DWORD __readprocid()
 {
@@ -229,51 +234,109 @@ static inline void __hide_threads(const HANDLE process_handle)
 
 static inline bool __clear_ifeo(const HANDLE process_handle)
 {
-    NTSTATUS status;
+    NTSTATUS status = 0xC0000001;
     ULONG needed = 0;
     PVOID image_buf = NULL;
     SIZE_T image_size = 0;
     UNICODE_STRING key_name = { 0 };
     UNICODE_STRING parent_name = { 0 };
     OBJECT_ATTRIBUTES oa = { 0 };
+    HANDLE parent_key_handle = NULL;
     HANDLE key_handle = NULL;
     WCHAR* exe_name;
     size_t exe_len = 0;
 
-    status = DbgNtQueryInformationProcess(process_handle, (PROCESSINFOCLASS)ProcessImageFileName, NULL, 0, &needed);
+    status = DbgNtQueryInformationProcess(
+        process_handle,
+        (PROCESSINFOCLASS)ProcessImageFileName,
+        NULL,
+        0,
+        &needed);
+
     if (needed == 0)
         return false;
 
     image_size = (SIZE_T)needed + sizeof(WCHAR);
-    status = DbgNtAllocateVirtualMemory(process_handle, &image_buf, 0, &image_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+
+    status = DbgNtAllocateVirtualMemory(
+        process_handle,
+        &image_buf,
+        0,
+        &image_size,
+        MEM_COMMIT | MEM_RESERVE,
+        PAGE_READWRITE);
+
     if (status < 0)
         return false;
 
-    status = DbgNtQueryInformationProcess(process_handle, (PROCESSINFOCLASS)ProcessImageFileName, image_buf, needed, &needed);
+    status = DbgNtQueryInformationProcess(
+        process_handle,
+        (PROCESSINFOCLASS)ProcessImageFileName,
+        image_buf,
+        needed,
+        &needed);
+
     if (status < 0)
         goto done;
 
-    exe_name = wcsrchr(((UNICODE_STRING*)image_buf)->Buffer, L'\\');
-    exe_name = exe_name == NULL ? ((UNICODE_STRING*)image_buf)->Buffer : exe_name + 1;
+    PUNICODE_STRING pustr = (PUNICODE_STRING)image_buf;
+    if (pustr->Length == 0 || pustr->Buffer == NULL) goto done;
 
-    if (StringCchLengthW(exe_name, needed / sizeof(WCHAR), &exe_len) != S_OK)
+    USHORT num_chars = pustr->Length / sizeof(WCHAR);
+    PWSTR buf = pustr->Buffer;
+    PWSTR last_slash = NULL;
+
+    for (USHORT i = 0; i < num_chars; i++) {
+        if (buf[i] == L'\\') {
+            last_slash = &buf[i + 1];
+        }
+    }
+
+    exe_name = (last_slash != NULL) ? last_slash : buf;
+    exe_len = (size_t)num_chars - (size_t)(exe_name - buf);
+
+    if (status != S_OK)
         goto done;
 
-    parent_name.Buffer = L"\\Registry\\Machine\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options";
-    parent_name.Length = (USHORT)(wcslen(parent_name.Buffer) * sizeof(WCHAR));
-    parent_name.MaximumLength = (USHORT)((wcslen(parent_name.Buffer) + 1) * sizeof(WCHAR));
+    parent_name.Buffer =
+        L"\\Registry\\Machine\\SOFTWARE\\Microsoft\\Windows NT\\"
+        L"CurrentVersion\\Image File Execution Options";
+    parent_name.Length =
+        (USHORT)(wcslen(parent_name.Buffer) * sizeof(WCHAR));
+    parent_name.MaximumLength =
+        (USHORT)((wcslen(parent_name.Buffer) + 1) * sizeof(WCHAR));
 
     key_name.Buffer = exe_name;
     key_name.Length = (USHORT)(exe_len * sizeof(WCHAR));
     key_name.MaximumLength = (USHORT)((exe_len + 1) * sizeof(WCHAR));
 
-    InitializeObjectAttributes(&oa, &parent_name, OBJ_CASE_INSENSITIVE, NULL, NULL);
-    status = DbgNtOpenKey(&key_handle, DELETE | KEY_WOW64_64KEY, &oa);
+    InitializeObjectAttributes(
+        &oa,
+        &parent_name,
+        OBJ_CASE_INSENSITIVE,
+        NULL,
+        NULL);
+
+    status = DbgNtOpenKey(
+        &parent_key_handle,
+        KEY_WOW64_64KEY,
+        &oa);
+
     if (status < 0)
         goto done;
 
-    InitializeObjectAttributes(&oa, &key_name, OBJ_CASE_INSENSITIVE, key_handle, NULL);
-    status = DbgNtOpenKey(&key_handle, DELETE | KEY_WOW64_64KEY, &oa);
+    InitializeObjectAttributes(
+        &oa,
+        &key_name,
+        OBJ_CASE_INSENSITIVE,
+        parent_key_handle,
+        NULL);
+
+    status = DbgNtOpenKey(
+        &key_handle,
+        DELETE | KEY_WOW64_64KEY,
+        &oa);
+
     if (status < 0)
         goto done;
 
@@ -283,11 +346,70 @@ done:
     if (key_handle != NULL)
         DbgNtClose(key_handle);
 
+    if (parent_key_handle != NULL)
+        DbgNtClose(parent_key_handle);
+
     if (image_buf != NULL) {
         image_size = 0;
-        DbgNtFreeVirtualMemory(process_handle, &image_buf, &image_size, MEM_RELEASE);  
+        DbgNtFreeVirtualMemory(
+            process_handle,
+            &image_buf,
+            &image_size,
+            MEM_RELEASE);
     }
+
     return status >= 0;
+}
+
+HANDLE g_protected_threads[MAX_PROTECTED_THREADS] = { NULL };
+volatile LONG g_protected_thread_count = 0;
+HANDLE g_watchdog_threads[NUM_WATCHDOGS] = { NULL };
+
+void __add_protected_thread(HANDLE thread_handle) {
+    if (!thread_handle) return;
+
+    LONG idx = _InterlockedExchangeAdd(&g_protected_thread_count, 1);
+    if (idx < MAX_PROTECTED_THREADS) {
+        g_protected_threads[idx] = thread_handle;
+    }
+    else {
+        _InterlockedDecrement(&g_protected_thread_count);
+    }
+}
+
+DWORD __stdcall __watchdog_worker(LPVOID lpParam) {
+    UNREFERENCED_PARAMETER(lpParam);
+
+    LARGE_INTEGER delay = { 0 };
+    delay.QuadPart = -160000; // 16 ms, single tick
+
+    ULONG suspend_count;
+
+    while (1) {
+        DbgNtDelayExecution(FALSE, &delay);
+
+        LONG count = g_protected_thread_count;
+        if (count > MAX_PROTECTED_THREADS) {
+            count = MAX_PROTECTED_THREADS;
+        }
+
+        for (LONG i = 0; i < count; i++) {
+            const HANDLE hThread = g_protected_threads[i];
+            if (hThread) {
+                DbgNtResumeThread(hThread, &suspend_count);
+            }
+        }
+    }
+    return 0;
+}
+
+void __start_watchdogs(const HANDLE process_handle) {
+    for (int i = 0; i < NUM_WATCHDOGS; i++) {
+        g_watchdog_threads[i] = DbgCreateThread(process_handle, 0, __watchdog_worker, NULL, 0, NULL, NULL);
+        if (g_watchdog_threads[i]) {
+            __add_protected_thread(g_watchdog_threads[i]);
+        }
+    }
 }
 
 bool __setup_protection(const HANDLE process_handle)
@@ -313,7 +435,8 @@ bool __setup_protection(const HANDLE process_handle)
             unsigned char patch[12] = { 0 };
             patch[0] = 0x48; // REX.W prefix for 64-bit operand
             patch[1] = 0xB8; // MOV RAX, imm64
-            *(ULONGLONG*)&patch[2] = (ULONGLONG)&__anti_attach;
+            ULONGLONG hook_addr = (ULONGLONG)&__anti_attach;
+            memcpy(&patch[2], &hook_addr, sizeof(hook_addr));
             patch[10] = 0xFF; // JMP RAX
             patch[11] = 0xE0;
 

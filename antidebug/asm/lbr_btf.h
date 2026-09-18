@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-	bool __adbg_lbr(const HANDLE process_handle, const HANDLE thread_handle);
+	bool __adbg_lbr(const HANDLE process_handle);
 
 #ifdef __cplusplus
 }

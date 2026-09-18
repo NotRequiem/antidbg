@@ -29,13 +29,20 @@ void __log(_Printf_format_string_ const char* fmt, ...)
     va_list args;
     va_start(args, fmt);
     if (vsnprintf_s(buffer, sizeof(buffer), _TRUNCATE, fmt, args) < 0) {
-        strcpy_s(buffer, sizeof(buffer), "[adbg] log formatting failed");
+        strcpy_s(buffer, sizeof(buffer), "[AntiDBG] log formatting failed");
     }
     va_end(args);
 
     size_t len = strnlen_s(buffer, sizeof(buffer));
-    if (len == 0 || buffer[len - 1] != '\n') {
-        strcat_s(buffer, sizeof(buffer), "\r\n");
+    if (len > 0 && buffer[len - 1] != '\n') {
+        if (len < sizeof(buffer) - 2) {
+            strcat_s(buffer, sizeof(buffer), "\r\n");
+        }
+        else {
+            buffer[sizeof(buffer) - 3] = '\r';
+            buffer[sizeof(buffer) - 2] = '\n';
+            buffer[sizeof(buffer) - 1] = '\0';
+        }
     }
 
     OutputDebugStringA(buffer);

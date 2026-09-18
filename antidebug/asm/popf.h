@@ -21,7 +21,7 @@ extern "C" {
             }
     */
 
-	bool __adbg_popf();
+    bool __adbg_popf(const HANDLE process_handle);
 
 #ifdef __cplusplus
 }

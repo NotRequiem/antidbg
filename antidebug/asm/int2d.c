@@ -27,12 +27,11 @@ const uint8_t _int2d_stub[] = {
     0xC3 // ret 
 };
 
-bool __adbg_int2d()
+bool __adbg_int2d(const HANDLE process_handle)
 {
     if (_non_stealth()) return true;
 
     bool debugged = true;
-    HANDLE process_handle = (HANDLE)-1;
     PVOID exec_mem = NULL;
     SIZE_T region_size = sizeof(_int2d_stub);
 
@@ -57,5 +56,6 @@ bool __adbg_int2d()
         SIZE_T free_size = 0;
         DbgNtFreeVirtualMemory(process_handle, &exec_mem, &free_size, MEM_RELEASE);
     }
+
     return debugged;
 }

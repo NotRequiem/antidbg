@@ -4,29 +4,64 @@
 #include "debug.h"
 #include "module.h"
 
-typedef struct _MEMORY_SECTION_NAME {
-    UNICODE_STRING SectionFileName;
-} MEMORY_SECTION_NAME, * PMEMORY_SECTION_NAME;
+typedef struct _UNICODE_STRING_T {
+    USHORT Length;
+    USHORT MaximumLength;
+    PWSTR  Buffer;
+} UNICODE_STRING_T;
+
+typedef struct _LDR_DATA_TABLE_ENTRY_T {
+    LIST_ENTRY InLoadOrderLinks;
+    LIST_ENTRY InMemoryOrderLinks;
+    LIST_ENTRY InInitializationOrderLinks;
+    PVOID DllBase;
+    PVOID EntryPoint;
+    ULONG SizeOfImage;
+    UNICODE_STRING_T FullDllName;
+    UNICODE_STRING_T BaseDllName;
+} LDR_DATA_TABLE_ENTRY_T;
+
+typedef struct _PEB_LDR_DATA_T {
+    ULONG Length;
+    BOOLEAN Initialized;
+    HANDLE SsHandle;
+    LIST_ENTRY InLoadOrderModuleList;
+} PEB_LDR_DATA_T;
+
+typedef struct _PEB_T {
+    BYTE Reserved1[2];
+    BYTE BeingDebugged;
+    BYTE Reserved2[1];
+    BYTE Reserved3[4];
+    PVOID Mutant;
+    PVOID ImageBaseAddress;
+    PEB_LDR_DATA_T* Ldr;
+} PEB_T;
 
 static inline bool __read_section(HMODULE module_handle, DWORD* rva, DWORD* size)
 {
-    BYTE* base = (BYTE*)module_handle;
-    IMAGE_DOS_HEADER*     dos = (IMAGE_DOS_HEADER*)base;
-    IMAGE_NT_HEADERS*     nt;
-    IMAGE_SECTION_HEADER* sec;
-    WORD                  i;
+    __try {
+        BYTE* base = (BYTE*)module_handle;
+        IMAGE_DOS_HEADER* dos = (IMAGE_DOS_HEADER*)base;
+        IMAGE_NT_HEADERS* nt;
+        IMAGE_SECTION_HEADER* sec;
+        WORD i;
 
-    if (dos->e_magic != IMAGE_DOS_SIGNATURE) return false;
-    nt = (IMAGE_NT_HEADERS*)(base + dos->e_lfanew);
-    if (nt->Signature != IMAGE_NT_SIGNATURE) return false;
+        if (dos->e_magic != IMAGE_DOS_SIGNATURE) return false;
+        nt = (IMAGE_NT_HEADERS*)(base + dos->e_lfanew);
+        if (nt->Signature != IMAGE_NT_SIGNATURE) return false;
 
-    sec = IMAGE_FIRST_SECTION(nt);
-    for (i = 0; i < nt->FileHeader.NumberOfSections; i++, sec++) {
-        if (memcmp(sec->Name, ".text", 5) == 0) {
-            *rva = sec->VirtualAddress;
-            *size = sec->Misc.VirtualSize;
-            return true;
+        sec = IMAGE_FIRST_SECTION(nt);
+        for (i = 0; i < nt->FileHeader.NumberOfSections; i++, sec++) {
+            if (memcmp(sec->Name, ".text", 5) == 0) {
+                *rva = sec->VirtualAddress;
+                *size = sec->Misc.VirtualSize;
+                return true;
+            }
         }
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER) {
+        return false;
     }
     return false;
 }
@@ -58,44 +93,54 @@ static inline void _enable_privilege(LPCWSTR privilege_name, const HANDLE proces
     return;
 }
 
-#if (__clang__ || __GNUC__)
-__attribute__((__target__("crc32")))
+#if defined(__clang__) || defined(__GNUC__)
+    __attribute__((__target__("crc32")))
 #endif
+//  __attribute__((__target__("sse4.2")))
 static _force_inline uint32_t __hash_section(const HMODULE module_handle, const DWORD sectionRVA, const DWORD sectionSize)
 {
-    PIMAGE_DOS_HEADER dos_header = (PIMAGE_DOS_HEADER)module_handle;
-    if (dos_header->e_magic != IMAGE_DOS_SIGNATURE) return 0;
+    uint32_t crc_result = 0;
 
-    PIMAGE_NT_HEADERS nt_headers = (PIMAGE_NT_HEADERS)((BYTE*)module_handle + dos_header->e_lfanew);
-    if (nt_headers->Signature != IMAGE_NT_SIGNATURE) return 0;
+    __try {
+        PIMAGE_DOS_HEADER dos_header = (PIMAGE_DOS_HEADER)module_handle;
+        if (dos_header->e_magic != IMAGE_DOS_SIGNATURE) return 0;
 
-    BYTE* base = (BYTE*)module_handle;
-    BYTE* sectionBase = base + sectionRVA;
-    BYTE* sectionEnd = sectionBase + sectionSize;
+        PIMAGE_NT_HEADERS nt_headers = (PIMAGE_NT_HEADERS)((BYTE*)module_handle + dos_header->e_lfanew);
+        if (nt_headers->Signature != IMAGE_NT_SIGNATURE) return 0;
 
-    if ((BYTE*)sectionBase < base || sectionEnd >(base + nt_headers->OptionalHeader.SizeOfImage))
-        return 0;
+        BYTE* base = (BYTE*)module_handle;
+        BYTE* sectionBase = base + sectionRVA;
+        BYTE* sectionEnd = sectionBase + sectionSize;
 
-    uint64_t crc = 0;
-    BYTE* p = sectionBase;
-    SIZE_T bytesLeft = sectionSize;
+        if ((BYTE*)sectionBase < base || sectionEnd >(base + nt_headers->OptionalHeader.SizeOfImage))
+            return 0;
 
-    while (bytesLeft >= 8) {
-        uint64_t chunk = *(uint64_t*)p;
-        crc = _mm_crc32_u64(crc, chunk);
-        p += 8; bytesLeft -= 8;
+        uint64_t crc = 0;
+        BYTE* p = sectionBase;
+        SIZE_T bytesLeft = sectionSize;
+
+        while (bytesLeft >= 8) {
+            uint64_t chunk = *(uint64_t*)p;
+            crc = _mm_crc32_u64(crc, chunk);
+            p += 8; bytesLeft -= 8;
+        }
+        while (bytesLeft > 0) {
+            uint8_t b = *p;
+            crc = _mm_crc32_u8((uint32_t)crc, b);
+            p++; bytesLeft--;
+        }
+
+        crc_result = (uint32_t)crc;
     }
-    while (bytesLeft > 0) {
-        uint8_t b = *p;
-        crc = _mm_crc32_u8((uint32_t)crc, b);
-        p++; bytesLeft--;
+    __except (EXCEPTION_EXECUTE_HANDLER) {
+        crc_result = 0;
     }
 
-    return (uint32_t)crc;
+    return crc_result;
 }
 
-#if (__clang__ || __GNUC__)
-__attribute__((__target__("crc32")))
+#if defined(__clang__) || defined(__GNUC__)
+    __attribute__((__target__("crc32")))
 #endif
 void __start_monitor(const HANDLE process_handle)
 {
@@ -104,17 +149,20 @@ void __start_monitor(const HANDLE process_handle)
     module_crc* module_hashes;
     DWORD i;
 
-    PVOID base_address = NULL;
-    MEMORY_BASIC_INFORMATION mbi = { 0 };
+    // we need to enumerate  loaded modules via the PEB loader list to avoid picking up transient section mappings created by __detect_hook
+    PEB_T* peb = (PEB_T*)__readgsqword(0x60);
+    if (!peb || !peb->Ldr) return;
 
-    while (NT_SUCCESS(DbgNtQueryVirtualMemory(process_handle, base_address, MemoryBasicInformation, &mbi, sizeof(mbi), NULL))) {
-        if (mbi.Type == MEM_IMAGE && mbi.State == MEM_COMMIT && mbi.BaseAddress == mbi.AllocationBase) {
-            if (module_count < _countof(modules)) {
-                modules[module_count++] = (HMODULE)mbi.AllocationBase;
-            }
-            else { break; }
+    PEB_LDR_DATA_T* ldr = peb->Ldr;
+    LIST_ENTRY* head = &ldr->InLoadOrderModuleList;
+    LIST_ENTRY* curr = head->Flink;
+
+    while (curr != head && module_count < _countof(modules)) {
+        LDR_DATA_TABLE_ENTRY_T* entry = (LDR_DATA_TABLE_ENTRY_T*)curr;
+        if (entry->DllBase != NULL) {
+            modules[module_count++] = (HMODULE)entry->DllBase;
         }
-        base_address = (PVOID)((ULONG_PTR)mbi.BaseAddress + mbi.RegionSize);
+        curr = curr->Flink;
     }
 
     if (module_count == 0) return;
@@ -169,13 +217,12 @@ void __start_monitor(const HANDLE process_handle)
         }
 
         LARGE_INTEGER delay = { 0 };
-        delay.QuadPart = -20 * 10000; // 2 seconds
+        delay.QuadPart = -20 * 10000;
 
         if (time_slip_active && time_slip_event) {
             status = DbgNtWaitForSingleObject(time_slip_event, FALSE, &delay);
             if (status == 0x00000000L) {
-                __log("[!] Wait satisfied illegally. Time slip event triggered? Fastfailing.");
-                // __fastfail(STATUS_SXS_EARLY_DEACTIVATION);
+                __log("[!] Wait satisfied illegally. Time slip event triggered?");
             }
         }
         else {

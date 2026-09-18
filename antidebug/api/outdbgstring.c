@@ -41,18 +41,19 @@ bool __adbg_output_dbg_str()
 			debugged = TRUE;
 	}
 
-	const WCHAR output_string[] = L"xd";
+	const WCHAR output_string_w[] = L"xd";
+	const CHAR output_string_a[] = "xd";
 	ULONG_PTR args[4] = { 0 };
 
-	args[0] = (ULONG_PTR)(sizeof(output_string) / sizeof(output_string[0]));
-	args[1] = (ULONG_PTR)output_string;
-	__try
-	{
-		RaiseException(DBG_PRINTEXCEPTION_WIDE_C, 0, 4, args);
-		RaiseException(DBG_PRINTEXCEPTION_C, 0, 4, args);
-		debugged = TRUE;
-	}
-	__except (EXCEPTION_EXECUTE_HANDLER) {}
+	args[0] = (ULONG_PTR)(sizeof(output_string_w) / sizeof(output_string_w[0]));
+	args[1] = (ULONG_PTR)output_string_w;
+	__try { RaiseException(DBG_PRINTEXCEPTION_WIDE_C, 0, 4, args); }
+	__except (1) {}
+
+	args[0] = (ULONG_PTR)(sizeof(output_string_a) / sizeof(output_string_a[0]));
+	args[1] = (ULONG_PTR)output_string_a;
+	__try { RaiseException(DBG_PRINTEXCEPTION_C, 0, 4, args); }
+	__except (1) {}
 
 	return debugged;
 }

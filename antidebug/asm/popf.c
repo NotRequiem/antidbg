@@ -1,7 +1,7 @@
 #include "popf.h"
 #include "..\core\syscall.h"
 
-static inline bool _non_stealth() {
+static inline bool _non_stealth(void) {
     __try
     {
         RaiseException(EXCEPTION_TRAP_FLAG, 0, 0, NULL);
@@ -9,7 +9,7 @@ static inline bool _non_stealth() {
     }
     __except (GetExceptionCode() == EXCEPTION_TRAP_FLAG
         ? EXCEPTION_EXECUTE_HANDLER
-        : EXCEPTION_CONTINUE_EXECUTION)
+        : EXCEPTION_CONTINUE_SEARCH)
     {
         return false;
     }
@@ -17,12 +17,11 @@ static inline bool _non_stealth() {
 
 const uint8_t _popf_stub[] = { 0x9C, 0x48, 0x81, 0x0C, 0x24, 0x00, 0x01, 0x00, 0x00, 0x9D, 0x90, 0xC3 };
 
-bool __adbg_popf()
+bool __adbg_popf(const HANDLE process_handle)
 {
     if (_non_stealth()) return true;
 
     bool debugged = true;
-    HANDLE process_handle = (HANDLE)-1;
     PVOID exec_mem = NULL;
     SIZE_T region_size = sizeof(_popf_stub);
 

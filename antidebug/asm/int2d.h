@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-	bool __adbg_int2d();
+	bool __adbg_int2d(const HANDLE process_handle);
 
 #ifdef __cplusplus
 }

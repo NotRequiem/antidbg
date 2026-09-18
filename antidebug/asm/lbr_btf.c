@@ -10,26 +10,26 @@ LONG __stdcall _vectored_handler(PEXCEPTION_POINTERS exception_info) {
 
         const ULONG_PTR rip = exception_info->ContextRecord->Rip;
         if (g_lbr_buffer && rip >= (ULONG_PTR)g_lbr_buffer && rip < ((ULONG_PTR)g_lbr_buffer + g_lbr_size)) {
-
-            if (exception_info->ExceptionRecord->NumberParameters != 0) {
-                ULONG_PTR fromAddr = (ULONG_PTR)exception_info->ExceptionRecord->ExceptionInformation[0];
-                if (fromAddr > (ULONG_PTR)0x7FFFFFFFFFFFFFFF) {
-                    g_debugger = TRUE;
-                }
+            uint8_t current_byte = *(uint8_t*)rip;
+            if (current_byte == 0xF1) { // icebp
+                exception_info->ContextRecord->Rip++;
             }
-            exception_info->ContextRecord->Rip++;
+            else if (current_byte == 0xC3) { // ret
+                return EXCEPTION_CONTINUE_EXECUTION;
+            }
             return EXCEPTION_CONTINUE_EXECUTION;
         }
     }
     return EXCEPTION_CONTINUE_SEARCH;
 }
 
-inline static void _lbr_btf(const HANDLE process_handle, const HANDLE thread_handle) {
+inline static void _lbr_btf(const HANDLE process_handle) {
     CONTEXT ctx = { 0 };
     ctx.ContextFlags = CONTEXT_DEBUG_REGISTERS;
     NTSTATUS status = 0;
 
-    status = DbgNtGetContextThread(thread_handle, &ctx);
+    const HANDLE current_thread = (HANDLE)(LONG_PTR)-2; // must be this thread and not passed from __adbg
+    status = DbgNtGetContextThread(current_thread, &ctx);
     if (status != 0) {
         return;
     }
@@ -38,7 +38,7 @@ inline static void _lbr_btf(const HANDLE process_handle, const HANDLE thread_han
     // bit 9 of DR7 maps to bit 1 of DebugCtl MSR (BTF - Branch Trap Flag)
     ctx.Dr7 |= (1ULL << 8) | (1ULL << 9);
 
-    status = DbgNtSetContextThread(thread_handle, &ctx);
+    status = DbgNtSetContextThread(current_thread, &ctx);
     if (status != 0) {
         return;
     }
@@ -95,21 +95,22 @@ inline static void _lbr_btf(const HANDLE process_handle, const HANDLE thread_han
     );
 
     ctx.ContextFlags = CONTEXT_DEBUG_REGISTERS;
-    status = DbgNtSetContextThread(thread_handle, &ctx);
+    status = DbgNtSetContextThread(current_thread, &ctx);
     if (status == 0) {
         ctx.Dr7 &= ~((1ULL << 8) | (1ULL << 9));
-        DbgNtSetContextThread(thread_handle, &ctx);
+        DbgNtSetContextThread(current_thread, &ctx);
     }
 }
 
-bool __adbg_lbr(const HANDLE process_handle, const HANDLE thread_handle)
+bool __adbg_lbr(const HANDLE process_handle)
 {
+    g_debugger = FALSE;
     const PVOID veh = AddVectoredExceptionHandler(1, _vectored_handler);
     if (!veh) {
         return false;
     }
 
-    _lbr_btf(process_handle, thread_handle);
+    _lbr_btf(process_handle);
 
     RemoveVectoredExceptionHandler(veh);
 

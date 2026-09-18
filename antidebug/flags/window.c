@@ -2,8 +2,8 @@
 
 static BOOL __stdcall EnumWndProc(HWND hwnd, LPARAM lParam)
 {
-	char cur_window[1024];
-	GetWindowTextA(hwnd, cur_window, 1023);
+	char cur_window[1024] = { 0 };
+	GetWindowTextA(hwnd, cur_window, sizeof(cur_window) - 1);
 	if (strstr(cur_window, "WinDbg") != NULL || strstr(cur_window, "x64_dbg") != NULL || strstr(cur_window, "OllyICE") != NULL || strstr(cur_window, "OllyDBG") != NULL || strstr(cur_window, "Immunity") != NULL)
 	{
 		*((BOOL*)lParam) = TRUE;
@@ -21,8 +21,8 @@ bool __adbg_window()
 		return true;
 	}
 
-	char fore_window[1024];
-	GetWindowTextA(GetForegroundWindow(), fore_window, 1023);
+	char fore_window[1024] = { 0 };
+	GetWindowTextA(GetForegroundWindow(), fore_window, sizeof(fore_window) - 1);
 	if (strstr(fore_window, "WinDbg") != NULL || strstr(fore_window, "x64_dbg") != NULL || strstr(fore_window, "OllyICE") != NULL || strstr(fore_window, "OllyDBG") != NULL || strstr(fore_window, "Immunity") != NULL)
 	{
 		return true;

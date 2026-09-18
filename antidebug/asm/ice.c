@@ -22,12 +22,11 @@ static inline bool _non_stealth()
 
 const uint8_t _icebp_stub[] = { 0xF1, 0xC3 }; // icebp; ret
 
-bool __adbg_ice()
+bool __adbg_ice(const HANDLE process_handle)
 {
     if (_non_stealth()) return true;
 
     bool debugged = true;
-    HANDLE process_handle = (HANDLE)-1;
     PVOID exec_mem = NULL;
     SIZE_T region_size = sizeof(_icebp_stub);
 

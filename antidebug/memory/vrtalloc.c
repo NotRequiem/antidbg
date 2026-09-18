@@ -178,18 +178,24 @@ static inline bool _virtual_alloc_write_watch_code_write(const HANDLE process_ha
     ULONG_PTR is_debugger_present_addr = (ULONG_PTR)&IsDebuggerPresent;
 
     int pos = 0;
-    buffer[pos++] = 0x48; buffer[pos++] = 0x83; buffer[pos++] = 0xEC; buffer[pos++] = 0x28; // sub rsp, 0x28
-    buffer[pos++] = 0x51; // push rcx
-    buffer[pos++] = 0x48; buffer[pos++] = 0xB9; // movabs rcx
-    int offset = 0;
+    buffer[pos++] = 0x48;
+    buffer[pos++] = 0x83;
+    buffer[pos++] = 0xEC;
+    buffer[pos++] = 0x28; // sub rsp, 0x28
+    buffer[pos++] = 0x48;
+    buffer[pos++] = 0xB9; // mov rcx, imm64
     for (int n = 0; n < 8; n++) {
-        buffer[pos++] = (unsigned char)((is_debugger_present_addr >> offset) & 0xFF);
-        offset += 8;
+        buffer[pos++] = (unsigned char)((is_debugger_present_addr >> (n * 8)) & 0xFF);
     }
-    buffer[pos++] = 0xFF; buffer[pos++] = 0xD1; // call rcx
-    buffer[pos++] = 0x59; // pop rcx
-    buffer[pos++] = 0x48; buffer[pos++] = 0x83; buffer[pos++] = 0xC4; buffer[pos++] = 0x28; // add rsp, 0x28
+    buffer[pos++] = 0xFF; 
+    buffer[pos++] = 0xD1; // call rcx
+    buffer[pos++] = 0x48; 
+    buffer[pos++] = 0x83; 
+    buffer[pos++] = 0xC4; 
+    buffer[pos++] = 0x28; // add rsp, 0x28
     buffer[pos++] = 0xC3; // ret
+
+    DbgNtFlushInstructionCache(process_handle, buffer, pos);
 
     DbgNtResetWriteWatch(process_handle, (PVOID)buffer, (ULONG)buffer_size);
 

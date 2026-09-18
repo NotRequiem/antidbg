@@ -10,17 +10,21 @@ static inline DWORD __readprocid()
 bool __adbg_process_job()
 {
     bool problem = false;
-    DWORD job_process_struct_size = sizeof(JOBOBJECT_BASIC_PROCESS_ID_LIST) + sizeof(ULONG_PTR) * 1024;
-    JOBOBJECT_BASIC_PROCESS_ID_LIST* job_process_id_list = (JOBOBJECT_BASIC_PROCESS_ID_LIST*)(malloc(job_process_struct_size));
+    const DWORD max_processes = 1024;
+    const DWORD job_process_struct_size = sizeof(JOBOBJECT_BASIC_PROCESS_ID_LIST) + (sizeof(ULONG_PTR) * (max_processes - 1));
+    JOBOBJECT_BASIC_PROCESS_ID_LIST* job_process_id_list = (JOBOBJECT_BASIC_PROCESS_ID_LIST*)malloc(job_process_struct_size);
 
     if (job_process_id_list) {
         RtlSecureZeroMemory(job_process_id_list, job_process_struct_size);
 
-        job_process_id_list->NumberOfProcessIdsInList = 1024;
+        job_process_id_list->NumberOfProcessIdsInList = max_processes;
 
         if (NT_SUCCESS(DbgNtQueryInformationJobObject(NULL, JobObjectBasicProcessIdList, job_process_id_list, job_process_struct_size, NULL))) {
+            DWORD count = job_process_id_list->NumberOfProcessIdsInList;
+            if (count > max_processes) count = max_processes;
+
             DWORD ok_processes = 0;
-            for (DWORD i = 0; i < job_process_id_list->NumberOfAssignedProcesses; i++) {
+            for (DWORD i = 0; i < count; i++) {
                 ULONG_PTR process_id = job_process_id_list->ProcessIdList[i];
 
                 if (process_id == (ULONG_PTR)__readprocid()) {
@@ -35,7 +39,7 @@ bool __adbg_process_job()
                     InitializeObjectAttributes(&object_attributes, NULL, 0, NULL, NULL);
                     NTSTATUS status = DbgNtOpenProcess(&job_process_handle, PROCESS_QUERY_INFORMATION, &object_attributes, &client_id);
                     if (!((NTSTATUS)(status) >= 0)) {
-                        return false;
+                        problem = true; break;
                     }
 
                     const int process_name_buffer_size = 4096;

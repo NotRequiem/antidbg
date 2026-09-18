@@ -27,10 +27,6 @@ bool __adbg_open_process()
         FreeLibrary(ntdll);
         return true;
     }
-    else
-    {
-        FreeLibrary(ntdll);
-    }
 
     // syscalled part
     csr_handle = NULL;
@@ -40,6 +36,8 @@ bool __adbg_open_process()
     CLIENT_ID client_id = { 0 };
     client_id.UniqueProcess = (HANDLE)(ULONG_PTR)pfn_csr_get_process_id();
     client_id.UniqueThread = 0;
+
+    FreeLibrary(ntdll);
 
     ACCESS_MASK access = PROCESS_ALL_ACCESS;
 

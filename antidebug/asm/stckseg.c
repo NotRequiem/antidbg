@@ -1,7 +1,7 @@
 #include "stckseg.h"
 #include "..\core\syscall.h"
 
-bool __adbg_ssr()
+bool __adbg_ssr(const HANDLE process_handle)
 {
     /*
         66 8C D0 mov ax, ss
@@ -13,16 +13,15 @@ bool __adbg_ssr()
         C3 ret ; ret
     */
     const uint8_t shellcode[] = {
-    0x66, 0x8C, 0xD0,
-    0x66, 0x8E, 0xD0,
-    0x9C,
-    0x58,
-    0x48, 0xC1, 0xE8, 0x08,
-    0x48, 0x83, 0xE0, 0x01,
-    0xC3
+        0x66, 0x8C, 0xD0,
+        0x66, 0x8E, 0xD0,
+        0x9C,
+        0x58,
+        0x48, 0xC1, 0xE8, 0x08,
+        0x48, 0x83, 0xE0, 0x01,
+        0xC3
     };
 
-    HANDLE process_handle = (HANDLE)-1;
     PVOID exec_mem = NULL;
     SIZE_T region_size = sizeof(shellcode);
 
@@ -70,7 +69,14 @@ bool __adbg_ssr()
     );
 
     typedef bool(*is_debugged_func)();
-    const bool debugged = ((is_debugged_func)exec_mem)();
+    bool debugged = false;
+
+    __try {
+        debugged = ((is_debugged_func)exec_mem)();
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER) {
+        debugged = true;
+    }
 
     SIZE_T free_size = 0;
     DbgNtFreeVirtualMemory(

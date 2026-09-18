@@ -104,79 +104,83 @@ static _force_inline bool __detect_hook(const char* module_name, const char* fun
 
     // prevents stack overflow in this thread
     PVOID heap_memory = NULL;
-    SIZE_T alloc_size = 16384; // 8192 for reloc_mask + 8192 for live_bytes
+    SIZE_T alloc_size = 16384;
     if (!NT_SUCCESS(DbgNtAllocateVirtualMemory(current_process, &heap_memory, 0, &alloc_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE))) {
         DbgNtUnmapViewOfSection(current_process, mapped_base);
         return false;
     }
 
-    // 0 means compare the byte, 1 means skip the byte (it was modified by the OS loader)
-    PBYTE reloc_mask = (PBYTE)heap_memory;
-    PBYTE live_bytes = (PBYTE)heap_memory + 8192;
+    bool hooked = false;
 
-    // parse the base relocation table to build the mask
-    if (nt) {
-        DWORD reloc_rva = nt->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC].VirtualAddress;
-        DWORD reloc_size = nt->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC].Size;
+    __try {
+        // 0 means compare the byte, 1 means skip the byte (it was modified by the OS loader)
+        PBYTE reloc_mask = (PBYTE)heap_memory;
+        PBYTE live_bytes = (PBYTE)heap_memory + 8192;
 
-        if (reloc_rva && reloc_size) {
-            PIMAGE_BASE_RELOCATION reloc = (PIMAGE_BASE_RELOCATION)((ULONG_PTR)mapped_base + reloc_rva);
-            DWORD reloc_end = (DWORD)((ULONG_PTR)reloc + reloc_size);
+        // parse the base relocation table to build the mask
+        if (nt) {
+            DWORD reloc_rva = nt->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC].VirtualAddress;
+            DWORD reloc_size = nt->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC].Size;
 
-            while ((ULONG_PTR)reloc < (ULONG_PTR)reloc_end && reloc->SizeOfBlock > 0) {
-                DWORD page_rva = reloc->VirtualAddress;
+            if (reloc_rva && reloc_size) {
+                const ULONG_PTR reloc_start = (ULONG_PTR)mapped_base + reloc_rva;
+                const ULONG_PTR reloc_end = reloc_start + reloc_size;
+                PIMAGE_BASE_RELOCATION reloc = (PIMAGE_BASE_RELOCATION)reloc_start;
 
-                // only process relocation blocks that overlap our target function
-                if ((unsigned long long)(page_rva) + 4096 >= rva && page_rva <= rva + function_size) {
-                    DWORD num_entries = (reloc->SizeOfBlock - sizeof(IMAGE_BASE_RELOCATION)) / sizeof(WORD);
-                    PWORD entries = (PWORD)((ULONG_PTR)reloc + sizeof(IMAGE_BASE_RELOCATION));
+                while ((ULONG_PTR)reloc < reloc_end && reloc->SizeOfBlock >= sizeof(IMAGE_BASE_RELOCATION)) {
+                    DWORD page_rva = reloc->VirtualAddress;
 
-                    for (DWORD i = 0; i < num_entries; i++) {
-                        WORD entry = entries[i];
-                        WORD type = entry >> 12;
-                        WORD offset = entry & 0xFFF;
-                        DWORD entry_rva = page_rva + offset;
+                    // only process relocation blocks that overlap our target function
+                    if ((unsigned long long)(page_rva) + 4096 >= rva && page_rva <= rva + function_size) {
+                        DWORD num_entries = (reloc->SizeOfBlock - sizeof(IMAGE_BASE_RELOCATION)) / sizeof(WORD);
+                        PWORD entries = (PWORD)((ULONG_PTR)reloc + sizeof(IMAGE_BASE_RELOCATION));
 
-                        // if this specific relocation falls inside our function bounds
-                        if (entry_rva >= rva && entry_rva < rva + function_size) {
-                            DWORD func_offset = entry_rva - (DWORD)rva;
+                        for (DWORD i = 0; i < num_entries; i++) {
+                            WORD entry = entries[i];
+                            WORD type = entry >> 12;
+                            WORD offset = entry & 0xFFF;
+                            DWORD entry_rva = page_rva + offset;
 
-                            // mark these specific bytes as "do not compare"
-                            if (type == IMAGE_REL_BASED_DIR64) {
-                                for (int b = 0; b < 8 && (func_offset + b) < function_size; b++) reloc_mask[func_offset + b] = 1;
-                            }
-                            else if (type == IMAGE_REL_BASED_HIGHLOW) {
-                                for (int b = 0; b < 4 && (func_offset + b) < function_size; b++) reloc_mask[func_offset + b] = 1;
+                            // if this specific relocation falls inside our function bounds
+                            if (entry_rva >= rva && entry_rva < rva + function_size) {
+                                DWORD func_offset = entry_rva - (DWORD)rva;
+
+                                // mark these specific bytes as "do not compare"
+                                if (type == IMAGE_REL_BASED_DIR64) {
+                                    for (int b = 0; b < 8 && (func_offset + b) < function_size; b++) reloc_mask[func_offset + b] = 1;
+                                }
+                                else if (type == IMAGE_REL_BASED_HIGHLOW) {
+                                    for (int b = 0; b < 4 && (func_offset + b) < function_size; b++) reloc_mask[func_offset + b] = 1;
+                                }
                             }
                         }
                     }
+                    reloc = (PIMAGE_BASE_RELOCATION)((ULONG_PTR)reloc + reloc->SizeOfBlock);
                 }
-                reloc = (PIMAGE_BASE_RELOCATION)((ULONG_PTR)reloc + reloc->SizeOfBlock);
+            }
+        }
+
+        // live active bytes from the target process
+        SIZE_T bytes_read = 0;
+        if (NT_SUCCESS(DbgNtReadVirtualMemory(process_handle, remote_function, live_bytes, function_size, &bytes_read)) && bytes_read == function_size) {
+            for (DWORD i = 0; i < function_size; i++) {
+                if (reloc_mask[i] == 1) continue;
+                if (live_bytes[i] != disk_bytes[i]) {
+                    hooked = true;
+                    break;
+                }
             }
         }
     }
-
-    // live active bytes from the target process
-    bool hooked = false;
-    SIZE_T bytes_read = 0;
-
-    if (NT_SUCCESS(DbgNtReadVirtualMemory(process_handle, remote_function, live_bytes, function_size, &bytes_read)) && bytes_read == function_size) {
-
-        // byte-by-byte comparison, ignoring relocated bytes
-        for (DWORD i = 0; i < function_size; i++) {
-            if (reloc_mask[i] == 1) continue; // skip OS modified pointers
-
-            if (live_bytes[i] != disk_bytes[i]) {
-                hooked = true;
-                break;
-            }
+    __finally {
+        if (mapped_base) {
+            DbgNtUnmapViewOfSection(current_process, mapped_base);
+        }
+        if (heap_memory) {
+            alloc_size = 0;
+            DbgNtFreeVirtualMemory(current_process, &heap_memory, &alloc_size, MEM_RELEASE);
         }
     }
-
-    DbgNtUnmapViewOfSection(current_process, mapped_base);
-
-    alloc_size = 0; 
-    DbgNtFreeVirtualMemory(current_process, &heap_memory, &alloc_size, MEM_RELEASE);
 
     return hooked;
 }
@@ -185,15 +189,6 @@ LONG CALLBACK __global_handler(PEXCEPTION_POINTERS exception_info)
 {
     if (!exception_info || !exception_info->ContextRecord || !exception_info->ExceptionRecord) {
         return EXCEPTION_CONTINUE_SEARCH;
-    }
-
-    if (exception_info->ExceptionRecord->ExceptionCode == EXCEPTION_SINGLE_STEP)
-    {
-        const PCONTEXT ctx = exception_info->ContextRecord;
-        if (ctx->Dr0 || ctx->Dr1 || ctx->Dr2 || ctx->Dr3) {
-            __log("[!] Hardware debug registers detected");
-            __fastfail(STATUS_SXS_EARLY_DEACTIVATION);
-        }
     }
 
     __try {

@@ -41,15 +41,24 @@ bool __adbg_duplicate_handles(const HANDLE process_handle)
     if (DuplicateHandle(process_handle, process_handle, process_handle, &dup1, 0, FALSE, DUPLICATE_SAME_ACCESS)) {
         pfn_nt_set_information_object(dup1, ObjectHandleFlagInformation, &flags_on, sizeof(flags_on));
 
+        bool was_closed = false;
+
         __try {
-            CloseHandle(dup1);
+            if (CloseHandle(dup1)) {
+                was_closed = true;
+            }
         }
-        __except (GetExceptionCode() == STATUS_INVALID_HANDLE ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH) {
-            debugged = true; 
+        __except (EXCEPTION_EXECUTE_HANDLER) {
+            debugged = true;
         }
 
-        pfn_nt_set_information_object(dup1, ObjectHandleFlagInformation, &flags_off, sizeof(flags_off));
-        CloseHandle(dup1);
+        if (!was_closed) {
+            pfn_nt_set_information_object(dup1, ObjectHandleFlagInformation, &flags_off, sizeof(flags_off));
+            CloseHandle(dup1);
+        }
+        else {
+            debugged = true;
+        }
     }
 
     return debugged;

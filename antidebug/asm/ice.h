@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-    bool __adbg_ice();
+    bool __adbg_ice(const HANDLE process_handle);
 
 #ifdef __cplusplus
 }

@@ -37,7 +37,8 @@ bool __adbg_query_object()
                 }
 
                 // detect handle stripping
-                status = DbgNtQueryObject(debug_object, ObjectTypeInformation, type_info, required_length, (PULONG)&type_info->TypeName.Buffer);
+                ULONG actual_return_length = 0;
+                status = DbgNtQueryObject(debug_object, ObjectTypeInformation, type_info, required_length, &actual_return_length);
 
                 if (status == (NTSTATUS)STATUS_ACCESS_VIOLATION) {
                     debugged = true;

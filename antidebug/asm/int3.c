@@ -28,7 +28,7 @@ bool __adbg_int3()
     */
     // swallowed_exception = true;
     // DebugBreakProcess(process_handle);
-
+    swallowed_exception = true;
     const PVOID veh = AddVectoredExceptionHandler(1, _vectored_handler);
 
     __debugbreak();

@@ -33,6 +33,7 @@ bool __adbg_heap_magic(const HANDLE process_handle)
 
     // lock heap to prevent other threads from modifying it while we walk
     if (!HeapLock(heap_handle)) {
+        HeapFree(__readheap(), 0, ptr2);
         return false;
     }
 

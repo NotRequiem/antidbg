@@ -76,7 +76,6 @@ bool __adbg_parent_processes(const HANDLE process_handle)
     if (ppid == 0) return false;
 
     ULONG return_length = 0;
-    HANDLE current_process = (HANDLE)-1;
 
     DbgNtQuerySystemInformation(5, NULL, 0, &return_length);
     if (return_length == 0) return false;
@@ -86,7 +85,7 @@ bool __adbg_parent_processes(const HANDLE process_handle)
     PVOID snapshot_buffer = NULL;
     SIZE_T alloc_size = return_length;
 
-    if (DbgNtAllocateVirtualMemory(current_process, &snapshot_buffer, 0, &alloc_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE) < 0) {
+    if (DbgNtAllocateVirtualMemory(process_handle, &snapshot_buffer, 0, &alloc_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE) < 0) {
         return false;
     }
 
@@ -114,7 +113,7 @@ bool __adbg_parent_processes(const HANDLE process_handle)
 
     if (snapshot_buffer) {
         SIZE_T free_size = 0;
-        DbgNtFreeVirtualMemory(current_process, &snapshot_buffer, &free_size, MEM_RELEASE);
+        DbgNtFreeVirtualMemory(process_handle, &snapshot_buffer, &free_size, MEM_RELEASE);
     }
 
     return is_suspicious;
