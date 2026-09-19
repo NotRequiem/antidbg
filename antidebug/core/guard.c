@@ -111,6 +111,7 @@ static void __stdcall __anti_attach(void)
 }
 
 // not directly syscalled because we don't really care too much, we will be checking debug registers at random times during all the program's lifecycle with direct kernel calls
+/*
 static void __clear_breakpoints()
 {
     const DWORD currentPid = GetCurrentProcessId();
@@ -152,7 +153,7 @@ static void __clear_breakpoints()
     }
     DbgNtClose(hSnap);
 }
-
+*/
 static inline bool __harden_process(void)
 {
     // DEP
@@ -415,7 +416,7 @@ void __start_watchdogs(const HANDLE process_handle) {
 bool __setup_protection(const HANDLE process_handle)
 {
     __harden_process();
-    __clear_breakpoints();
+    // __clear_breakpoints();
     __clear_ifeo(process_handle); // not called in TLS callback because we don't care too much
     __hide_threads(process_handle); // redundancy is always good
     if (!__set_callback(&g_callback_page, process_handle))

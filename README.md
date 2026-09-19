@@ -118,12 +118,6 @@ int main() {
 }
 ```
 
-Here is the updated, production-ready build documentation. 
-
-It removes the anti-pattern of copy-pasting `main()` into `adbg.c`, provides accurate commands for both static and shared library configurations, documents the lack of GCC support due to C SEH constraints, and distinguishes between **MSVC (`cl.exe`)**, **`clang-cl`**, and **MinGW Clang**.
-
----
-
 ## Build
 
 ### 1. Binary mode
@@ -208,7 +202,9 @@ C:/local/antidebug/
         └── ...
 ```
 
-## Legal
+## Legal & Disclaimers
 I am not responsible nor liable for any damage you cause through any malicious usage of this project.
+
+The generation of the BUILD documentation was made with AI, report any issues.
 
 License: MIT
