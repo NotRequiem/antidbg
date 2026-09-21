@@ -2,6 +2,7 @@
 #include "../core/syscall.h"
 
 volatile BOOL g_debugger = FALSE;
+volatile BOOL g_veh_invoked = FALSE;
 PVOID g_lbr_buffer = NULL;
 SIZE_T g_lbr_size = 0;
 
@@ -10,13 +11,31 @@ LONG __stdcall _vectored_handler(PEXCEPTION_POINTERS exception_info) {
 
         const ULONG_PTR rip = exception_info->ContextRecord->Rip;
         if (g_lbr_buffer && rip >= (ULONG_PTR)g_lbr_buffer && rip < ((ULONG_PTR)g_lbr_buffer + g_lbr_size)) {
+            g_veh_invoked = TRUE;
             uint8_t current_byte = *(uint8_t*)rip;
+
+            if (current_byte != 0xC3 && current_byte != 0xF1) {
+                g_debugger = TRUE;
+                return EXCEPTION_CONTINUE_EXECUTION;
+            }
+
+            if (exception_info->ExceptionRecord->NumberParameters >= 2) {
+                const ULONG_PTR info_from = exception_info->ExceptionRecord->ExceptionInformation[0];
+                const ULONG_PTR info_to = exception_info->ExceptionRecord->ExceptionInformation[1];
+
+                if ((LONG_PTR)info_from < 0 || (LONG_PTR)info_to < 0) {
+                    g_debugger = TRUE;
+                }
+            }
+
             if (current_byte == 0xF1) { // icebp
                 exception_info->ContextRecord->Rip++;
+                return EXCEPTION_CONTINUE_EXECUTION;
             }
             else if (current_byte == 0xC3) { // ret
                 return EXCEPTION_CONTINUE_EXECUTION;
             }
+
             return EXCEPTION_CONTINUE_EXECUTION;
         }
     }
@@ -61,9 +80,9 @@ inline static void _lbr_btf(const HANDLE process_handle) {
 
     status = DbgNtAllocateVirtualMemory(
         process_handle,
-        &exec_mem,          
-        0,                  
-        &region_size,        
+        &exec_mem,
+        0,
+        &region_size,
         MEM_COMMIT | MEM_RESERVE,
         PAGE_EXECUTE_READWRITE
     );
@@ -88,15 +107,24 @@ inline static void _lbr_btf(const HANDLE process_handle) {
 
     region_size = 0;
     status = DbgNtFreeVirtualMemory(
-        process_handle, 
-        &exec_mem,          
-        &region_size,      
+        process_handle,
+        &exec_mem,
+        &region_size,
         MEM_RELEASE
     );
 
     ctx.ContextFlags = CONTEXT_DEBUG_REGISTERS;
-    status = DbgNtSetContextThread(current_thread, &ctx);
+    status = DbgNtGetContextThread(current_thread, &ctx);
     if (status == 0) {
+        if (ctx.Dr0 || ctx.Dr1 || ctx.Dr2 || ctx.Dr3) {
+            g_debugger = TRUE;
+        }
+        if (!(ctx.Dr7 & (1ULL << 8))) {
+            g_debugger = TRUE;
+        }
+        if (!(ctx.Dr7 & (1ULL << 9))) {
+            g_debugger = TRUE;
+        }
         ctx.Dr7 &= ~((1ULL << 8) | (1ULL << 9));
         DbgNtSetContextThread(current_thread, &ctx);
     }
@@ -105,6 +133,7 @@ inline static void _lbr_btf(const HANDLE process_handle) {
 bool __adbg_lbr(const HANDLE process_handle)
 {
     g_debugger = FALSE;
+    g_veh_invoked = FALSE;
     const PVOID veh = AddVectoredExceptionHandler(1, _vectored_handler);
     if (!veh) {
         return false;
@@ -113,6 +142,10 @@ bool __adbg_lbr(const HANDLE process_handle)
     _lbr_btf(process_handle);
 
     RemoveVectoredExceptionHandler(veh);
+
+    if (!g_veh_invoked) {
+        g_debugger = TRUE;
+    }
 
     if (g_debugger) {
         return true;
